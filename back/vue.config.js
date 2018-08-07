@@ -25,16 +25,20 @@ module.exports = {
   // 生产环境是否生成 sourceMap 文件
   // productionSourceMap: true,
   // css相关配置
-  // css: {
+  css: {
   //   // 是否使用css分离插件 ExtractTextPlugin
   //   extract: true,
   //   // 开启 CSS source maps?
   //   sourceMap: false,
   //   // css预设器配置项
-  //   loaderOptions: {},
+    loaderOptions: {
+      sass: {
+        data:`@import './src/assets/style/mixins.scss';`
+      }
+    },
   //   // 启用 CSS modules for all css / pre-processor files.
   //   modules: false
-  // },
+  },
   // use thread-loader for babel & TS in production build
   // enabled by default if the machine has more than 1 cores
   parallel: require('os').cpus().length > 1,
@@ -53,16 +57,18 @@ module.exports = {
     https: false,
     hotOnly: false,
     disableHostCheck: true,
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://localhost:4000',
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       '^/api': '/'
-    //     }
-    //   }
-    // }
-  }
+    proxy: {
+      "/carrots-admin-ajax/": {
+        "target": "http://dev.admin.carrots.ptteng.com/",
+        "secure": false,
+        "pathRewrite": {
+              "^/carrots-admin-ajax/": ""
+             },
+       "changeOrigin": true,
+       "logLevel": "debug"
+     } /* 配置反向代理 ，暂时配置任务6-10的地址，此地址需要改动 */
+    }
+  },
   // 第三方插件配置
   // pluginOptions: {
   // // ...
