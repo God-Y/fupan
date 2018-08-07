@@ -1,29 +1,18 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Back</router-link> |
-      <router-link to="/about">Login</router-link>
-    </div>
-    <router-view/>
+    <router-view/> <!-- 路由出口 -->
   </div>
 </template>
 
 <style lang="scss">
+
+@import './assets/style/reset/normalize'; /* 导入reset样式 */
+
+
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  height: 100%;
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+
 </style>
+
+/*  */
