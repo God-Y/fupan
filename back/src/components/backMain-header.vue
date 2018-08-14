@@ -1,5 +1,4 @@
-// 后台 header
-
+//  后台 header
 <template>
     <div class="header">
         <div>
@@ -50,4 +49,3 @@ export default class backHead extends Vue {
 }
 
 </style>
-

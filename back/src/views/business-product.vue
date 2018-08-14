@@ -42,67 +42,61 @@
 
 
 <script lang='ts'>
-
-import {Vue, Component, Prop} from 'vue-property-decorator';
-import DatePicker from '../components/date-picker.vue';
+import { Vue, Component, Prop } from "vue-property-decorator";
+import DatePicker from "../components/date-picker.vue";
 
 @Component({
-    components:{
-        DatePicker, /* 日期组件 */
-    }
+  components: {
+    DatePicker /* 日期组件 */
+  }
 })
 export default class BusinessProduct extends Vue {
-
-    list:any = [
-        {
-            code:'XSB',
-            name:'新手体验计划',
-            rate:'12.00',
-            deadline:'1月',
-            start:'10,000.00',
-            startdate:'T+0',
-            commend:'精品推荐',
-            state:'在售',
-            type:'下架',
-            edit:'编辑'
-        }
-    ]
+  list: any = [
+    {
+      code: "XSB",
+      name: "新手体验计划",
+      rate: "12.00",
+      deadline: "1月",
+      start: "10,000.00",
+      startdate: "T+0",
+      commend: "精品推荐",
+      state: "在售",
+      type: "下架",
+      edit: "编辑"
+    }
+  ];
 }
-
 </script>
 
 //样式
 <style lang='scss'>
+@mixin border-style {
+  border: 1px solid $border-color;
+} /* 边框样式 */
 
-    @mixin border-style {
-    border: 1px solid $border-color;
-    } /* 边框样式 */
-
-    .box {
-        @include border-style();
-    } 
-
-    .addTitle {
-        @include flex-vertical-between;
-        @include list-style();
-        border-bottom: 1px solid $border-color;
-        font-size: 14px;
-        & > span:nth-child(2){
-            color: blue;
-            cursor: pointer;
-        }
-    } /* 新增title */
-
-
-   .handle {
-       @include flex-vertical-between;
-       justify-content: space-around;
-       a{
-           cursor: pointer;
-       }
-       a:nth-child(2) {
-        color: blue;           
-       }
-   } /* 操作 */
-   
+.box {
+  @include border-style();
+}
+.addTitle {
+  @include flex-vertical-between;
+  @include list-style();
+  border-bottom: 1px solid $border-color;
+  font-size: 14px;
+  & > span:nth-child(2) {
+    color: blue;
+    cursor: pointer;
+  }
+}
+/* 新增title */
+.handle {
+  @include flex-vertical-between;
+  justify-content: space-around;
+  a {
+    cursor: pointer;
+  }
+  a:nth-child(2) {
+    color: blue;
+  }
+}
+/* 操作 */
 </style>

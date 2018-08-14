@@ -68,34 +68,30 @@
 
 
 <script lang='ts'>
-
-import {Vue, Component, Prop} from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
-export default class addCreditor extends Vue {
-
-}
-
+export default class addCreditor extends Vue {}
 </script>
 
 //样式
 <style scoped lang='scss'>
-    .add-creditor {
-        border: 1px solid $light-grey;
+.add-creditor {
+  border: 1px solid $light-grey;
+}
+.edit-title {
+  padding: 15px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid $light-grey;
+}
+.line-style {
+  & > div {
+    & > span:nth-child(1) {
+      color: #000;
+      width: 30%;
+      text-align: left;
+      font-size: 14px;
     }
-    .edit-title {
-        padding: 15px;
-        margin-bottom: 30px;
-        border-bottom: 1px solid $light-grey;
-    }
-    .line-style {
-        & > div {
-            & > span:nth-child(1) {
-                color: #000;
-                width: 30%;
-                text-align: left;
-                font-size: 14px;
-            }
-        }
-    }
+  }
+}
 </style>

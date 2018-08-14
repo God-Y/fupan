@@ -1,7 +1,6 @@
 $border-color: #333;
 $header-bg-grey: #f8f8f8; /* 表格header 背色 */
 $light-grey:#c0c4cc; /* 浅灰色 */
-
 @mixin flex-vertical-center {
     display: flex;
     justify-content: center;
