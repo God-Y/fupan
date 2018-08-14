@@ -44,6 +44,8 @@ export default class Home extends Vue {
   } /* UI框架侧边栏、页眉 */
   
   .el-main {
+    padding: 20px;
+    margin-bottom: 40px;
     background-color: #fff;
     color: #333;
     text-align: center;
