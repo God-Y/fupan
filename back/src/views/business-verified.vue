@@ -6,17 +6,11 @@
 
 
 <script lang='ts'>
-
-import {Vue, Component, Prop} from 'vue-property-decorator';
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class BusinessVerified extends Vue {
-
-}
-
+export default class BusinessVerified extends Vue {}
 </script>
-
 //样式
 <style lang='scss'>
-
 </style>

@@ -11,8 +11,6 @@ import addCreditor from "./views/business-creditor/add-creditor.vue";
 import creditorMatch from "./views/business-creditor/creditor-match.vue";
 import WelcomePage from "./views/backMain-welcomPage.vue";
 
-
-
 Vue.use(Router);
 
 export default new Router({
@@ -26,13 +24,13 @@ export default new Router({
         /* 用户管理 */
         {
           path: "user",
-          name:"BusinessUser", 
-          component: BusinessUser 
+          name: "BusinessUser",
+          component: BusinessUser
         },
         /* 实名认证 */
         {
           path: "verifiel",
-          name:"BusinessVerified", 
+          name: "BusinessVerified",
           component: BusinessVerified
         },
         /* 产品管理 */

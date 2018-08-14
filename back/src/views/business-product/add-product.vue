@@ -68,7 +68,7 @@
             </div>
         </div>
         <!-- 第三行 -->
-        <div class='textarea'>
+        <div class="textarea">
             <span>&#12288;备&#12288;&#12288;注</span>
             <el-input
                 type="textarea"
@@ -111,58 +111,64 @@
 </template>
 
 
-<script lang='ts'>
-
-import {Vue, Component, Prop} from 'vue-property-decorator';
-import uploadFile from '../../components/upload-file.vue';
+<script lang="ts">
+import { Vue, Component, Prop } from "vue-property-decorator";
+import uploadFile from "../../components/upload-file.vue";
 
 @Component({
-    components: {
-        uploadFile, /* 上传文件组件 */
-    }
+  components: {
+    uploadFile /* 上传文件组件 */
+  }
 })
 export default class addProduct extends Vue {
-    /*
-    所有的按钮和输入框还需要绑定 双向绑定数据， 
-     */
+  /*
+  所有的按钮和输入框还需要绑定 双向绑定数据， 
+    */
+  yearIncome: string = ""; /* 年化收益 */
+  loan: string = ""; /* 还款方式 */
+  startDate: string = ""; /* 起息日期 */
+  selectDate: string = ""; /* 日月选择 */
+  textarea: string = ""; /* 备注 */
+  loanOptions: any = [
+    {
+      value: "选项1",
+      label: "到期本息一次付清"
+    },
+    {
+      value: "选项2",
+      label: "按月付息，到期还本"
+    }
+  ];
 
-    yearIncome:string = ''; /* 年化收益 */
-    loan:string = ''; /* 还款方式 */
-    startDate: string = '' ; /* 起息日期 */
-    selectDate: string = ''; /* 日月选择 */
-    textarea:string = ''; /* 备注 */
-    loanOptions:any = [{
-          value: '选项1',
-          label: '到期本息一次付清'
-        }, {
-          value: '选项2',
-          label: '按月付息，到期还本'
-    }]
-
-    startOptions: any = [{
-         value: '选项1',
-          label: 't+0'
-        }, {
-          value: '选项2',
-          label: 't+1'
-        }, {
-            value: '选项3',
-            label: 't+2'
-        }
-    ]
-    date:any = [{
-        value: '选项1',
-          label: '日'
-        }, {
-          value: '选项2',
-          label: '月'
+  startOptions: any = [
+    {
+      value: "选项1",
+      label: "t+0"
+    },
+    {
+      value: "选项2",
+      label: "t+1"
+    },
+    {
+      value: "选项3",
+      label: "t+2"
+    }
+  ];
+  date: any = [
+    {
+      value: "选项1",
+      label: "日"
+    },
+    {
+      value: "选项2",
+      label: "月"
     }
   ];
 }
 </script>
 
 //样式
-<style scoped lang='scss'>
+<style scoped lang="scss">
 @mixin side-span-padding {
   white-space: nowrap;
   margin-left: 20px;
