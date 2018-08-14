@@ -11,6 +11,6 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class BackMainPage extends Vue {}
 </script>
-//样式
+//样式三
 <style lang='scss'>
 </style>
