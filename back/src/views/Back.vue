@@ -22,37 +22,35 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import  backHead from '../components/backMain-header.vue';
-import backAside from '../components/backMain-aside.vue';
+import backHead from "../components/backMain-header.vue";
+import backAside from "../components/backMain-aside.vue";
 
 @Component({
   components: {
-  backHead,
-  backAside
+    backHead,
+    backAside
   }
 })
 export default class Home extends Vue {
-  input:string = ''
+  input: string = "";
 }
 </script>
 
 <style scoped lang='scss'>
-
-  .el-aside,  .el-header{
-    border: 1px solid $border-color;
-    border-top: none;
-  } /* UI框架侧边栏、页眉 */
-  
-  .el-main {
-    padding: 20px;
-    margin-bottom: 40px;
-    background-color: #fff;
-    color: #333;
-    text-align: center;
-  } /* UI 框架主内容区 */
-  
-  .home, .el-container {
-    height: 100%;
-  } /* 容器 */
-  
+.el-aside,
+.el-header {
+  border: 1px solid $border-color;
+  border-top: none;
+} /* UI框架侧边栏、页眉 */
+.el-main {
+  padding: 20px;
+  margin-bottom: 40px;
+  background-color: #fff;
+  color: #333;
+  text-align: center;
+} /* UI 框架主内容区 */
+.home,
+.el-container {
+  height: 100%;
+} /* 容器 */
 </style>

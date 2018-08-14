@@ -156,54 +156,51 @@ export default class addProduct extends Vue {
         }, {
           value: '选项2',
           label: '月'
-    }]
-
+    }
+  ];
 }
-
 </script>
 
 //样式
 <style scoped lang='scss'>
-    @mixin side-span-padding {
-        white-space: nowrap;
-        margin-left: 20px;
-        margin-right: 10px;
-    }
-    .star-style {
-        color: red;
-    } /* * 颜色 */
-    .deadline {
-        justify-content: flex-start;
-        .el-select {
-            margin-left: 10px;
-            width: 100px;
-        }
-    } /* 期限 */
-    .textarea {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-bottom: 30px;
-        span { 
-            @include side-span-padding;
-        }
-        .el-textarea {
-            width: 60%;
-        }
-    } /* 输入区域 */
-    
-    .side-span {
-        display: flex;
-        margin-bottom: 30px;
-        > span {
-            @include side-span-padding();
-        }
-    } /* 输入框侧边侧边 */
-
-    .footer-button {
-        margin-left: 35px;
-        button {
-            width: 100px;
-        }
-    }
+@mixin side-span-padding {
+  white-space: nowrap;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+.star-style {
+  color: red;
+} /* * 颜色 */
+.deadline {
+  justify-content: flex-start;
+  .el-select {
+    margin-left: 10px;
+    width: 100px;
+  }
+} /* 期限 */
+.textarea {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 30px;
+  span {
+    @include side-span-padding;
+  }
+  .el-textarea {
+    width: 60%;
+  }
+} /* 输入区域 */
+.side-span {
+  display: flex;
+  margin-bottom: 30px;
+  > span {
+    @include side-span-padding();
+  }
+} /* 输入框侧边侧边 */
+.footer-button {
+  margin-left: 35px;
+  button {
+    width: 100px;
+  }
+}
 </style>

@@ -37,30 +37,27 @@
 
 
 <script lang='ts'>
-
-import {Vue, Component, Prop} from 'vue-property-decorator';
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class creditorMatch extends Vue {
-     list:any = [
-        {
-            code:'XSB',
-            name:'新手体验计划',
-            rate:'12.00',
-            deadline:'1月',
-            start:'10,000.00',
-            startdate:'T+0',
-            commend:'精品推荐',
-            state:'在售',
-            type:'下架',
-            edit:'编辑'
-        }
-    ]
+  list: any = [
+    {
+      code: "XSB",
+      name: "新手体验计划",
+      rate: "12.00",
+      deadline: "1月",
+      start: "10,000.00",
+      startdate: "T+0",
+      commend: "精品推荐",
+      state: "在售",
+      type: "下架",
+      edit: "编辑"
+    }
+  ];
 }
-
 </script>
 
 //样式
 <style lang='scss'>
-
 </style>
