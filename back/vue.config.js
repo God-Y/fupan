@@ -16,7 +16,7 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   chainWebpack: (config)=>{
     config.resolve.alias
-        .set('common_Components',resolve('~src/components/common'))
+        .set('common_Components',resolve('src/components/common'))
 },
   // configureWebpack: () => {},
   // vue-loader 配置项
