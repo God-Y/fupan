@@ -31,7 +31,7 @@
                         <td>{{item.state}}</td>
                         <td>{{item.statu}}</td>
                         <td class="handle">
-                            <a>{{item.type}}</a>
+                            <a><router-link to="creditorMatch">{{item.type}}</router-link></a>
                             <a>{{item.edit}}</a>
                         </td>
                     </tr>
@@ -89,26 +89,6 @@ export default class BusinessCreditor extends Vue {
         }
     } /* 新增title */
 
-   .listBox {
-       padding: 10px;
-       font-size: 14px;
-       table {
-            width: 100%;
-            border-collapse: collapse;
-            border-top: none;
-            tr {
-                @include list-style();
-                @include border-style();
-            } /* 表格样式 */
-            tr:nth-child(1) {
-                background: $header-bg-grey;
-            } /* 表头 */
-            td {
-                min-height: 40px;
-                max-width: 280px;
-            } /*  */
-       }
-   }
 
    .handle {
        @include flex-vertical-between;

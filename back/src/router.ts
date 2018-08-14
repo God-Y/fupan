@@ -8,6 +8,7 @@ import BusinessProduct from './views/business-product.vue';
 import addProduct from './views/business-product/add-product.vue';
 import BusinessCreditor from './views/business-creditor.vue';
 import addCreditor from './views/business-creditor/add-creditor.vue';
+import creditorMatch from './views/business-creditor/creditor-match.vue';
 import WelcomePage from './views/backMain-welcomPage.vue';
 
 
@@ -27,9 +28,9 @@ export default new Router({
 
         {path: 'product', name:'BusinessProduct', component: BusinessProduct },/* 产品管理 */
         {path:'addProduct', name:'addProduct',component:addProduct}, /* 新增产品管理 */
-
         {path: 'creditor', name:'BusinessCreditor', component: BusinessCreditor },/* 债权管理 */
         {path: 'addCreditor', name:'addCreditor', component:addCreditor}, /* 增加债券管理 */
+        {path:'creditorMatch', name:'creditorMatch',component:creditorMatch}, /* 债权匹配 */
 
         {path: '', name: 'backend', component: WelcomePage }, /* 默认跳转到欢迎页 */
       ]

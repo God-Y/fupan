@@ -2,17 +2,17 @@
     <div>
         <div class="one-line">
             <div> 
-                <span>*</span>
+                <span class="star-style">*</span>
                 <span>产品代号</span> 
                 <el-input placeholder="请输入内容"  size="mini" clearable> </el-input> 
             </div>
             <div> 
-                <span>*</span>
+                <span class="star-style">*</span>
                 <span>年化收益</span>
                 <el-input placeholder="请输入内容" v-model="yearIncome"  size="mini"  clearable> </el-input> 
             </div>
             <div> 
-                <span>*</span>
+                <span class="star-style">*</span>
                 <span>还款方式</span> 
                 <el-select v-model="loan" clearable size="mini" placeholder="请选择">
                     <el-option
@@ -27,17 +27,17 @@
         <!-- 第一行 -->
          <div class="one-line">
             <div> 
-                <span>*</span>
+                <span class="star-style">*</span>
                 <span>产品名称</span> 
                 <el-input placeholder="请输入内容"  size="mini" clearable> </el-input> 
             </div>
             <div> 
-                <span>*</span>
+                <span class="star-style">*</span>
                 <span>起投金额</span>
                 <el-input placeholder="请输入内容"  size="mini"  clearable> </el-input> 
             </div>
             <div> 
-                <span>*</span>
+                <span class="star-style">*</span>
                 <span>起息日期</span> 
                 <el-select v-model="startDate" clearable size="mini" placeholder="请选择">
                     <el-option
@@ -52,7 +52,7 @@
         <!-- 第二行 -->
          <div class="one-line deadline">
             <div> 
-                <span>*</span>
+                <span class="star-style">*</span>
                 <span>期&#12288;&#12288;限</span> 
                 <el-input placeholder="请输入内容"  size="mini" clearable> </el-input> 
             </div>
@@ -163,33 +163,22 @@ export default class addProduct extends Vue {
 </script>
 
 //样式
-<style lang='scss'>
+<style scoped lang='scss'>
     @mixin side-span-padding {
         white-space: nowrap;
         margin-left: 20px;
         margin-right: 10px;
     }
-    .one-line {
-        @include flex-vertical-between;
-        margin-bottom: 30px;
-        & > div {
-            @include flex-vertical-between;
-                span {
-                    margin: 0 10px;
-                    white-space: nowrap;
-                }
-                span:nth-child(1) {
-                    color: red;
-                }
-        }
-    } /*  */
+    .star-style {
+        color: red;
+    } /* * 颜色 */
     .deadline {
         justify-content: flex-start;
         .el-select {
             margin-left: 10px;
             width: 100px;
         }
-    }
+    } /* 期限 */
     .textarea {
         display: flex;
         justify-content: flex-start;
@@ -202,16 +191,14 @@ export default class addProduct extends Vue {
             width: 60%;
         }
     } /* 输入区域 */
-    .el-input {
-        max-width: 280px !important;
-    } /* 输入框长度 */
+    
     .side-span {
         display: flex;
         margin-bottom: 30px;
         > span {
             @include side-span-padding();
         }
-    }
+    } /* 输入框侧边侧边 */
 
     .footer-button {
         margin-left: 35px;
