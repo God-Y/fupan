@@ -4,3 +4,5 @@ declare module "*.vue" {
 }
 
 declare module 'vue-simple-uploader';
+declare module "vee-validate";
+declare module "vee-validate/dist/locale/zh_CN";
