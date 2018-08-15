@@ -69,7 +69,7 @@ export default class BusinessProduct extends Vue {
 
   created() {
     axios
-      .get("http://47.98.219.40:8080/a/list/investment-product")
+      .get("/api/a/list/investment-product")
       .then(response => {
         console.log(response);
       });
