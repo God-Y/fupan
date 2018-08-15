@@ -1,52 +1,53 @@
 <template>
-<div>
-  <div class="block">
-    <span class="demonstration">默认为 Date 对象</span>
-    <div class="demonstration">值：{{ value10 }}</div>
-    <el-date-picker
-      v-model="value10"
-      type="date"
-      placeholder="选择日期"
-      format="yyyy 年 MM 月 dd 日">
-    </el-date-picker>
-  </div>
-  <div class="block">
-    <span class="demonstration">使用 value-format</span>
-    <div class="demonstration">值：{{ value11 }}</div>
-    <el-date-picker
-      v-model="value11"
-      type="date"
-      placeholder="选择日期"
-      format="yyyy 年 MM 月 dd 日"
-      value-format="yyyy-MM-dd">
-    </el-date-picker>
-  </div>
-  <div class="block">
-    <span class="demonstration">时间戳</span>
-    <div class="demonstration">值：{{ value12 }}</div>
-    <el-date-picker
-      v-model="value12"
-      type="date"
-      placeholder="选择日期"
-      format="yyyy 年 MM 月 dd 日"
-      value-format="timestamp">
-    </el-date-picker>
-  </div>
+<div class="date-box">
+  <date-pickers placeholder="起止日期" v-model="start" @change="startChanged"></date-pickers>
+  ~
+  <date-pickers placeholder="结束日期" v-model="end" @change="endChanged"></date-pickers>
 </div> 
-
 </template>
 
-
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import DatePickers from "vue2-datepicker";
+// import { constants } from 'http2';
 
-@Component
+@Component({
+  components: {
+    DatePickers
+  }
+})
 export default class DatePicker extends Vue {
-  value10: string = "";
-  value11: string = "";
-  value12: string = "";
+  @Prop([String, Date, Number])
+  upperDate!: string | Date | number; //定义结束搜索时间
+  @Prop([String, Date, Number])
+  lowerDate!: string | Date | number; //定义开始搜索时间
+  //定义两个区间因为要改变，所以不能使用prop，使用data
+  start: any = this.lowerDate;
+  end: any = this.upperDate;
+  //组件向去父级传参
+  @Emit() //开始时间向父级传值
+  startChange(upperDateNum: number) {}
+  @Emit() //结束时间向父级传值
+  endChange(endDateNum: number) {}
+
+  //开始change事件传参
+  startChanged(val: Date) {
+    //设定开始时间的变量
+    let upperDateNum: number = val.valueOf();
+    this.startChange(upperDateNum);
+  }
+
+  //结束change事件传值
+  endChanged(val: Date) {
+    //设定结束时间的变量
+    let endNumber: number = val.valueOf() + 8.64e6 - 1;
+    this.endChange(endNumber);
+  }
 }
 </script>
 //样式
-<style lang='scss'>
+<style lang='scss' scoped>
+.date-box {
+  display: inline-block;
+}
 </style>

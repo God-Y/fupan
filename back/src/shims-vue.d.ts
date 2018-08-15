@@ -4,3 +4,4 @@ declare module "*.vue" {
 }
 
 declare module 'vue-simple-uploader';
+declare module 'vue2-datepicker';
