@@ -113,7 +113,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import uploadFile from "../../components/upload-file.vue";
+import uploadFile from "../../components/upload-file.vue"; /* import 上传文件组件 */
 
 @Component({
   components: {
@@ -165,6 +165,8 @@ export default class addProduct extends Vue {
     }
   ];
 }
+
+class validate {}
 </script>
 
 //样式

@@ -58,11 +58,11 @@ module.exports = {
     hotOnly: false,
     disableHostCheck: true,
     proxy: {
-      "/carrots-admin-ajax/": {
-        "target": "http://dev.admin.carrots.ptteng.com/",
+      "/api": {
+        "target": "http://47.98.219.40:8080/",
         "secure": false,
         "pathRewrite": {
-              "^/carrots-admin-ajax/": ""
+              "^/api": "/"
              },
        "changeOrigin": true,
        "logLevel": "debug"

@@ -23,14 +23,7 @@ export default class login extends Vue {
   data: any = {};
 
   submit(): boolean {
-    let putData = `name=${this.name}&pwd=${this.password}`;
-    axios.post("/carrots-admin-ajax/a/login", putData).then(response => {
-      this.data = response;
-      if (this.data.data.message === "success") {
-        console.log("success");
-        router.push({ name: "backend" });
-      }
-    });
+    router.push({ name: "backend" });
     return false;
   }
   /* 暂时使用任务6-10的接口来测试反向代理和请求，此数据需要更改 */
