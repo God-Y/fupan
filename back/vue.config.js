@@ -58,11 +58,11 @@ module.exports = {
     hotOnly: false,
     disableHostCheck: true,
     proxy: {
-      "/api": {
+      "/api/": {
         "target": "http://47.98.219.40:8080/",
         "secure": false,
         "pathRewrite": {
-              "^/api": "/"
+              "^/api/": ""
              },
        "changeOrigin": true,
        "logLevel": "debug"
