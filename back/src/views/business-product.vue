@@ -43,6 +43,7 @@
 
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
+import axios from "axios";
 import DatePicker from "../components/date-picker.vue";
 
 @Component({
@@ -65,6 +66,14 @@ export default class BusinessProduct extends Vue {
       edit: "编辑"
     }
   ];
+
+  created() {
+    axios
+      .get("http://47.98.219.40:8080/a/list/investment-product")
+      .then(response => {
+        console.log(response);
+      });
+  }
 }
 </script>
 
