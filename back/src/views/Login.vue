@@ -14,7 +14,7 @@
 import { Component, Vue, Provide } from "vue-property-decorator";
 import axios from "axios";
 import Router from "vue-router";
-import router from "@/router";
+import router from "@/router"; //router 实例
 
 @Component
 export default class login extends Vue {
