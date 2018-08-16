@@ -6,10 +6,16 @@ import store from "./store";
 import "./assets/style/mixins.scss";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css"; /* element ui */
+import vfilters from "./assets/filter/filter";
 
 Vue.use(ElementUI); /* 导入element */
 
 Vue.config.productionTip = false;
+
+//for-in循环定义多个过滤器
+for (let key in vfilters) {
+  Vue.filter(key, vfilters[key]);
+}
 
 new Vue({
   router,
