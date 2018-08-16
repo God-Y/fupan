@@ -58,6 +58,7 @@ export default class BusinessProduct extends Vue {
   list: any[] = [];
   created() {
     axios.get("/api/a/list/investment-product").then(response => {
+      console.log(response);
       this.list = response.data.data.list;
       console.log(this.list);
     });
