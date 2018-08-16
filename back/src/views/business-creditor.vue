@@ -67,7 +67,7 @@ export default class BusinessCreditor extends Vue {
 </script>
 
 //样式
-<style lang='scss'>
+<style lang='scss' scoped>
 @mixin border-style {
   border: 1px solid $border-color;
 } /* 边框样式 */
@@ -81,7 +81,7 @@ export default class BusinessCreditor extends Vue {
   border-bottom: 1px solid $border-color;
   font-size: 14px;
   & > span:nth-child(2) {
-    color: blue;
+    color: $blue;
     cursor: pointer;
   }
 } /* 新增title */
@@ -92,7 +92,7 @@ export default class BusinessCreditor extends Vue {
     cursor: pointer;
   }
   a:nth-child(2) {
-    color: blue;
+    color: $blue;
   }
 } /* 操作 */
 </style>
