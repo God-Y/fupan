@@ -18,9 +18,9 @@ import DatePickers from "vue2-datepicker";
 })
 export default class DatePicker extends Vue {
   @Prop([String])
-  upperDate!:  Date | number; //定义结束搜索时间
+  upperDate!: Date | number; //定义结束搜索时间
   @Prop([String])
-  lowerDate!:  Date | number; //定义开始搜索时间
+  lowerDate!: Date | number; //定义开始搜索时间
   //定义两个区间因为要改变，所以不能使用prop，使用data
   start: any = this.lowerDate;
   end: any = this.upperDate;
