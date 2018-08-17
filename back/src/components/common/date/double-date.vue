@@ -17,6 +17,7 @@ import DatePickers from "vue2-datepicker";
   }
 })
 export default class DatePicker extends Vue {
+
   @Prop([String , Number])
   upperDate!: string | Date | number; //定义结束搜索时间
   @Prop([String , Number])
@@ -28,6 +29,7 @@ export default class DatePicker extends Vue {
   get end () {
     return this.upperDate;
   }
+
   //组件向去父级传参
   @Emit() //开始时间向父级传值
   startChange(upperDateNum: number) {}

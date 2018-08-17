@@ -1,4 +1,6 @@
 <template>
+<div>
+    <searchProduct></searchProduct>
     <div class="box">
         <div class="addTitle">
             <span>产品列表</span>
@@ -20,17 +22,17 @@
                         <th>操作</th>
                     </tr>
                     <tr v-for="item in list" :key="item.id">
-                        <td>{{item.code}}</td>
+                        <td>{{item.productCode}}</td>
                         <td>{{item.name}}</td>
-                        <td>{{item.rate}}</td>
+                        <td>{{item.annualizedIncome}}</td>
                         <td>{{item.deadline}}</td>
-                        <td>{{item.start}}</td>
-                        <td>{{item.startdate}}</td>
-                        <td>{{item.commend}}</td>
-                        <td>{{item.state}}</td>
+                        <td>{{item.startingAmount}}</td>
+                        <td>{{valueDate(item.valueDate)}}</td>
+                        <td>{{reconmend(item.recommend)}}</td>
+                        <td :class="{success:item.shelf===0, danger:item.shelf===1}">{{statu(item.shelf)}}</td>
                         <td class="handle">
-                            <a>{{item.type}}</a>
-                            <a>{{item.edit}}</a>
+                            <a :class="{success:item.shelf===1, danger:item.shelf===0}">{{shelf(item.shelf)}}</a>
+                            <a>编辑</a>
                         </td>
                     </tr>
                 </thead>
@@ -38,42 +40,63 @@
             <!-- 列表 -->
         </div>
     </div>
+</div>
 </template>
 
 
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
 import axios from "axios";
-import DatePicker from "../components/date-picker.vue";
+import searchProduct from "./business-product/search-product.vue"; /*  */
 
 @Component({
   components: {
-    DatePicker /* 日期组件 */
+    searchProduct
   }
 })
 export default class BusinessProduct extends Vue {
-  list: any = [
-    {
-      code: "XSB",
-      name: "新手体验计划",
-      rate: "12.00",
-      deadline: "1月",
-      start: "10,000.00",
-      startdate: "T+0",
-      commend: "精品推荐",
-      state: "在售",
-      type: "下架",
-      edit: "编辑"
-    }
-  ];
-
+  list: any[] = [];
   created() {
-    axios
-      .get("http://47.98.219.40:8080/a/list/investment-product")
-      .then(response => {
-        console.log(response);
-      });
-  }
+    axios.get("/api/a/list/investment-product").then(response => {
+      console.log(response);
+      this.list = response.data.data.list;
+      console.log(this.list);
+    });
+  } /* 组件生成后获取HTTP请求数据 */
+  valueDate(value: number) {
+    switch (value) {
+      case 10:
+        return "T+0";
+      case 20:
+        return "T+1";
+      case 30:
+        return "T+2";
+    }
+  } /* 起息日期 */
+  reconmend(value: number) {
+    switch (value) {
+      case 0:
+        return "不推荐";
+      case 1:
+        return "推荐";
+    }
+  } /* 推荐 */
+  statu(value: number) {
+    switch (value) {
+      case 0:
+        return "在售";
+      case 1:
+        return "停售";
+    }
+  } /* 状态判断 */
+  shelf(value: number) {
+    switch (value) {
+      case 0:
+        return "下架";
+      case 1:
+        return "上架";
+    }
+  } /* 上下架 */
 }
 </script>
 
@@ -92,7 +115,9 @@ export default class BusinessProduct extends Vue {
   border-bottom: 1px solid $border-color;
   font-size: 14px;
   & > span:nth-child(2) {
-    color: blue;
+    & > a {
+      color: $blue;
+    }
     cursor: pointer;
   }
 }
@@ -104,8 +129,14 @@ export default class BusinessProduct extends Vue {
     cursor: pointer;
   }
   a:nth-child(2) {
-    color: blue;
+    color: $blue;
   }
 }
 /* 操作 */
+.success {
+  color: $success;
+}
+.danger {
+  color: $danger;
+}
 </style>

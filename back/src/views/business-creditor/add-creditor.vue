@@ -3,7 +3,7 @@
         <div class="edit-title">新增/编辑</div>
         <div>
             <div class="one-line line-style">
-                <!-- class one-line的及之内的样式引用至 新增产品页面 -->
+                <!-- class one-line的及之内的样式引用至 app页面 -->
                 <div> 
                     <span>债权人身份证号</span> 
                     <el-input placeholder="请输入内容"  size="mini" clearable> </el-input> 
