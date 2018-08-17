@@ -14,7 +14,7 @@
           <!-- 日期组件 -->
           <date
             :upperDate="userForm.upperDate"
-            :lowerDate=" userForm.lowerDate"
+            :lowerDate="userForm.lowerDate"
             @start-change="getStart"
             @end-change="getEnd"
           ></date>
@@ -23,13 +23,13 @@
           </el-form-item>
           <el-form-item label="账户状态" prop="status">
             <el-select v-model="userForm.status" placeholder="全部" >
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+              <el-option label="正常" value="10"></el-option>
+              <el-option label="冻结" value="20"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item class="btn-box">
-            <el-button type="danger">清空</el-button>
-            <el-button @click="resetForm('userForm1')" type="primary">搜索</el-button>
+            <el-button type="danger" @click="resetForm('userForm1')">清空</el-button>
+            <el-button type="primary">搜索</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -39,11 +39,12 @@
         用户列表
       </div>
       <div class="card-body">
+        <!-- 表格渲染开始 -->
         <el-table
           :data="userList"
           border
           style="width: 100%"
-          v-loading="listLoading">
+          >
           <el-table-column
             prop="userNumber"
             label="用户编号"
@@ -90,7 +91,7 @@
             width="100"  align="center" >
             <template slot-scope="scope">
               <el-button 
-              @click="handleClick(scope.row.status)" 
+              @click="changeStatus(scope.row.status)" 
               type="text" 
               size="small"
               :class="[scope.row.status==10? 'freeze' :'remove-freeze']"
@@ -107,7 +108,7 @@
 </template>
 
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Date from "common_Components/date/double-date.vue";
 import axios from "axios";
@@ -120,12 +121,19 @@ export default class BusinessUser extends Vue {
   //定义
   userList: Array<object> = [];
   created() {
-    axios.get("/api/a/list/user").then(response => {
-      let data = response.data;
-      if (data.code) this.userList = data.data.list;
-    });
+    axios
+      .get("/api/a/list/user")
+      .then(response => {
+        let data = response.data;
+        if (data.code) this.userList = data.data.list;
+      })
+      .then(() => {
+        //获取后加载动画取消
+        this.listLoading = false;
+      });
   }
-
+  //可以扁担加载动画
+  listLoading: boolean = true;
   //关于表单的数据
   userForm: any = {
     phone: "",
@@ -188,11 +196,39 @@ export default class BusinessUser extends Vue {
     userForm1: HTMLFormElement
   };
   resetForm(formName: string) {
+    console.log(1);
+    this.userForm.upperDate = "";
+    this.userForm.lowerDate = "";
     this.$refs[formName].resetFields();
+  }
+  //改变状态会弹窗
+  changeStatus(status: number) {
+    //判断当前的状态
+    let alertMsg: string =
+      status == 10 ? "冻结后将禁止用户登录App" : "解冻后将恢复用户登录权限";
+    this.$confirm(alertMsg, "操作提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+      center: true
+    })
+      .then(() => {
+        let msg: string = status == 10 ? "冻结成功" : "解冻成功";
+        this.$message({
+          type: "success",
+          message: msg
+        });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "取消操作"
+        });
+      });
   }
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .ruleForm {
   display: flex;
   flex-wrap: wrap;
