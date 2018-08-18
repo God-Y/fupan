@@ -30,6 +30,8 @@ export default class DatePicker extends Vue {
   get start() {
     return this.lowerDate;
   }
+  //对计算属性设置set 方法
+  set start(newValue: any) {}
   get end() {
     return this.upperDate;
   }
