@@ -58,7 +58,7 @@ export default class uploadFile extends Vue {
     this.files = e.target.files[0];
     this.filesSize = (this.files.size / 1024 / 1024).toFixed(3);
     this.imgPreview(this.files);
-  } /* 通过change事件获取文件信息 */
+  } /* 通过change事件获取文件信息1 */
 
   imgPreview(file: any) {
     if (/^image/.test(file.type)) {
