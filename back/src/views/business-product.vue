@@ -24,14 +24,16 @@
                     <tr v-for="item in list" :key="item.id">
                         <td>{{item.productCode}}</td>
                         <td>{{item.name}}</td>
-                        <td>{{item.annualizedIncome}}</td>
+                        <td>{{item.annualizedIncome | annualized }}</td>
                         <td>{{item.deadline}}</td>
                         <td>{{item.startingAmount}}</td>
-                        <td>{{valueDate(item.valueDate)}}</td>
-                        <td>{{reconmend(item.recommend)}}</td>
-                        <td :class="{success:item.shelf===0, danger:item.shelf===1}">{{statu(item.shelf)}}</td>
+                        <td>{{item.valueDate | valueDate}}</td>
+                        <td>{{item.recommend | reconmend}}</td>
+                        <td :class="{success:item.shelf===0, danger:item.shelf===1}">{{item.shelf | statu}}</td>
                         <td class="handle">
-                            <a :class="{success:item.shelf===1, danger:item.shelf===0}">{{shelf(item.shelf)}}</a>
+                            <el-button type="text" @click="shelfOperate(item.id,item.shelf)" >
+                              <a :class="{success:item.shelf===1, danger:item.shelf===0}" >{{item.shelf | shelf}}</a>
+                            </el-button>
                             <a>编辑</a>
                         </td>
                     </tr>
@@ -63,40 +65,30 @@ export default class BusinessProduct extends Vue {
       console.log(this.list);
     });
   } /* 组件生成后获取HTTP请求数据 */
-  valueDate(value: number) {
-    switch (value) {
-      case 10:
-        return "T+0";
-      case 20:
-        return "T+1";
-      case 30:
-        return "T+2";
-    }
-  } /* 起息日期 */
-  reconmend(value: number) {
-    switch (value) {
-      case 0:
-        return "不推荐";
-      case 1:
-        return "推荐";
-    }
-  } /* 推荐 */
-  statu(value: number) {
-    switch (value) {
-      case 0:
-        return "在售";
-      case 1:
-        return "停售";
-    }
-  } /* 状态判断 */
-  shelf(value: number) {
-    switch (value) {
-      case 0:
-        return "下架";
-      case 1:
-        return "上架";
-    }
-  } /* 上下架 */
+  shelfOperate(id: number, shelf: number) {
+    let statu = shelf === 0 ? 0 : 1; /* 判断上下架状态 */
+    // 弹窗提示
+    this.$confirm("是否执行此操作?", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
+      .then(() => {
+        axios.get(`api/a/product_shelf/${id}`).then(res => {
+          console.log(res);
+        }); /* 点击确定发送请求 */
+        this.$message({
+          type: "success",
+          message: "操作成功!"
+        });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消"
+        });
+      });
+  } /* 上下架功能 */
 }
 </script>
 

@@ -31,6 +31,52 @@ let filtersObj: Filters = {
   //解冻还是冻结
   handleStatus: function(value: number): string {
     return value === 10 ? "冻结" : "解冻";
+  },
+  // 产品列表年化收益率
+  annualized: function(value: number): string {
+    return value * 100 + "%";
+  },
+
+  // 产品列表 起息日期
+  valueDate: function(value: number): any {
+    switch (value) {
+      case 10:
+        return "T+0";
+      case 20:
+        return "T+1";
+      case 30:
+        return "T+2";
+    }
+  },
+
+  // 产品列表 推荐
+  reconmend: function(value: number) {
+    switch (value) {
+      case 0:
+        return "不推荐";
+      case 1:
+        return "推荐";
+    }
+  },
+
+  // 产品列表 状态判断
+  statu: function(value: number) {
+    switch (value) {
+      case 0:
+        return "在售";
+      case 1:
+        return "停售";
+    }
+  },
+
+  // 产品列表 上下架
+  shelf: function(value: number) {
+    switch (value) {
+      case 0:
+        return "下架";
+      case 1:
+        return "上架";
+    }
   }
 };
 
