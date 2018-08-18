@@ -8,6 +8,8 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css"; /* element ui */
 import vfilters from "./assets/filter/filter";
 
+import axios from "./http/axios";
+import { post, get } from "./http/http";
 Vue.use(ElementUI); /* 导入element */
 
 Vue.config.productionTip = false;

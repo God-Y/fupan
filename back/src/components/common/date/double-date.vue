@@ -17,16 +17,15 @@ import DatePickers from "vue2-datepicker";
   }
 })
 export default class DatePicker extends Vue {
-
-  @Prop([String , Number])
+  @Prop([String, Number])
   upperDate!: string | Date | number; //定义结束搜索时间
-  @Prop([String , Number])
+  @Prop([String, Number])
   lowerDate!: string | Date | number; //定义开始搜索时间
   //定义两个区间因为要改变，所以不能使用prop，使用计算属性
-  get start () {
+  get start() {
     return this.lowerDate;
   }
-  get end () {
+  get end() {
     return this.upperDate;
   }
 
