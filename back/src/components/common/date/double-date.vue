@@ -1,8 +1,13 @@
 <template>
 <div class="date-box">
-  <date-pickers placeholder="起止日期" v-model="start" @change="startChanged"></date-pickers>
+  <date-pickers placeholder="起止日期" v-model="start" 
+  :not-after="end ||new Date() "
+  @change="startChanged"></date-pickers>
   ~
-  <date-pickers placeholder="结束日期" v-model="end" @change="endChanged"></date-pickers>
+  <date-pickers placeholder="结束日期" v-model="end" 
+    :not-before="start" :not-after="new Date()"
+    @change="endChanged"
+  ></date-pickers>
 </div> 
 </template>
 
@@ -25,9 +30,12 @@ export default class DatePicker extends Vue {
   get start() {
     return this.lowerDate;
   }
+  //对计算属性设置set 方法
+  set start(newValue: any) {}
   get end() {
     return this.upperDate;
   }
+  set end(newValue: any) {}
 
   //组件向去父级传参
   @Emit() //开始时间向父级传值

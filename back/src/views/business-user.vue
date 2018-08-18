@@ -27,9 +27,10 @@
               <el-option label="冻结" value="20"></el-option>
             </el-select>
           </el-form-item>
+          <!-- 搜索清空那按钮 -->
           <el-form-item class="btn-box">
             <el-button type="danger" @click="resetForm('userForm1')">清空</el-button>
-            <el-button type="primary">搜索</el-button>
+            <el-button type="primary" @click="search">搜索</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -44,6 +45,7 @@
           :data="userList"
           border
           style="width: 100%"
+          v-loading="listLoading"
           >
           <el-table-column
             prop="userNumber"
@@ -118,7 +120,7 @@ import axios from "axios";
   }
 })
 export default class BusinessUser extends Vue {
-  //定义
+  //发送http请求，获取数据
   userList: Array<object> = [];
   created() {
     axios
@@ -212,6 +214,7 @@ export default class BusinessUser extends Vue {
       type: "warning",
       center: true
     })
+      //冻结 ，解冻的操作写在这里
       .then(() => {
         let msg: string = status == 10 ? "冻结成功" : "解冻成功";
         this.$message({
@@ -225,6 +228,27 @@ export default class BusinessUser extends Vue {
           message: "取消操作"
         });
       });
+  }
+  //搜索
+  search(): void {
+    axios
+      .get("/api/a/list/user", {
+        // params: {
+        //   phone: this.userForm.phone,
+        //   managerNumber: this.userForm.managerNumber,
+        //   status: this.userForm.status,
+        //   upperDate: this.userForm.upperDate,
+        //   lowerDate: this.userForm.lowerDate,
+        //   idName: this.userForm.idName
+        // }
+        params: this.userForm
+      })
+      .then(response => {
+        console.log("测试所有", response);
+      })
+      .catch( res => {
+        console.log(res)
+      })
   }
 }
 </script>
