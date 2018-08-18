@@ -246,9 +246,9 @@ export default class BusinessUser extends Vue {
       .then(response => {
         console.log("测试所有", response);
       })
-      .catch( res => {
-        console.log(res)
-      })
+      .catch(res => {
+        console.log(res);
+      });
   }
 }
 </script>
