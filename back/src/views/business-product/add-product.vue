@@ -142,7 +142,7 @@ export default class addProduct extends Vue {
   // 以上注释的都放入表单验证的数据对象中
   selectDate: string = "日"; /* 期限 日月选择 */
   textarea: string = ""; /* 备注 */
-  imgUrl:string = "";
+  imgUrl: string = "";
   type: number = 0; /* 产品分类 */
   recommend: number = 0; /* 是否推荐 */
   purchaseLimit: number = 0; /* 是否限购 */
@@ -242,7 +242,7 @@ export default class addProduct extends Vue {
     } /* 禁用按钮 */
   } /* 如果是新增按钮跳转，禁用一些按钮 */
   getUpload(file: any) {
-    this.imgUrl = file ;
+    this.imgUrl = file;
     console.log(this.imgUrl);
   }
   $refs: any = {
