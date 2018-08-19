@@ -23,7 +23,7 @@
                     <td>
                         <div class="progressBox">
                             <div v-if="start" class="progress" 
-                            :style="{backgroundImage:'linear-gradient(to right,#409eff 0%,#409eff '+progress+',#409eff '+progress+',#409eff '+progress+',#409eff 100%)'}">
+                            :style="{width:progress}">
                             </div> <!-- v-if的作用是等到点击上传后才显现 -->
                         </div>
                     </td>
@@ -41,7 +41,7 @@
 
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import uploader from "vue-simple-uploader";
 import Axios from "axios";
 import { Input } from "element-ui";
@@ -54,6 +54,9 @@ export default class uploadFile extends Vue {
   filesSize: number = 0; /* 文件大小 */
   @Prop([Boolean])
   disabled!: boolean; /* 判断是否禁用 */
+
+  @Emit()
+  uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
 
   handleFileChange(e: any) {
     this.init(); /* 初始化 */
@@ -85,18 +88,22 @@ export default class uploadFile extends Vue {
   } /* 通过fileready来实现本地预览 */
 
   uploadImg() {
-    if (this.files.name == undefined) {
+    this.uploadInfo("测试和父级通信");
+    /* 这里上传的是图片名，接口通了以后要更改返回图片的路径 */
+
+    if (this.files.name == "") {
       this.$alert("请先上传文件", "错误提示", {
         confirmButtonText: "确定"
       });
       return false;
     } /* 如果没有选择文件就点击上传，弹窗 */
-    this.start = true;
 
+    this.start = true; /* 进度条显示 */
     let form = new FormData();
     form.append("file", this.files); /* 添加获取到的文件 */
     let config = {
       onUploadProgress: (progressEvent: any) => {
+        console.log(progressEvent.loaded);
         console.log(progressEvent);
         this.progress =
           (((progressEvent.loaded / progressEvent.total) * 100) | 0) + "%";
@@ -104,10 +111,15 @@ export default class uploadFile extends Vue {
       }
     }; /* 上传进度事件 */
 
-    Axios.post(`/carrots-admin-ajax/a/u/img/task`, form, config).then(res => {
-      console.log(res);
-      let message = res.data.message;
-    }); /* 上传成功的回调，信息在这里面提取，要限制上传图片的大小 */
+    Axios.post(`/carrots-admin-ajax/a/u/img/task`, form, config)
+      .then(res => {
+        console.log(res);
+        let message = res.data.message;
+        console.log(this.files);
+      })
+      .catch(function() {
+        console.log("FAILURE!!");
+      }); /* 上传成功的回调，信息在这里面提取，要限制上传图片的大小 */
   } /* 点击上传按钮，发送HTTP请求 */
 
   init() {
@@ -212,9 +224,10 @@ export default class uploadFile extends Vue {
   box-shadow: 0 0 5px 0px #ddd inset;
 }
 .progress {
-  width: 200px;
+  background: #409eff;
+  // width: 200px;
   height: 6px;
-  transition: 2s;
+  // transition: 2s;
 } /* 上传进度条 */
 
 .buttonStyle {
