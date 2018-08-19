@@ -2,8 +2,8 @@
     <!-- 上传图片 -->
     <div>
         <div class="uploadButton">
-            <input type="file" id="file" @change='handleFileChange' class="fileInput">
-            <label for="file">点击上传文件</label>
+            <input type="file" :disabled="disabled" id="file" @change='handleFileChange' class="fileInput">
+            <label for="file" >点击上传文件</label>
         </div>
         <div class="imgPreview" >
             <span>Photo Preview Area</span>
@@ -29,7 +29,7 @@
                     </td>
                     <td>
                         <div class="buttonStyle">
-                            <button @click="uploadImg">上传</button>
+                            <el-button :plain="true" :disabled="disabled" @click="uploadImg">上传</el-button>
                             <button @click="init">删除</button>
                         </div>
                     </td>
@@ -47,40 +47,48 @@ import Axios from "axios";
 import { Input } from "element-ui";
 @Component
 export default class uploadFile extends Vue {
-  files: any = {}; /* 文件信息 */
+  files: any = { name: "" }; /* 文件信息 */
   dataurl: any = ""; /* 图片base64 */
   progress: any = 0; /* 上传文件进度 */
   start: boolean = false; /* 控制进度条显示 */
-  filesSize: any = 0; /* 文件大小 */
+  filesSize: number = 0; /* 文件大小 */
+  @Prop([Boolean])
+  disabled!: boolean; /* 判断是否禁用 */
 
   handleFileChange(e: any) {
     this.init(); /* 初始化 */
     this.files = e.target.files[0];
-    this.filesSize = (this.files.size / 1024 / 1024).toFixed(3);
+    // if(this.files != undefined) {
+    //   this.filesSize = (this.files.size / 1024 / 1024).toFixed(3);
+    // }
     this.imgPreview(this.files);
-  } /* 通过change事件获取文件信息1 */
+  } /* 通过change事件获取文件信息 */
 
   imgPreview(file: any) {
-    if (/^image/.test(file.type)) {
-      /* 匹配文件类型为image的文件 */
-      // 创建一个reader
-      var reader = new FileReader();
-      // 将图片将转成 base64 格式
-      reader.readAsDataURL(file);
-      // 读取成功后的回调
-      reader.onloadend = result => {
-        this.dataurl = result;
-        this.dataurl = this.dataurl.currentTarget.result; /* 提取base64码 */
-      };
+    if (file !== undefined) {
+      if (/^image/.test(file.type)) {
+        /* 匹配文件类型为image的文件 */
+        // 创建一个reader
+        var reader = new FileReader();
+        // 将图片将转成 base64 格式
+        reader.readAsDataURL(file);
+        // 读取成功后的回调
+        reader.onloadend = result => {
+          this.dataurl = result;
+          this.dataurl = this.dataurl.currentTarget.result; /* 提取base64码 */
+        };
+      }
     } else {
+      this.init();
       alert("请选择图片");
-      return false;
     }
   } /* 通过fileready来实现本地预览 */
 
   uploadImg() {
     if (this.files.name == undefined) {
-      alert("请选择文件");
+      this.$alert("请先上传文件", "错误提示", {
+        confirmButtonText: "确定"
+      });
       return false;
     } /* 如果没有选择文件就点击上传，弹窗 */
     this.start = true;

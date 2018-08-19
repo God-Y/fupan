@@ -1,11 +1,12 @@
 <template>
     <div>
+      <el-form status-icon :rules="rules" ref="form">
         <div class="one-line">
-            <div> 
+            <el-form-item prop="code"> 
                 <span class="star-style">*</span>
                 <span>产品代号</span> 
-                <el-input placeholder="请输入内容" v-model="Pcode" :disabled="disabled" size="mini" clearable> </el-input> 
-            </div>
+                <el-input placeholder="请输入内容" v-model="form.Pcode" auto-complete="off" :disabled="disabled" size="mini" clearable> </el-input> 
+            </el-form-item>
             <div> 
                 <span class="star-style">*</span>
                 <span>年化收益</span>
@@ -56,6 +57,7 @@
                 <span>期&#12288;&#12288;限</span> 
                 <el-input placeholder="请输入内容" v-model="deadline" :disabled="disabled" size="mini" clearable> </el-input> 
             </div>
+            <!-- 期限 -->
             <div> 
                 <el-select v-model="selectDate" clearable :disabled="disabled" size="mini" placeholder="请选择">
                     <el-option
@@ -66,6 +68,7 @@
                     </el-option>
                 </el-select>
             </div>
+            <!-- 选择日、月 -->
         </div>
         <!-- 第三行 -->
         <div class="textarea">
@@ -108,6 +111,7 @@
             <el-button type="primary">保存</el-button>
             <el-button @click="prePage" type="danger" plain>取消</el-button>
         </div>
+      </el-form>
     </div>
 </template>
 
@@ -125,7 +129,7 @@ export default class addProduct extends Vue {
   /*
   所有的按钮和输入框还需要绑定 双向绑定数据， 
     */
-  Pcode: string = ""; /* 产品代号 */
+  // Pcode: string = ""; /* 产品代号 */
   yearIncome: string = ""; /* 年化收益 */
   loan: string = "到期本息一次付清"; /* 还款方式 */
   Pname: string = ""; /* 产品名称 */
@@ -173,9 +177,32 @@ export default class addProduct extends Vue {
       label: "月"
     }
   ];
+  form: any = {
+    Pcode: "",
+    income: "",
+    loan: "",
+    name: "",
+    amount: "",
+    start: "",
+    dead: ""
+  }; /* 表单验证 数据对象 */
+  checkCode = (rule: any, value: any, callback: any) => {
+    console.log(this.form.Pcode);
+    if (!this.form.Pcode) {
+      callback(new Error("请输入"));
+    } else {
+      callback();
+      /* 不加callback就不显示 值为正确时的提示 */
+    }
+  }; /* 验证 产品代号输入 */
+  rules: any = {
+    code: [
+      { validator: this.checkCode, trigger: "blur" }
+    ]
+  }; /* 验证规则 ，加至 el-form*/
   created() {
-    this.judgeEdit();
-  }
+    this.judgeEdit(); /* 判断是否编辑页面 */
+  } /* 生命周期 */
   judgeEdit() {
     let statu = this.$route.query.statu; /* 获取是不是从新增按钮跳转进来的id */
     if (statu === "edit") {
@@ -197,7 +224,7 @@ export default class addProduct extends Vue {
           message: "已取消确认"
         });
       });
-  }
+  } /* 点击取消返回上一页 */
 }
 </script>
 
