@@ -4,7 +4,7 @@
     <div class="box">
         <div class="addTitle">
             <span>产品列表</span>
-            <span> <router-link to="addProduct">+新增</router-link></span>
+            <span> <router-link :to="{ path: 'addProduct', query: { id: 'add' }}">+新增</router-link></span>
         </div>
         <!-- 新增 -->
         <div class='listBox'>
@@ -34,7 +34,7 @@
                             <el-button type="text" @click="shelfOperate(item.id,item.shelf)" >
                               <a :class="{success:item.shelf===1, danger:item.shelf===0}" >{{item.shelf | shelf}}</a>
                             </el-button>
-                            <a>编辑</a>
+                            <a @click="jumpEdit(item.id)">编辑</a>
                         </td>
                     </tr>
                 </thead>
@@ -60,11 +60,16 @@ export default class BusinessProduct extends Vue {
   list: any[] = [];
   created() {
     axios.get("/api/a/list/investment-product").then(response => {
-      console.log(response);
       this.list = response.data.data.list;
       console.log(this.list);
     });
   } /* 组件生成后获取HTTP请求数据 */
+  jumpEdit(id: string) {
+    this.$router.push({
+      path: "addProduct",
+      query: { id: id, statu: "edit" }
+    }); /* 路由加入参数 */
+  } /* 跳转至编辑页面 */
   shelfOperate(id: number, shelf: number) {
     let statu = shelf === 0 ? 0 : 1; /* 判断上下架状态 */
     // 弹窗提示

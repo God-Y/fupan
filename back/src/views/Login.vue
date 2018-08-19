@@ -13,8 +13,6 @@
 <script lang='ts'>
 import { Component, Vue, Provide } from "vue-property-decorator";
 import axios from "axios";
-import Router from "vue-router";
-import router from "@/router"; //router 实例
 
 @Component
 export default class login extends Vue {
@@ -23,7 +21,7 @@ export default class login extends Vue {
   data: any = {};
 
   submit(): boolean {
-    router.push({ name: "backend" });
+    this.$router.push({ name: "backend" });
     return false;
   }
   /* 暂时使用任务6-10的接口来测试反向代理和请求，此数据需要更改 */
