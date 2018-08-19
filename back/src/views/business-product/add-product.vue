@@ -4,17 +4,17 @@
             <div> 
                 <span class="star-style">*</span>
                 <span>产品代号</span> 
-                <el-input placeholder="请输入内容"  size="mini" clearable> </el-input> 
+                <el-input placeholder="请输入内容" v-model="Pcode" :disabled="disabled" size="mini" clearable> </el-input> 
             </div>
             <div> 
                 <span class="star-style">*</span>
                 <span>年化收益</span>
-                <el-input placeholder="请输入内容" v-model="yearIncome"  size="mini"  clearable> </el-input> 
+                <el-input placeholder="请输入内容" v-model="yearIncome" :disabled="disabled"  size="mini"  clearable> </el-input> 
             </div>
             <div> 
                 <span class="star-style">*</span>
                 <span>还款方式</span> 
-                <el-select v-model="loan" clearable size="mini" placeholder="请选择">
+                <el-select v-model="loan" clearable :disabled="disabled" size="mini" placeholder="请选择">
                     <el-option
                         v-for="item in loanOptions"
                         :key="item.value"
@@ -29,17 +29,17 @@
             <div> 
                 <span class="star-style">*</span>
                 <span>产品名称</span> 
-                <el-input placeholder="请输入内容"  size="mini" clearable> </el-input> 
+                <el-input placeholder="请输入内容" v-model="Pname" :disabled="disabled" size="mini" clearable> </el-input> 
             </div>
             <div> 
                 <span class="star-style">*</span>
                 <span>起投金额</span>
-                <el-input placeholder="请输入内容"  size="mini"  clearable> </el-input> 
+                <el-input placeholder="请输入内容" v-model="startingAmount" :disabled="disabled" size="mini"  clearable> </el-input> 
             </div>
             <div> 
                 <span class="star-style">*</span>
                 <span>起息日期</span> 
-                <el-select v-model="startDate" clearable size="mini" placeholder="请选择">
+                <el-select v-model="startDate" clearable :disabled="disabled" size="mini" placeholder="请选择">
                     <el-option
                         v-for="item in startOptions"
                         :key="item.value"
@@ -54,10 +54,10 @@
             <div> 
                 <span class="star-style">*</span>
                 <span>期&#12288;&#12288;限</span> 
-                <el-input placeholder="请输入内容"  size="mini" clearable> </el-input> 
+                <el-input placeholder="请输入内容" v-model="deadline" :disabled="disabled" size="mini" clearable> </el-input> 
             </div>
             <div> 
-                <el-select v-model="selectDate" clearable size="mini" placeholder="请选择">
+                <el-select v-model="selectDate" clearable :disabled="disabled" size="mini" placeholder="请选择">
                     <el-option
                         v-for="item in date"
                         :key="item.value"
@@ -71,41 +71,42 @@
         <div class="textarea">
             <span>&#12288;备&#12288;&#12288;注</span>
             <el-input
-                type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
-                placeholder="请输入内容,字数长度限制为50"
-                maxlength = 50
-                v-model="textarea">
+              :disabled="disabled"
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容,字数长度限制为50"
+              maxlength = 50
+              v-model="textarea">
             </el-input>
         </div>
         <!-- 第四行 -->
         <div class="side-span">
             <span>&#12288;更多详情</span>
-            <uploadFile></uploadFile>
+            <uploadFile :disabled="disabled"></uploadFile>
         </div>
         <div class="side-span">
             <span>&#12288;角&#12288;&#12288;标</span>
             <div>
-                <el-radio label="1">新进产品</el-radio>
-                <el-radio label="2">热门产品</el-radio>
+                <el-radio v-model="type" label="1">新进产品</el-radio>
+                <el-radio v-model="type" label="2">热门产品</el-radio>
             </div>
         </div>
         <div class="side-span">
             <span>&#12288;推&#12288;&#12288;荐</span>
              <div>
-                <el-radio label="1">精品推荐</el-radio>
+                <el-radio v-model="recommend" label="1">精品推荐</el-radio>
             </div>
         </div>
         <div class="side-span">
             <span>&#12288;限&#12288;&#12288;购</span>
              <div>
-                <el-radio label="1">是</el-radio>
-                <el-radio label="2">否</el-radio>
+                <el-radio v-model="purchaseLimit" label="1">是</el-radio>
+                <el-radio v-model="purchaseLimit" label="2">否</el-radio>
             </div>
         </div>
         <div class="side-span footer-button">
             <el-button type="primary">保存</el-button>
-            <el-button type="danger" plain>取消</el-button>
+            <el-button @click="prePage" type="danger" plain>取消</el-button>
         </div>
     </div>
 </template>
@@ -124,11 +125,19 @@ export default class addProduct extends Vue {
   /*
   所有的按钮和输入框还需要绑定 双向绑定数据， 
     */
+  Pcode: string = ""; /* 产品代号 */
   yearIncome: string = ""; /* 年化收益 */
-  loan: string = ""; /* 还款方式 */
-  startDate: string = ""; /* 起息日期 */
-  selectDate: string = ""; /* 日月选择 */
+  loan: string = "到期本息一次付清"; /* 还款方式 */
+  Pname: string = ""; /* 产品名称 */
+  startingAmount: string = ""; /* 起投金额 */
+  startDate: string = "t+0"; /* 起息日期 */
+  deadline: number = 0; /* 期限 */
+  selectDate: string = "日"; /* 期限 日月选择 */
   textarea: string = ""; /* 备注 */
+  type: number = 0; /* 产品分类 */
+  recommend: number = 0; /* 是否推荐 */
+  purchaseLimit: number = 0; /* 是否限购 */
+  disabled: boolean = false; /* 禁用按钮 */
   loanOptions: any = [
     {
       value: "选项1",
@@ -164,9 +173,32 @@ export default class addProduct extends Vue {
       label: "月"
     }
   ];
+  created() {
+    this.judgeEdit();
+  }
+  judgeEdit() {
+    let statu = this.$route.query.statu; /* 获取是不是从新增按钮跳转进来的id */
+    if (statu === "edit") {
+      this.disabled = true;
+    } /* 禁用按钮 */
+  } /* 如果是新增按钮跳转，禁用一些按钮 */
+  prePage() {
+    this.$confirm("是否取消?", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
+      .then(() => {
+        this.$router.go(-1);
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消确认"
+        });
+      });
+  }
 }
-
-class validate {}
 </script>
 
 //样式
