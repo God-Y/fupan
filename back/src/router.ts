@@ -2,7 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import Back from "./views/Back.vue";
 import Login from "./views/Login.vue";
-import BusinessUser from "./views/business-user.vue";
+import BusinessUser from "./views/user/business-user.vue";
+import UserId from "./views/user/userId.vue";
 import BusinessVerified from "./views/business-verified.vue";
 import BusinessProduct from "./views/business-product.vue";
 import addProduct from "./views/business-product/add-product.vue";
@@ -26,6 +27,12 @@ export default new Router({
           path: "user",
           name: "BusinessUser",
           component: BusinessUser
+        },
+        {
+          //用户详情页
+          path: "user/:id",
+          name: "UserId",
+          component: UserId
         },
         /* 实名认证 */
         {

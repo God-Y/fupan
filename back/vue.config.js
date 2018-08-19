@@ -17,6 +17,7 @@ module.exports = {
   chainWebpack: (config)=>{
     config.resolve.alias
         .set('common_Components',resolve('src/components/common'))
+        .set('view','src/view')
 },
   // configureWebpack: () => {},
   // vue-loader 配置项
