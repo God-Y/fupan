@@ -96,11 +96,11 @@
               @click="changeStatus(scope.row.status)" 
               type="text" 
               size="small"
-              :class="[scope.row.status==10? 'freeze' :'remove-freeze']"
+              :class="[scope.row.status==10 ? 'freeze' :'remove-freeze']"
               >
                 {{scope.row.status|handleStatus}}
               </el-button>
-              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small" @click="getUserMsg(scope.row.id)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -113,7 +113,6 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Date from "common_Components/date/double-date.vue";
-import axios from "axios";
 @Component({
   components: {
     Date
@@ -122,10 +121,11 @@ import axios from "axios";
 export default class BusinessUser extends Vue {
   //发送http请求，获取数据
   userList: Array<object> = [];
+  
   created() {
-    axios
-      .get("/api/a/list/user")
-      .then(response => {
+    (this as any).$api.user
+      .list("")
+      .then((response: any) => {
         let data = response.data;
         if (data.code) this.userList = data.data.list;
       })
@@ -198,7 +198,6 @@ export default class BusinessUser extends Vue {
     userForm1: HTMLFormElement
   };
   resetForm(formName: string) {
-    console.log(1);
     this.userForm.upperDate = "";
     this.userForm.lowerDate = "";
     this.$refs[formName].resetFields();
@@ -216,10 +215,14 @@ export default class BusinessUser extends Vue {
     })
       //冻结 ，解冻的操作写在这里
       .then(() => {
-        let msg: string = status == 10 ? "冻结成功" : "解冻成功";
-        this.$message({
-          type: "success",
-          message: msg
+        this.freeze(status).then((res: any) => {
+          let msg: string = status == 10 ? "冻结成功" : "解冻成功";
+          this.$message({
+            type: "success",
+            message: msg
+          });
+          //请求成功后刷新本页面,或者从新调用search方法
+          this.$router.go(0);
         });
       })
       .catch(() => {
@@ -229,26 +232,20 @@ export default class BusinessUser extends Vue {
         });
       });
   }
-  //搜索
+  //搜索按钮的实现
   search(): void {
-    axios
-      .get("/api/a/list/user", {
-        // params: {
-        //   phone: this.userForm.phone,
-        //   managerNumber: this.userForm.managerNumber,
-        //   status: this.userForm.status,
-        //   upperDate: this.userForm.upperDate,
-        //   lowerDate: this.userForm.lowerDate,
-        //   idName: this.userForm.idName
-        // }
-        params: this.userForm
-      })
-      .then(response => {
-        console.log("测试所有", response);
-      })
-      .catch(res => {
-        console.log(res);
-      });
+    (this as any).$api.user.list(this.userForm).then((res: any) => {
+      let data = res.data;
+      if (data.code) this.userList = data.data.list;
+    });
+  }
+  //冻结账号功能
+  freeze(id: number | string): any {
+    return (this as any).$api.user.changeStatus(id);
+  }
+  //查看个人详情信息
+  getUserMsg(id: number | string): any {
+    this.$router.push("/back/user/" + id);
   }
 }
 </script>

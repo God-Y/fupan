@@ -5,11 +5,12 @@ import store from "./store";
 
 import "./assets/style/mixins.scss";
 import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css"; /* element ui */
+import "element-ui/lib/theme-chalk/index.css"; /* element ui css */
 import vfilters from "./assets/filter/filter";
 
-import axios from "./http/axios";
-import { post, get } from "./http/http";
+import api from "./http/api/index"; //挂载封装好的api
+Vue.prototype.$api = api;
+
 Vue.use(ElementUI); /* 导入element */
 
 Vue.config.productionTip = false;
