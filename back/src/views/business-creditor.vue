@@ -42,15 +42,14 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class BusinessCreditor extends Vue {
   dataList: Array<any> = []; /* 这里必须声明为数组类型，使用any={} 渲染不出来 */
-
   created() {
     this.getList();
   }
   getList() {
-    (<any>this).$api.user.getCreditor("").then((res :any) =>{
+    (this as any).$api.user.getCreditor("").then((res: any) => {
       this.dataList = res.data.data.list;
       console.log(this.dataList);
-    })
+    });
   }
 }
 </script>

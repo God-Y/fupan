@@ -32,6 +32,21 @@ let filtersObj: Filters = {
   handleStatus: function(value: number): string {
     return value === 10 ? "冻结" : "解冻";
   },
+  //交易类型
+  dealType: function(value: number): string {
+    return value === -1 ? "回款" : "付款";
+  },
+  //交易状态
+  dealStatus: function(value: number): any {
+    switch (value) {
+      case 10:
+        return "成功";
+      case 20:
+        return "失败";
+      case 30:
+        return "回款中";
+    }
+  },
   // 产品列表年化收益率
   annualized: function(value: number): string {
     return value * 100 + "%";
@@ -87,7 +102,7 @@ let filtersObj: Filters = {
 
   // 债权列表状态判断
   creditorStatu: function(value: number) {
-    return (value == 0 ? "未使用" :  value == 1 ? "使用中" : "已到期");
+    return value == 0 ? "未使用" : value == 1 ? "使用中" : "已到期";
   },
 
   matchRate: function(value: number) {
