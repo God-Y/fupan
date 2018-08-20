@@ -49,7 +49,7 @@
             </el-form-item>
             <!-- 搜索清空那按钮 -->
             <el-form-item class="btn-box" >
-              <el-button type="danger">交易记录</el-button>
+              <el-button type="danger" @click="$router.push({name:'UserDeal',params:{id:ID}})">交易记录</el-button>
               <el-button type="primary">投资记录</el-button>
             </el-form-item>
           </el-form>
@@ -276,6 +276,9 @@ export default class UserMsg extends Vue {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  @media (min-width: 1520px) {
+    width: 1200px;
+  }
   //左侧布局
   .left-item {
     flex-basis: 412px;
