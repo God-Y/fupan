@@ -4,7 +4,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>债权列表</span>
-          <el-button style="float: right; padding: 3px 0" type="text">+新增</el-button>
+          <el-button @click="edit" style="float: right; padding: 3px 0" type="text">+新增</el-button>
         </div>
           <el-table :data="dataList" border class="table-style" style="width: 100%;" >
               <el-table-column prop="claimCode" label="债权代号" width="100px" header-align="center"> </el-table-column>
@@ -32,7 +32,7 @@
                 <template slot-scope="scope">
                   <div class="operate">
                     <div :class="changeRateCloor(scope.row.matchingRate,scope.row.status)">
-                      <span>{{scope.row.matchingRate|matchRate}}</span>
+                      <span @click="matchRate">{{scope.row.matchingRate|matchRate}}</span>
                       <span>{{scope.row.matchingRate|annualized}}</span>
                     </div>
                     <div class="check">查看</div>
@@ -47,7 +47,7 @@
 
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
-import creditorSearchList from "./business-creditor/search-list.vue";
+import creditorSearchList from "./search-list.vue";
 
 @Component({
   components: {
@@ -65,6 +65,17 @@ export default class BusinessCreditor extends Vue {
       let list = res.data.data.list;
       this.dataList = list;
       console.log(this.dataList);
+    });
+  } /* 获取列表数据 */
+  edit() {
+    this.$router.push({
+      path: "addCreditor"
+      // query: {}
+    });
+  } /* 跳转至编辑页面 */
+  matchRate() {
+    this.$router.push({
+      path: "creditorMatch"
     });
   }
   changeRateCloor(rate: any, statu: any) {
@@ -114,6 +125,7 @@ export default class BusinessCreditor extends Vue {
   justify-content: space-around;
   align-items: center;
   & > div:nth-child(1) {
+    cursor: pointer;
     span {
       display: inline-block;
       width: 100%;
