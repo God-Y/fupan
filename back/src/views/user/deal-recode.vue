@@ -118,10 +118,20 @@ import Date from "common_Components/date/double-date.vue";
     Date
   }
 })
-export default class BusinessUser extends Vue {
+export default class DealRecode extends Vue {
   //发送http请求，获取数据
   userList: Array<object> = [];
   created() {
+    (this as any).$api.user
+      .list("")
+      .then((response: any) => {
+        let data = response.data;
+        if (data.code) this.userList = data.data.list;
+      })
+      .then(() => {
+        //获取后加载动画取消
+        this.listLoading = false;
+      });
     (this as any).$api.user
       .list("")
       .then((response: any) => {
@@ -154,7 +164,6 @@ export default class BusinessUser extends Vue {
   }
   //自定义表达验证规则
   private checkPhone = (rule: any, value: string, callback: any) => {
-    console.log(value);
     let number = Number(value); //定义数字
     if (value.length == 0) {
       return this.$refs.phone.resetField(); //这里必须调用该元素的resetFileld()方法

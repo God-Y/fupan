@@ -2,8 +2,11 @@ import Vue from "vue";
 import Router from "vue-router";
 import Back from "./views/Back.vue";
 import Login from "./views/Login.vue";
+//用户页
 import BusinessUser from "./views/user/business-user.vue";
 import UserId from "./views/user/userId.vue";
+import DealRecode from "./views/user/deal-recode.vue";
+
 import BusinessVerified from "./views/business-verified.vue";
 import BusinessProduct from "./views/business-product.vue";
 import addProduct from "./views/business-product/add-product.vue";
@@ -33,6 +36,12 @@ export default new Router({
           path: "user/:id",
           name: "UserId",
           component: UserId
+        },
+        {
+          //用户交易记录
+          path: "user-deal/:id",
+          name: "UserDeal",
+          component: DealRecode
         },
         /* 实名认证 */
         {
