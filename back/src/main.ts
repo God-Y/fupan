@@ -9,7 +9,9 @@ import "element-ui/lib/theme-chalk/index.css"; /* element ui css */
 import vfilters from "./assets/filter/filter";
 
 import api from "./http/api/index"; //挂载封装好的api
+import _global from "./assets/_global"; //挂载封装好的全局函数
 Vue.prototype.$api = api;
+Vue.prototype.$alertMsg = _global.alertMsg;
 
 Vue.use(ElementUI); /* 导入element */
 
