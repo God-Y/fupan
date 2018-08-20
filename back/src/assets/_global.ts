@@ -13,8 +13,8 @@ export default {
           (this as any).$message({
             type: "success",
             message: successMsg
-          })
-        })
+          });
+        });
       })
       //请求成功后刷新本页面,或者从新调用search方法
       .catch(() => {
