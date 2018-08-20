@@ -22,14 +22,14 @@ export default {
     });
   },
   //修改用户的工号
-  changeManage(id: number, manage: string) {
+  changeManage(id: string, manage: string) {
     return axios.put(`/api/a/user/${id}`, {
       managerNumber: manage
     });
   },
   //解绑银行卡
   deleteCard(id: number, cardNumber: string | number) {
-    return axios.delete(`/api/a/user/${id}`, {
+    return axios.delete(`/api/a/user-bank/${id}`, {
       params: {
         cardNumber: cardNumber
       }
