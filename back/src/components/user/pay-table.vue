@@ -83,10 +83,6 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="bankName" width="85"
-          label="交易银行"  align="center" >
-        </el-table-column>
       </el-table>
       <div class="nullMsg" v-if="!payList.length">无有效信息</div>
     </div>
