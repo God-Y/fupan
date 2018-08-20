@@ -77,6 +77,27 @@ let filtersObj: Filters = {
       case 1:
         return "上架";
     }
+  },
+
+  // 债权列表出借日期转换
+  dateString: function(value: string) {
+    let temple = value.replace(/(.{4})/, "$1-");
+    return temple.replace(/(.{7})/, "$1-");
+  },
+
+  // 债权列表状态判断
+  creditorStatu: function(value: number) {
+    return (value == 0 ? "未使用" :  value == 1 ? "使用中" : "已到期");
+  },
+
+  matchRate: function(value: number) {
+    if (value == 1) {
+      return "匹配完成";
+    } else if (value === 0) {
+      return "尚未匹配";
+    } else {
+      return "匹配未全";
+    }
   }
 };
 

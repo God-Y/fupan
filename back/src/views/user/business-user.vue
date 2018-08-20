@@ -121,7 +121,7 @@ import Date from "common_Components/date/double-date.vue";
 export default class BusinessUser extends Vue {
   //发送http请求，获取数据
   userList: Array<object> = [];
-  
+
   created() {
     (this as any).$api.user
       .list("")
@@ -155,6 +155,7 @@ export default class BusinessUser extends Vue {
   }
   //自定义表达验证规则
   private checkPhone = (rule: any, value: string, callback: any) => {
+    console.log(value);
     let number = Number(value); //定义数字
     if (value.length == 0) {
       return this.$refs.phone.resetField(); //这里必须调用该元素的resetFileld()方法
