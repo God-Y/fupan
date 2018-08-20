@@ -41,5 +41,9 @@ export default {
       idAuthentication: idAuthentication,
       refusal: refusal
     });
+  },
+  // 债权管理列表请求, 查询
+  getCreditor(data: any): any {
+    return axios.get("/api/a/list/claim-info", data);
   }
 };

@@ -2,8 +2,8 @@
     <!-- 上传图片 -->
     <div>
         <div class="uploadButton">
-            <input type="file" id="file" @change='handleFileChange' class="fileInput">
-            <label for="file">点击上传文件</label>
+            <input type="file" :disabled="disabled" id="file" @change='handleFileChange' class="fileInput">
+            <label for="file" >点击上传文件</label>
         </div>
         <div class="imgPreview" >
             <span>Photo Preview Area</span>
@@ -23,13 +23,13 @@
                     <td>
                         <div class="progressBox">
                             <div v-if="start" class="progress" 
-                            :style="{backgroundImage:'linear-gradient(to right,#409eff 0%,#409eff '+progress+',#409eff '+progress+',#409eff '+progress+',#409eff 100%)'}">
+                            :style="{width:progress}">
                             </div> <!-- v-if的作用是等到点击上传后才显现 -->
                         </div>
                     </td>
                     <td>
                         <div class="buttonStyle">
-                            <button @click="uploadImg">上传</button>
+                            <el-button :plain="true" :disabled="disabled" @click="uploadImg">上传</el-button>
                             <button @click="init">删除</button>
                         </div>
                     </td>
@@ -41,54 +41,69 @@
 
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import uploader from "vue-simple-uploader";
 import Axios from "axios";
 import { Input } from "element-ui";
 @Component
 export default class uploadFile extends Vue {
-  files: any = {}; /* 文件信息 */
+  files: any = { name: "" }; /* 文件信息 */
   dataurl: any = ""; /* 图片base64 */
   progress: any = 0; /* 上传文件进度 */
   start: boolean = false; /* 控制进度条显示 */
-  filesSize: any = 0; /* 文件大小 */
+  filesSize: number = 0; /* 文件大小 */
+  @Prop([Boolean])
+  disabled!: boolean; /* 判断是否禁用 */
+
+  @Emit()
+  uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
 
   handleFileChange(e: any) {
     this.init(); /* 初始化 */
     this.files = e.target.files[0];
-    this.filesSize = (this.files.size / 1024 / 1024).toFixed(3);
+    // if(this.files != undefined) {
+    //   this.filesSize = (this.files.size / 1024 / 1024).toFixed(3);
+    // }
     this.imgPreview(this.files);
-  } /* 通过change事件获取文件信息1 */
+  } /* 通过change事件获取文件信息 */
 
   imgPreview(file: any) {
-    if (/^image/.test(file.type)) {
-      /* 匹配文件类型为image的文件 */
-      // 创建一个reader
-      var reader = new FileReader();
-      // 将图片将转成 base64 格式
-      reader.readAsDataURL(file);
-      // 读取成功后的回调
-      reader.onloadend = result => {
-        this.dataurl = result;
-        this.dataurl = this.dataurl.currentTarget.result; /* 提取base64码 */
-      };
+    if (file !== undefined) {
+      if (/^image/.test(file.type)) {
+        /* 匹配文件类型为image的文件 */
+        // 创建一个reader
+        var reader = new FileReader();
+        // 将图片将转成 base64 格式
+        reader.readAsDataURL(file);
+        // 读取成功后的回调
+        reader.onloadend = result => {
+          this.dataurl = result;
+          this.dataurl = this.dataurl.currentTarget.result; /* 提取base64码 */
+        };
+      }
     } else {
+      this.init();
       alert("请选择图片");
-      return false;
     }
   } /* 通过fileready来实现本地预览 */
 
   uploadImg() {
-    if (this.files.name == undefined) {
-      alert("请选择文件");
+    this.uploadInfo("测试和父级通信");
+    /* 这里上传的是图片名，接口通了以后要更改返回图片的路径 */
+
+    if (this.files.name == "") {
+      this.$alert("请先上传文件", "错误提示", {
+        confirmButtonText: "确定"
+      });
       return false;
     } /* 如果没有选择文件就点击上传，弹窗 */
-    this.start = true;
 
+    this.start = true; /* 进度条显示 */
     let form = new FormData();
     form.append("file", this.files); /* 添加获取到的文件 */
     let config = {
       onUploadProgress: (progressEvent: any) => {
+        console.log(progressEvent.loaded);
         console.log(progressEvent);
         this.progress =
           (((progressEvent.loaded / progressEvent.total) * 100) | 0) + "%";
@@ -96,10 +111,15 @@ export default class uploadFile extends Vue {
       }
     }; /* 上传进度事件 */
 
-    Axios.post(`/carrots-admin-ajax/a/u/img/task`, form, config).then(res => {
-      console.log(res);
-      let message = res.data.message;
-    }); /* 上传成功的回调，信息在这里面提取，要限制上传图片的大小 */
+    Axios.post(`/carrots-admin-ajax/a/u/img/task`, form, config)
+      .then(res => {
+        console.log(res);
+        let message = res.data.message;
+        console.log(this.files);
+      })
+      .catch(function() {
+        console.log("FAILURE!!");
+      }); /* 上传成功的回调，信息在这里面提取，要限制上传图片的大小 */
   } /* 点击上传按钮，发送HTTP请求 */
 
   init() {
@@ -204,9 +224,10 @@ export default class uploadFile extends Vue {
   box-shadow: 0 0 5px 0px #ddd inset;
 }
 .progress {
-  width: 200px;
+  background: #409eff;
+  // width: 200px;
   height: 6px;
-  transition: 2s;
+  // transition: 2s;
 } /* 上传进度条 */
 
 .buttonStyle {
