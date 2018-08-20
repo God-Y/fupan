@@ -1,44 +1,37 @@
 <template>
-     <div class="box">
-        <div class="addTitle">
-            <span>债权列表</span>
-            <span> <router-link to="addCreditor">+新增</router-link></span>
+     <div>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>卡片名称</span>
         </div>
-        <!-- 新增 -->
-        <div class='listBox'>
-            <table>
-                <thead>
-                    <tr id="listTitle">
-                        <th>债券代号</th>
-                        <th>债权人</th>
-                        <th>债权人手机</th>
-                        <th>债权人身份证号码</th>
-                        <th>出借期限（月）</th>
-                        <th>出借日期</th>
-                        <th>到期日期</th>
-                        <th>出借金额（元）</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    <tr v-for="item in list" :key="item.id">
-                        <td>{{item.code}}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.rate}}</td>
-                        <td>{{item.deadline}}</td>
-                        <td>{{item.start}}</td>
-                        <td>{{item.startdate}}</td>
-                        <td>{{item.commend}}</td>
-                        <td>{{item.state}}</td>
-                        <td>{{item.statu}}</td>
-                        <td class="handle">
-                            <a><router-link to="creditorMatch">{{item.type}}</router-link></a>
-                            <a>{{item.edit}}</a>
-                        </td>
-                    </tr>
-                </thead>
-            </table>
-            <!-- 列表 -->
-        </div>
+          <el-table :data="dataList" border style="width: 100%" >
+              <el-table-column prop="claimCode" label="债权代号"> </el-table-column>
+              <el-table-column prop="creditorName" label="债权人"   > </el-table-column>
+              <el-table-column prop="creditorPhone" label="债权人手机" > </el-table-column>
+              <el-table-column prop="creditorIdNumber" label="债权人身份证"   > </el-table-column>
+              <el-table-column prop="lendingPeriod" label="出借期限(月)"   > </el-table-column>
+              <el-table-column label="出借日期"   > 
+                 <template slot-scope="scope">{{scope.row.lendingDate | dateString}}</template>
+              </el-table-column>
+              <el-table-column label="到期日期"   > 
+                 <template slot-scope="scope">{{scope.row.expirationDate | dateString}}</template>
+              </el-table-column>
+              <el-table-column prop="matchAmount" label="出借金额(元)"   > </el-table-column>
+              <el-table-column label="状态"   > 
+                 <template slot-scope="scope">
+                    <span :class="{success: scope.row.status === 1}">{{scope.row.status | creditorStatu}}</span>
+                  </template>
+              </el-table-column>
+              <el-table-column prop="claimCode" label="操作"> 
+                <template slot-scope="scope">
+                  <div>
+                    <span>{{scope.row.matchingRate|matchRate}}</span>
+                    <span>{{scope.row.matchingRate|annualized}}</span>
+                  </div>
+                </template>
+              </el-table-column>
+          </el-table>
+      </el-card>
     </div>
 </template>
 
@@ -48,21 +41,17 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class BusinessCreditor extends Vue {
-  list: any = [
-    {
-      code: "XSB",
-      name: "新手体验计划",
-      rate: "12.00",
-      deadline: "1月",
-      start: "10,000.00",
-      startdate: "T+0",
-      commend: "精品推荐",
-      state: "在售",
-      statu: "使用中",
-      type: "下架",
-      edit: "编辑"
-    }
-  ];
+  dataList: Array<any> = []; /* 这里必须声明为数组类型，使用any={} 渲染不出来 */
+
+  created() {
+    this.getList();
+  }
+  getList() {
+    (<any>this).$api.user.getCreditor("").then((res :any) =>{
+      this.dataList = res.data.data.list;
+      console.log(this.dataList);
+    })
+  }
 }
 </script>
 
@@ -95,4 +84,7 @@ export default class BusinessCreditor extends Vue {
     color: $blue;
   }
 } /* 操作 */
+.success {
+  color: $success;
+}
 </style>
