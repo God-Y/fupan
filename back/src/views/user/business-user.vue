@@ -12,12 +12,14 @@
             <el-input type="text" v-model="userForm.idName" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 日期组件 -->
-          <date
-            :upperDate="userForm.upperDate"
-            :lowerDate="userForm.lowerDate"
-            @start-change="getStart"
-            @end-change="getEnd"
-          ></date>
+          <el-form-item label="注册日期" prop="idName" ref="idName">
+            <date
+              :upperDate="userForm.upperDate"
+              :lowerDate="userForm.lowerDate"
+              @start-change="getStart"
+              @end-change="getEnd"
+            ></date>
+          </el-form-item>
           <el-form-item label="理财经理" prop="managerNumber">
             <el-input type="text" v-model="userForm.managerNumber" auto-complete="off"></el-input>
           </el-form-item>
@@ -40,6 +42,7 @@
         用户列表
       </div>
       <div class="card-body">
+        <div class="nullMsg" v-if="!userList.length && !listLoading">无有效信息</div>
         <!-- 表格渲染开始 -->
         <el-table
           :data="userList"
@@ -122,8 +125,26 @@ export default class BusinessUser extends Vue {
   //发送http请求，获取数据
   userList: Array<object> = [];
   created() {
+    console.log(this.$route.query);
+    let query: any = this.$route.query;
+    let keys = Object.keys(query);
+    if (keys.length) {
+      query.upperDate = query.upperDate ? Number(query.upperDate) : ""; //保证拿出的毫秒数是number类型
+      query.lowerDate = query.lowerDate ? Number(query.lowerDate) : ""; //保证拿出的毫秒数是number类型
+      keys.forEach(value => {
+        //foreach循环
+        this.userForm[value] = query[value];
+        //赋值给查询对象
+      });
+    }
+    this.getList();
+  }
+  //可以扁担加载动画
+  listLoading: boolean = true;
+  //请求的http数据
+  getList() {
     (this as any).$api.user
-      .list("")
+      .list(this.userForm)
       .then((response: any) => {
         let data = response.data;
         if (data.code) this.userList = data.data.list;
@@ -133,14 +154,8 @@ export default class BusinessUser extends Vue {
         this.listLoading = false;
       });
   }
-  //可以扁担加载动画
-  listLoading: boolean = true;
   //关于表单的数据
   userForm: any = {
-    phone: "",
-    idName: "",
-    status: "",
-    managerNumber: "",
     upperDate: "",
     lowerDate: ""
   };
@@ -193,15 +208,6 @@ export default class BusinessUser extends Vue {
     phone: [{ validator: this.checkPhone, trigger: "blur" }],
     idName: [{ validator: this.checkName, trigger: "blur" }]
   };
-  //重置表单，定义$refs保证元素能调用方法
-  $refs: any = {
-    userForm1: HTMLFormElement
-  };
-  resetForm(formName: string) {
-    this.userForm.upperDate = "";
-    this.userForm.lowerDate = "";
-    this.$refs[formName].resetFields();
-  }
   //改变状态会弹窗
   changeStatus(status: number) {
     //判断当前的状态
@@ -234,10 +240,22 @@ export default class BusinessUser extends Vue {
   }
   //搜索按钮的实现
   search(): void {
-    (this as any).$api.user.list(this.userForm).then((res: any) => {
-      let data = res.data;
-      if (data.code) this.userList = data.data.list;
+    this.$router.push({
+      path: `/back/user`,
+      query: this.userForm
     });
+    this.getList();
+  }
+  //重置表单，定义$refs保证元素能调用方法
+  $refs: any = {
+    userForm1: HTMLFormElement
+  };
+  resetForm(formName: string) {
+    this.userForm.upperDate = "";
+    this.userForm.lowerDate = "";
+    this.$refs[formName].resetFields();
+    this.$router.push("/back/user");
+    this.getList();
   }
   //冻结账号功能
   freeze(id: number | string): any {
@@ -258,7 +276,7 @@ export default class BusinessUser extends Vue {
     width: 1200px;
   }
   .btn-box {
-    flex-basis: 441px;
+    flex-basis: 398px;
     display: flex;
     justify-content: flex-end;
     button {

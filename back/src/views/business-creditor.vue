@@ -56,14 +56,15 @@ import creditorSearchList from "./business-creditor/search-list.vue";
 })
 export default class BusinessCreditor extends Vue {
   dataList: Array<any> = []; /* 这里必须声明为数组类型，使用any={} 渲染不出来 */
-
   created() {
     this.getList();
   }
   getList() {
     (this as any).$api.user.getCreditor("").then((res: any) => {
+
       let list = res.data.data.list;
       this.dataList = list;
+
       console.log(this.dataList);
     });
   }
