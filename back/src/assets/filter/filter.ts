@@ -113,7 +113,16 @@ let filtersObj: Filters = {
     } else {
       return "匹配未全";
     }
-  }
+  },
+  /* 债权列表操作判断 */
+
+  amount: function(val: any) {
+    if (val) {
+      return Number(val)
+        .toFixed(2)
+        .replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    }
+  } /* 债权列表出借金额 */
 };
 
 export default filtersObj;
