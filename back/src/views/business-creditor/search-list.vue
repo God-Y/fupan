@@ -1,94 +1,75 @@
 <template>
-   <div class="card">
-      <div class="card-body">
-          <div class="line-style">
-            <!-- class one-line的及之内的样式引用至 app页面 -->
-            <div> 
-                <span>产品名称</span> 
-                <el-input v-model="productName" placeholder="请输入内容"  size="mini" clearable> </el-input> 
+    <div>
+      <div class="card">
+        <div class="card-body">
+          <el-form status-icon  ref="ruleForm2">
+            <div class="line-style">
+                <el-form-item label="" prop="pass" size="mini">
+                  <span>债权人&#12288;</span>
+                  <el-input type="text" auto-complete="off" placeholder="请输入内容"></el-input>
+                </el-form-item>
+                <el-form-item prop="checkPass">
+                  <span>身份证号</span>
+                  <el-input type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
+                </el-form-item>
+                <el-form-item prop="age" size="mini">
+                  <span>出借日期</span>
+                  <DatePicker></DatePicker>
+                </el-form-item>
             </div>
-            <div> 
-                <span>起息日期</span>
-                <el-select v-model="startDate" clearable size="mini" placeholder="请选择">
-                  <el-option
-                      v-for="item in startOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                  </el-option>
-                </el-select>
-            </div>
-            <div> 
-              <span>年化收益</span> 
-              <DatePicker
-              :upperDate="upperDate"
-              :lowerDate="lowerDate"
-              @start-change="getStart"
-              @end-change="getEnd"
-              ></DatePicker>
-            </div>
-          </div>
-          <div class="line-style">
-              <!-- class one-line的及之内的样式引用至 app页面 -->
-              <div> 
-                  <span>起投金额</span> 
-                  <el-input v-model="startingAmount" placeholder="请输入内容"  size="mini" clearable> </el-input> 
-              </div>
-              <div> 
-                  <span>状&#12288;&#12288;态</span>
-                  <el-select v-model="singleStatu" clearable size="mini" placeholder="请选择">
+            <div class="line-style">
+                <el-form-item label="" prop="pass" size="mini">
+                  <span>债权代号</span>
+                  <el-input type="text" auto-complete="off" placeholder="请输入内容"></el-input>
+                </el-form-item>
+                <el-form-item prop="checkPass">
+                  <span>状态&#12288;&#12288;</span>
+                  <el-select v-model="loan" clearable :disabled="disabled" size="mini" placeholder="请选择">
                     <el-option
-                        v-for="item in status"
+                        v-for="item in loanOptions"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
                     </el-option>
-                </el-select>
-              </div>
-              <div class="deadline-select"> 
-                  <span>期&#12288;&#12288;限</span> 
-                  <el-input class="small-size" v-model="upperDeadline" @change="inputMatch(upperDeadline)" size="mini" clearable> </el-input> 
-
-                    <el-select class="small-size" v-model="dayMonthSelect" clearable size="mini">
-                      <el-option
-                          v-for="item in dayMonth"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                      </el-option>
-                    </el-select>
+                  </el-select>
+                </el-form-item>
+                <el-form-item prop="age" size="mini">
+                  <span>到期日期</span>
+                  <DatePicker></DatePicker>
+                </el-form-item>
+            </div>
+            <div class="line-style">
+                <el-form-item label="" prop="pass" size="mini">
+                  <span>手机号&#12288;</span>
+                  <el-input type="text" auto-complete="off" placeholder="请输入内容"></el-input>
+                </el-form-item>
+                 <el-form-item prop="checkPass">
+                  <span>出借金额</span>
+                  <el-input class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
                   ~
-                  <el-input class="small-size" v-model="lowerDeadline"  size="mini" clearable> </el-input> 
-
-                    <el-select class="small-size" v-model="dayMonthSelect" clearable size="mini">
-                      <el-option
-                          v-for="item in dayMonth"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
-                      </el-option>
-                    </el-select>
-              </div>
-          </div>
-          <div class="line-style">
-              <!-- class one-line的及之内的样式引用至 app页面 -->
-              <div> 
-                  <span>产品代号</span> 
-                  <el-input v-model="productCode" placeholder="请输入内容"  size="mini" clearable> </el-input> 
-              </div>
-          </div>
-          <div class="button-style">
-            <el-button  type="primary" plain>搜索</el-button>
-            <el-button @click="clear" type="danger">清空</el-button>
-          </div>
+                  <el-input class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                </el-form-item>
+                <el-form-item prop="checkPass">
+                  <span>出借金额</span>
+                  <el-input class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                  ~
+                  <el-input class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                </el-form-item>
+            </div>
+                <el-form-item class="button">
+                  <el-button type="primary" >搜索</el-button>
+                  <el-button type="danger">清空</el-button>
+                </el-form-item>
+          </el-form>
         </div>
+      </div>
     </div>
 </template>
-
 
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
 import DatePicker from "../../components/common/date/double-date.vue";
+
 
 @Component({
   components: {
@@ -96,110 +77,66 @@ import DatePicker from "../../components/common/date/double-date.vue";
   }
 })
 export default class creditorSearchList extends Vue {
-  productName: string = ""; /* 产品名称 */
-  startDate: string = "全部"; /* 起息日期 */
-  upperDate: any = ""; //结束时间
-  lowerDate: any = ""; //开始时间
-  startingAmount: string = ""; /* 起投金额 */
-  singleStatu: string = "全部"; /* 状态 */
-  dayMonthSelect: string = "日"; /* 期限选择框 */
-  upperDeadline: string = ""; /* 期限上限 */
-  lowerDeadline: string = ""; /* 期限下限 */
-  productCode: string = ""; /* 产品代号 */
-  getStart(value: number) {
-    //从子级取到开始时间值
-    this.lowerDate = value;
+  ruleForm2: any = {
+    pass: '',
+    checkPass: '',
+    age: ''
+  };
+  rules2: any = {
+    pass: [
+      // { validator: validatePass, trigger: 'blur' }
+    ],
+    checkPass: [
+      // { validator: validatePass2, trigger: 'blur' }
+    ],
+    age: [
+      // { validator: checkAge, trigger: 'blur' }
+    ]
   }
-  getEnd(value: number) {
-    //从子级取到开始时间值
-    this.upperDate = value;
-  }
-  startOptions: any = [
-    {
-      value: "全部",
-      label: "全部"
-    },
-    {
-      value: "正常",
-      label: "正常"
-    },
-    {
-      value: "已冻结",
-      label: "已冻结"
-    }
-  ];
-  status: any = [
-    {
-      value: "全部",
-      label: "全部"
-    },
-    {
-      value: "停售",
-      label: "停售"
-    },
-    {
-      value: "在售",
-      label: "在售"
-    }
-  ];
-  dayMonth: any = [
-    {
-      value: "日",
-      label: "日"
-    },
-    {
-      value: "月",
-      label: "月"
-    }
-  ];
-  inputMatch(val: string) {
-    console.log(val);
-    let reg = /^[0-3]*$/;
-    if (reg.test(val)) {
-      console.log("hege");
+    submitForm(formName: any) {
+  // this.$refs[formName].validate((valid) => {
+    if ("") {
+      alert('submit!');
+    } else {
+      console.log('error submit!!');
+      return false;
     }
   }
-  clear() {
-    this.productName = ""; /* 产品名称 */
-    this.startDate = "全部"; /* 起息日期 */
-    this.upperDate = ""; //结束时间
-    this.lowerDate = ""; //开始时间
-    this.startingAmount = ""; /* 起投金额 */
-    this.singleStatu = "全部"; /* 状态 */
-    this.dayMonthSelect = "日"; /* 期限选择框 */
-    this.upperDeadline = ""; /* 期限上限 */
-    this.lowerDeadline = ""; /* 期限下限 */
-    this.productCode = ""; /* 产品代号 */
+
+  resetForm(formName: any) {
+    // this.$refs[formName].resetFields();
   }
 }
 </script>
 //样式
-<style lang='scss'>
+<style lang='scss' scoped>
 .card {
-  margin-bottom: 20px;
-} /* 搜索框下边距 */
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+} /* 为搜索框添加阴影 */
+.input-width {
+  width: 100px !important;
+} /* input输入框的长度 */
 .line-style {
-  display: flex;
-  & > div {
-    margin: 10px 15px;
-    & > span {
-      margin-right: 5px;
-      font-size: 14px;
-    }
+  @include flex-vertical-between;
+  flex-wrap: wrap;
+  width: 100%;
+  div {
+    text-align: left;
   }
-} /* 每行样式 */
-.button-style {
+  span {
+    margin-right: 5px;
+  }
+  & > div:nth-child(1) {
+    flex-basis: 28%;
+  }
+  & > div:nth-child(2) {
+    flex-basis: 28%;
+  }
+  & > div:nth-child(3) {
+    flex-basis: 44%;
+  } /* 为每行的元素分配宽度 */
+} /* 搜索框每行样式 */
+.button {
   text-align: right;
-  margin-right: 5%;
-} /* 清空搜索按钮 */
-
-.small-size {
-  display: flex;
-  margin: 0 8px;
-  width: 80px !important;
-} /* 输入框长度 */
-
-.deadline-select {
-  @include flex-vertical-center;
-} /* 期限选择 */
+}
 </style>

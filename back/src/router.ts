@@ -7,9 +7,10 @@ import UserId from "./views/user/userId.vue";
 import BusinessVerified from "./views/business-verified.vue";
 import BusinessProduct from "./views/business-product.vue";
 import addProduct from "./views/business-product/add-product.vue";
-import BusinessCreditor from "./views/business-creditor.vue";
-import addCreditor from "./views/business-creditor/add-creditor.vue";
-import creditorMatch from "./views/business-creditor/creditor-match.vue";
+import BusinessCreditor from "./views/business-creditor/business-creditor.vue";
+import addCreditor from "./views/business-creditor/add-creditor.vue"; /* 增加债权 */
+import creditorMatch from "./views/business-creditor/match/creditor-match.vue"; /* 匹配债权 */
+import matchDetailed from "./views/business-creditor/match/detailed-match.vue"; /* 匹配详情 */
 import WelcomePage from "./views/backMain-welcomPage.vue";
 
 Vue.use(Router);
@@ -65,6 +66,11 @@ export default new Router({
           component: addCreditor
         },
         /* 债权匹配 */
+        {
+          path: "matchDetailed",
+          name: "matchDetailed",
+          component: matchDetailed
+        },
         {
           path: "creditorMatch",
           name: "creditorMatch",
