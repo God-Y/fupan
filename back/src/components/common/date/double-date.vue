@@ -1,11 +1,11 @@
 <template>
 <div class="date-box">
   <date-pickers placeholder="起止日期" v-model="start" 
-  :not-after="end ||new Date() "
-  @change="startChanged"></date-pickers>
+  :not-after="end ||new Date() " width="150"
+  @change="startChanged" ></date-pickers>
   ~
   <date-pickers placeholder="结束日期" v-model="end" 
-    :not-before="start" :not-after="new Date()"
+    :not-before="start" :not-after="new Date()" width="150"
     @change="endChanged"
   ></date-pickers>
 </div> 
