@@ -39,7 +39,7 @@
               v-if="!phoneUse" @click="cancelPhoneNumber ">取消</el-button>
             </el-form-item>
             <el-form-item label="注册时间" class="center-item">
-              <el-input type="text" v-model="userMsg.gmtCreate" auto-complete="off" disabled></el-input>
+              <el-input type="text" v-model="loginTime" auto-complete="off" disabled></el-input>
             </el-form-item>
             <el-form-item label="电子邮箱" >
               <el-input type="text" v-model="userMsg.email" auto-complete="off" disabled></el-input>
@@ -50,7 +50,7 @@
             <!-- 搜索清空那按钮 -->
             <el-form-item class="btn-box" >
               <el-button type="danger" @click="$router.push({name:'UserDeal',params:{id:ID}})">交易记录</el-button>
-              <el-button type="primary">投资记录</el-button>
+              <el-button type="primary" @click="$router.push({name:'UserPay',params:{id:ID}})">投资记录</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -163,14 +163,15 @@ export default class UserMsg extends Vue {
   userNumberUse: boolean = true; //工号修改
   manageNumber: string = ""; //工号值
   phoneNumber: string = ""; //电话号码值
-  get ID() {
-    return this.$route.params.id; //计算属性获取路由参数 id
-  }
+
   created() {
     //获得数据请求参数
+    this.getUserMsg();
+  }
+  // 定义一个获取数据的函数
+  getUserMsg(): void {
     let id: string = this.$route.params.id;
     (this as any).$api.user.getMsg(id).then((response: any) => {
-      //发送http请求获取数据
       if (response.data.code) {
         this.userMsg = response.data.data;
         this.manageNumber = response.data.data.managerNumber;
@@ -178,12 +179,16 @@ export default class UserMsg extends Vue {
       }
     });
   }
-  // 定义一个获取数据的函数
-  getUserMsg(): void {
-    let id: string = this.$route.params.id;
-    (this as any).$api.user.getMsg(id).then((response: any) => {
-      if (response.data.code) this.userMsg = response.data.data;
-    });
+  get ID() {
+    return this.$route.params.id; //计算属性获取路由参数 id
+  }
+  get loginTime() {
+    //注册时间的
+    let value = new Date(this.userMsg.gmtCreate);
+    let year = value.getFullYear();
+    let month = value.getMonth() + 1; //getMonth是从0开始，所以加+
+    let day = value.getDate();
+    return year + "-" + month + "-" + day;
   }
   //自定义表达验证规则
   checkPhone = (rule: any, value: string, callback: any) => {
@@ -239,7 +244,8 @@ export default class UserMsg extends Vue {
   }
   //保存工号
   saveManageNumber(id: string, number: string) {
-    if (number == this.manageNumber) return;
+    if (number == this.manageNumber)
+      return (this.userNumberUse = !this.userNumberUse);
     (this as any).$api.user.changeManage(id, number).then(() => {
       this.getUserMsg();
       this.userNumberUse = !this.userNumberUse;
@@ -253,7 +259,7 @@ export default class UserMsg extends Vue {
   }
   //保存手机号修改
   savePhoneNumber(id: string, number: string) {
-    if (number == this.phoneNumber) return;
+    if (number == this.phoneNumber) return (this.phoneUse = !this.phoneUse);
     (this as any).$api.user.changePhone(id, number).then(() => {
       this.getUserMsg();
       this.phoneUse = !this.phoneUse;

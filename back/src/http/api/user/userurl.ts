@@ -42,6 +42,18 @@ export default {
       refusal: refusal
     });
   },
+  //获取交易数据
+  getDeal(id: number, data: any) {
+    return axios.get(`/api/a/list/trading-flow/${id}`, {
+      params: data
+    });
+  },
+  //获取用户投资
+  getPay(id: number, data: any) {
+    return axios.get(`/api/a/list/investment-user/${id}`, {
+      params: data
+    });
+  },
   // 债权管理列表请求, 查询
   getCreditor(data: any): any {
     return axios.get("/api/a/list/claim-info", data);

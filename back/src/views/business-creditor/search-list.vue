@@ -77,11 +77,11 @@ import DatePicker from "../../components/common/date/double-date.vue";
   }
 })
 export default class creditorSearchList extends Vue {
-  ruleForm2: any = {
-    pass: '',
-    checkPass: '',
-    age: ''
-  };
+  // ruleForm2: any = {
+  //   pass: '',
+  //   checkPass: '',
+  //   age: ''
+  // };
   rules2: any = {
     pass: [
       // { validator: validatePass, trigger: 'blur' }
@@ -92,15 +92,15 @@ export default class creditorSearchList extends Vue {
     age: [
       // { validator: checkAge, trigger: 'blur' }
     ]
-  }
-    submitForm(formName: any) {
-  // this.$refs[formName].validate((valid) => {
-    if ("") {
-      alert('submit!');
-    } else {
-      console.log('error submit!!');
-      return false;
-    }
+  };
+  submitForm(formName: any) {
+    // this.$refs[formName].validate((valid) => {
+    // if ("") {
+    //   // alert('submit!');
+    // } else {
+    //   // console.log('error submit!!');
+    //   return false;
+    // }
   }
 
   resetForm(formName: any) {
@@ -111,7 +111,7 @@ export default class creditorSearchList extends Vue {
 //样式
 <style lang='scss' scoped>
 .card {
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 } /* 为搜索框添加阴影 */
 .input-width {
   width: 100px !important;

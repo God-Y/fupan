@@ -37,20 +37,17 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import DatePicker from "../../../components/common/date/double-date.vue";
 
-
 @Component({
   components: {
     DatePicker
   }
 })
-export default class mtachSearch extends Vue {
-
-}
+export default class mtachSearch extends Vue {}
 </script>
 //样式
 <style lang='scss' scoped>
 .card {
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 } /* 为搜索框添加阴影 */
 .input-width {
   width: 100px !important;

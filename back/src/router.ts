@@ -6,6 +6,7 @@ import Login from "./views/Login.vue";
 import BusinessUser from "./views/user/business-user.vue";
 import UserId from "./views/user/userId.vue";
 import DealRecode from "./views/user/deal-recode.vue";
+import PayRecode from "./views/user/pay-recode.vue";
 
 import BusinessVerified from "./views/business-verified.vue";
 import BusinessProduct from "./views/business-product.vue";
@@ -43,6 +44,12 @@ export default new Router({
           path: "user-deal/:id",
           name: "UserDeal",
           component: DealRecode
+        },
+        {
+          //用户投资记录
+          path: "user-pay/:id",
+          name: "UserPay",
+          component: PayRecode
         },
         /* 实名认证 */
         {
