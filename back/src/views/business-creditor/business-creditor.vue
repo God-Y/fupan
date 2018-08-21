@@ -1,6 +1,9 @@
 <template>
      <div>
-       <creditorSearchList></creditorSearchList>
+       <creditorSearchList
+       @send-search="sendSearch"
+       @sned-clear="sendClear"
+       ></creditorSearchList>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>债权列表</span>
@@ -58,15 +61,21 @@ export default class BusinessCreditor extends Vue {
   dataList: Array<any> = []; /* 这里必须声明为数组类型，使用any={} 渲染不出来 */
 
   created() {
-    this.getList();
+    this.getList(""); /* 初始值不需要加参数，所以只是传的空字符串 */
   }
-  getList() {
-    (this as any).$api.user.getCreditor("").then((res: any) => {
+  getList(data: any) {
+    (this as any).$api.creditor.getCreditor(data).then((res: any) => {
       let list = res.data.data.list;
       this.dataList = list;
-      console.log(this.dataList);
     });
   } /* 获取列表数据 */
+  sendSearch(val: any) {
+    console.log(val);
+    this.getList(val);
+  } /* 搜索数据 */
+  sendClear(val: any) {
+    this.getList(val);
+  } /* 清空搜索 */
   edit() {
     this.$router.push({
       path: "addCreditor"
@@ -77,7 +86,7 @@ export default class BusinessCreditor extends Vue {
     this.$router.push({
       path: "creditorMatch"
     });
-  }
+  } /* 跳转至匹配详情 */
   changeRateCloor(rate: any, statu: any) {
     if (statu === 0 || statu === 2) {
       return "info";
