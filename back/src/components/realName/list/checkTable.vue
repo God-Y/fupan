@@ -96,21 +96,21 @@ import checkLog from "../checkStatus.vue";
 })
 export default class RealTable extends Vue {
   @Prop([Array])
-  tableParams!: any;  // 表单数据
+  tableParams!: any; // 表单数据
   @Prop([Boolean])
-  loading!: boolean;  //是否加载表单
+  loading!: boolean; //是否加载表单
   @Prop([Number])
   total!: number; //条目总数，用于渲染分页
 
-  id:number = 1 ; //用于确定用户的id
-  idAuthentication:number = 10; //确定用户的实名状态
+  id: number = 1; //用于确定用户的id
+  idAuthentication: number = 10; //确定用户的实名状态
   get realList() {
     return this.tableParams;
   }
-  opationCheck(status: number){
-    if(status == 30 || status == 50){
+  opationCheck(status: number) {
+    if (status == 30 || status == 50) {
       return false;
-    }else {
+    } else {
       return true;
     }
   }
@@ -122,16 +122,15 @@ export default class RealTable extends Vue {
   //跳转页面
   toPage(val: number) {
     this.$router.push(`/back/verifiel/${val}`);
-    
   }
-   //改变状态会弹窗
-  cancelName(id:number,status:number) {
+  //改变状态会弹窗
+  cancelName(id: number, status: number) {
     //要传的参数
     let params = {
       idAuthentication: status,
       refusal: ""
     };
-    let alertMsg =`<div>
+    let alertMsg = `<div>
         <p>取消实名将删除用户身份信息</p>
         <h3> 确认取消？</h3></div>`;
     this.$confirm(alertMsg, "操作提示", {
@@ -143,13 +142,13 @@ export default class RealTable extends Vue {
     })
       //点击确定按钮
       .then(() => {
-        (this as any).$api.real.modifyRealName(id,params).then((res: any) => {
+        (this as any).$api.real.modifyRealName(id, params).then((res: any) => {
           this.$message({
             type: "success",
             message: "取消成功"
           });
           //取消成功后调用父级方法，更新列表.
-          (this as any ).$parent.getList();
+          (this as any).$parent.getList();
         });
       })
       .catch(() => {
@@ -161,28 +160,28 @@ export default class RealTable extends Vue {
   }
   //审核状态，分未认证和再申请
   //把请求的iD传进去
-  checkUser (id:number) {
+  checkUser(id: number) {
     this.checkVisible = true;
     this.id = id;
   }
-  modifyStatus(status: number,id: number) {
+  modifyStatus(status: number, id: number) {
     this.idAuthentication = status;
-    if(status == 20) {
-      this.cancelName(id,status);
-    }else {
+    if (status == 20) {
+      this.cancelName(id, status);
+    } else {
       this.checkUser(id);
     }
   }
   //从子级接受事件，发送请求，修改参数
-  confirmStatus(checkParams:any) {
+  confirmStatus(checkParams: any) {
     let params = {
       idAuthentication: this.idAuthentication,
       refusal: checkParams.reason
     };
-    (this as any).$api.real.modifyRealName(this.id,params).then(()=>{
+    (this as any).$api.real.modifyRealName(this.id, params).then(() => {
       this.checkVisible = false;
       (this as any).$parent.getList();
-    })
+    });
     console.log(checkParams.reason);
   }
 }
@@ -210,8 +209,7 @@ export default class RealTable extends Vue {
 }
 .status10,
 .status30,
-.modify20
-{
+.modify20 {
   color: #f56c6c;
 }
 .status20 {
@@ -222,11 +220,10 @@ export default class RealTable extends Vue {
   color: #0000ff;
 }
 .modify40 {
-  color: #FFA500;
+  color: #ffa500;
 }
 .modify30,
-.modify50{
+.modify50 {
   color: #808080;
 }
-
 </style>

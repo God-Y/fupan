@@ -60,7 +60,7 @@ export default class creditorMatch extends Vue {
     let id = this.$route.query.id;
     this.$router.push({
       path: "matchDetailed",
-      query: {id}
+      query: { id }
     });
   } /* 匹配详情 */
 }
