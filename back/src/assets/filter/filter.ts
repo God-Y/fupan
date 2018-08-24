@@ -32,6 +32,31 @@ let filtersObj: Filters = {
   handleStatus: function(value: number): string {
     return value === 10 ? "冻结" : "解冻";
   },
+  //实名状态
+  realState: function(value: number): any {
+    switch (value) {
+      case 10:
+        return "未认证";
+      case 20:
+        return "已认证";
+      case 30:
+        return "已拒绝";
+      case 40:
+        return "再申请";
+      case 50:
+        return "已取消";
+    }
+  },
+  //操作状态
+  realModifyState: function(value: number): any {
+    switch (value) {
+      case 20:
+        return "取消实名";
+      default:
+        return "审核";
+    }
+  },
+
   // 产品列表年化收益率
   annualized: function(value: number): string {
     return value * 100 + "%";

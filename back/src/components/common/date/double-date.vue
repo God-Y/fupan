@@ -39,22 +39,32 @@ export default class DatePicker extends Vue {
 
   //组件向去父级传参
   @Emit() //开始时间向父级传值
-  startChange(upperDateNum: number) {}
+  startChange(upperDateNum: number | string) {}
   @Emit() //结束时间向父级传值
-  endChange(endDateNum: number) {}
+  endChange(endDateNum: number | string) {}
 
   //开始change事件传参
   startChanged(val: Date) {
     //设定开始时间的变量
-    let upperDateNum: number = val.valueOf();
-    this.startChange(upperDateNum);
+    if (val) {
+      let upperDateNum: number = val.valueOf();
+      this.startChange(upperDateNum);
+    } else if (val == null) {
+      let value = "";
+      this.startChange(value);
+    }
   }
 
   //结束change事件传值
   endChanged(val: Date) {
     //设定结束时间的变量
-    let endNumber: number = val.valueOf() + 8.64e6 - 1;
-    this.endChange(endNumber);
+    if (val) {
+      let endNumber: number = val.valueOf() + 8.64e6 - 1;
+      this.endChange(endNumber);
+    } else if (val == null) {
+      let value = "";
+      this.endChange(value);
+    }
   }
 }
 </script>

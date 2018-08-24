@@ -9,7 +9,7 @@
           </el-form-item>
           <!-- 姓名 -->
           <el-form-item label="真实姓名" prop="idName" ref="idName">
-            <el-input type="text" v-model="userForm.idName" auto-complete="off"></el-input>
+            <el-input type="text" v-model="userForm.idName" class="input-item" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 日期组件 -->
           <el-form-item label="注册日期" prop="idName" ref="idName">
@@ -23,8 +23,8 @@
           <el-form-item label="理财经理" prop="managerNumber">
             <el-input type="text" v-model="userForm.managerNumber" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="账户状态" prop="status">
-            <el-select v-model="userForm.status" placeholder="全部" >
+          <el-form-item label="账户状态" prop="status" >
+            <el-select v-model="userForm.status" placeholder="全部"  class="input-item">
               <el-option label="正常" value="10"></el-option>
               <el-option label="冻结" value="20"></el-option>
             </el-select>
@@ -107,6 +107,7 @@
             </template>
           </el-table-column>
         </el-table>
+      <pages :total-num="total"  @page-change="toPage" v-if="userList.length"></pages>    
       </div>
     </div>
   </div>
@@ -116,18 +117,31 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Date from "common_Components/date/double-date.vue";
+import Pages from "common_Components/page/pagination.vue";
 @Component({
   components: {
-    Date
+    Date,
+    Pages
   }
 })
 export default class BusinessUser extends Vue {
   //发送http请求，获取数据
   userList: Array<object> = [];
+  get ID() {
+    //计算属性获取值
+    return this.$route.params.id;
+  }
+  total: number = 0; //总条数
+  //关于表单的数据
+  userForm: any = {
+    upperDate: "",
+    lowerDate: ""
+  };
   created() {
-    console.log(this.$route.query);
+    // console.log(this.$route.query);
     let query: any = this.$route.query;
     let keys = Object.keys(query);
+    //判断它的键值
     if (keys.length) {
       query.upperDate = query.upperDate ? Number(query.upperDate) : ""; //保证拿出的毫秒数是number类型
       query.lowerDate = query.lowerDate ? Number(query.lowerDate) : ""; //保证拿出的毫秒数是number类型
@@ -142,23 +156,21 @@ export default class BusinessUser extends Vue {
   //可以扁担加载动画
   listLoading: boolean = true;
   //请求的http数据
-  getList() {
+  getList(id:any = 1) {
     (this as any).$api.user
-      .list(this.userForm)
+      .list(this.userForm,id)
       .then((response: any) => {
         let data = response.data;
-        if (data.code) this.userList = data.data.list;
+        if (data.code) {
+          this.userList = data.data.list;
+          this.total = data.data.total;
+        }
       })
       .then(() => {
         //获取后加载动画取消
         this.listLoading = false;
       });
   }
-  //关于表单的数据
-  userForm: any = {
-    upperDate: "",
-    lowerDate: ""
-  };
   //从子级取到开始时间值
   getStart(value: number) {
     this.userForm.lowerDate = value;
@@ -205,8 +217,8 @@ export default class BusinessUser extends Vue {
   };
   //定义验证的虽则
   rules: object = {
-    phone: [{ validator: this.checkPhone, trigger: "blur" }],
-    idName: [{ validator: this.checkName, trigger: "blur" }]
+    phone: [{ validator: this.checkPhone, trigger: "change" }],
+    idName: [{ validator: this.checkName, trigger: "change" }]
   };
   //改变状态会弹窗
   changeStatus(status: number) {
@@ -265,6 +277,11 @@ export default class BusinessUser extends Vue {
   getUserMsg(id: number | string): any {
     this.$router.push("/back/user/" + id);
   }
+  //页码跳转
+  toPage(val: number) {
+    this.$router.push(`/back/user`);
+    this.getList(val);
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -274,6 +291,9 @@ export default class BusinessUser extends Vue {
   justify-content: space-between;
   @media (min-width: 1520px) {
     width: 1200px;
+  }
+  .input-item {
+    width: 200px;
   }
   .btn-box {
     flex-basis: 398px;

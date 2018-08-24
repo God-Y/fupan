@@ -4,37 +4,37 @@
       <div class="card-body">
         <el-form :model="userForm" ref="userForm1" label-width="96px" class="ruleForm">
           <!-- 产品名称 -->
-          <el-form-item label="产品名称"  width="150px">
+          <el-form-item label="产品名称"  class="form-item">
             <el-input type="tel" v-model="userForm.productName" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="出借合同编号"   width="150px">
+          <el-form-item label="出借合同编号"  class="form-item">
             <el-input type="tel" v-model="userForm.lendingContractNumber" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 日期组件 -->
            <el-form-item label="起息日期" prop="idName" ref="idName">
             <date
-              :upperDate="userForm.valueStartlowerDate"
-              :lowerDate="userForm.valueStartupperDate"
+              :upperDate="userForm.valueStartupperDate"
+              :lowerDate="userForm.valueStartlowerDate"
               @start-change="getStartdown"
               @end-change="getStartup"
             ></date>
           </el-form-item>
-           <el-form-item label="投资状态" prop="status">
+           <el-form-item label="投资状态" prop="status" class="form-item">
             <el-select v-model="userForm.investmentSatus" placeholder="全部" >
               <el-option label="投资中" value="10"></el-option>
               <el-option label="退出中" value="20"></el-option>
               <el-option label="已退出" value="30"></el-option>
             </el-select>
           </el-form-item>
-           <el-form-item label="债权协议编号"  width="150px">
+           <el-form-item label="债权协议编号" class="form-item">
             <el-input type="tel" v-model="userForm.creditContractNumber" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 姓名 -->
           <!-- 日期组件 -->
            <el-form-item label="起息日期" prop="idName" ref="idName">
             <date
-              :upperDate="userForm.valueEndlowerDate"
-              :lowerDate="userForm.valueEndupperDate"
+              :upperDate="userForm.valueEndupperDate"
+              :lowerDate="userForm.valueEndlowerDate"
               @start-change="getEnddown"
               @end-change="getEndup"
             ></date>
@@ -64,12 +64,7 @@ export default class PaySearch extends Vue {
   searchParams!: any; //定义结束搜索时间
   //关于表单搜索的数据，必须注意的是，组件
   //只接受string | number | Date格式
-  userForm: any = {
-    valueStartlowerDate: "", //起息时间下限
-    valueStartupperDate: "", //起息时间上限
-    valueEndlowerDate: "",
-    valueEndupperDate: ""
-  };
+  userForm: any = this.searchParams;
   //从子级取到起息时间值
   getStartdown(value: any) {
     this.userForm.valueStartlowerDate = value;
@@ -86,20 +81,25 @@ export default class PaySearch extends Vue {
   }
   //重置清空表单
   resetForm() {
-    (this as any).userForm = {
-      valueStartlowerDate: "", //起息时间下限
-      valueStartupperDate: "", //起息时间上限
-      valueEndlowerDate: "",
-      valueEndupperDate: ""
-    };
+    let ID = this.$route.params.id;
+    //循环所有的项
+    for (let key in this.userForm) {
+      this.userForm[key] = "";
+    }
+    this.$router.push({
+      path: `/back/user-pay/${ID}`,
+      query: {}
+    });
+    this.$emit("clearParams");
   }
   //搜索按钮的实现
   search(): void {
     let ID = this.$route.params.id;
     this.$router.push({
-      path: `/back/user-deal/${ID}`,
+      path: `/back/user-pay/${ID}`,
       query: this.userForm
     });
+    this.$emit("searchList");
   }
 }
 </script>
@@ -111,6 +111,9 @@ export default class PaySearch extends Vue {
   justify-content: space-between;
   @media (min-width: 1520px) {
     width: 1200px;
+  }
+  .form-item {
+    width: 280px;
   }
   .btn-box {
     flex-basis: 100%;
