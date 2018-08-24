@@ -17,7 +17,6 @@ interface Filters {
 let filtersObj: Filters = {
   //时间过滤，
   time: function(date: number): string {
-    console.log(date);
     let value = new Date(date);
     let year = value.getFullYear();
     let month = value.getMonth() + 1; //getMonth是从0开始，所以加+

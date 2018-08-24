@@ -54,9 +54,5 @@ export default {
     return axios.get(`/api/a/list/investment-user/${id}`, {
       params: data
     });
-  },
-  // 债权管理列表请求, 查询
-  getCreditor(data: any): any {
-    return axios.get("/api/a/list/claim-info", data);
   }
 };
