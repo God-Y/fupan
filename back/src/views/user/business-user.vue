@@ -156,9 +156,9 @@ export default class BusinessUser extends Vue {
   //可以扁担加载动画
   listLoading: boolean = true;
   //请求的http数据
-  getList(id:any = 1) {
+  getList(id: any = 1) {
     (this as any).$api.user
-      .list(this.userForm,id)
+      .list(this.userForm, id)
       .then((response: any) => {
         let data = response.data;
         if (data.code) {

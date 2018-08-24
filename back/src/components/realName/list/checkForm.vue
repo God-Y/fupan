@@ -56,7 +56,7 @@ export default class RealCheckForm extends Vue {
   //关于表单搜索的数据，必须注意的是，组件
   //只接受string | number | Date格式
   userForm: any = this.searchParams;
- //从子级取到开始时间值
+  //从子级取到开始时间值
   getStart(value: number) {
     this.userForm.lowerDate = value;
   }

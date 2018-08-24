@@ -75,7 +75,7 @@ export default class mtachSearch extends Vue {
   }
   search() {
     let id = this.$route.query.id;
-    this.formData.id = id ; /* 获取的路由id 存至对象 */
+    this.formData.id = id; /* 获取的路由id 存至对象 */
     let data = this.formData;
     (this as any).$api.creditor.matchSearch(id, data).then((res: any) => {
       console.log(res);
@@ -83,24 +83,24 @@ export default class mtachSearch extends Vue {
     this.$router.push({
       path: `/back/creditorMatch`,
       query: this.formData
-    })
+    });
   } /* 搜索按钮 */
   clear() {
     let query: any = this.$route.query;
     let keys: any = Object.keys(query);
     keys.forEach((value: any) => {
       this.formData[value] = "";
-    })
+    });
     this.$router.push({
       path: `/back/creditorMatch`,
-      query: {id:query.id}
-    })
+      query: { id: query.id }
+    });
   } /* 清空按钮 */
   getRouteData() {
     let query: any = this.$route.query;
     let keys: any = Object.keys(query);
-    if(keys.length) {
-       query.valueEndupperDate = query.valueEndupperDate
+    if (keys.length) {
+      query.valueEndupperDate = query.valueEndupperDate
         ? Number(query.valueEndupperDate)
         : ""; //保证拿出的毫秒数是number类型
       query.valueEndlowerDate = query.valueEndlowerDate

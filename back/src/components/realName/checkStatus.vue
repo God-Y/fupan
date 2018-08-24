@@ -42,7 +42,7 @@ export default class CheckStatus extends Vue {
   get dialogVisible() {
     return this.visible;
   }
-  checkForm:object = {
+  checkForm: object = {
     reason: "",
     status: "通过"
   };
@@ -50,8 +50,8 @@ export default class CheckStatus extends Vue {
   comfirm() {
     this.confirmStatus(this.checkForm);
   }
-  handleClose(done:any) {
-    this.$message('取消操作');
+  handleClose(done: any) {
+    this.$message("取消操作");
     (this as any).$parent.checkVisible = false;
   }
 }
@@ -62,7 +62,8 @@ export default class CheckStatus extends Vue {
   font-size: 25px;
 }
 .dialog-box {
-  .reason-item,.dialog-title {
+  .reason-item,
+  .dialog-title {
     font-size: 16px;
   }
   .dialog-title {

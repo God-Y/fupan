@@ -21,7 +21,6 @@
     </div>
 </template>
 
-
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
 
@@ -36,14 +35,13 @@ export default class matchDetailed extends Vue {
   getDetailedData() {
     (this as any).$api.creditor.getMatchDetailed(this.id).then((res: any) => {
       console.log(res);
-    })
+    });
   } /* 获取匹配详情数据 */
   getCommend() {
     (this as any).$api.creditor.getCommend(this.id).then((res: any) => {
       console.log(res);
-    })
+    });
   } /* 获取匹配的接口 */
-
 }
 </script>
 
