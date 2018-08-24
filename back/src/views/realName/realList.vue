@@ -1,28 +1,28 @@
 <template>
   <div>
-    <pay-search :search-params = "userForm" @searchList ="search"
+    <check-search :search-params = "userForm" @searchList ="search"
       @clearParams = "clear"
-    ></pay-search>
-    <pay-table :table-params = "payData" 
+    ></check-search>
+    <check-table :table-params = "list" 
     :loading="listLoading" :total = "total"
-    ></pay-table>    
+    ></check-table>
   </div>
 </template>
 
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import PaySearch from "../../components/user/pay-search.vue";
-import PayTable from "../../components/user/pay-table.vue";
+import CheckSearch from "../../components/realName/list/checkForm.vue";
+import CheckTable from "../../components/realName/list/checkTable.vue";
 @Component({
   components: {
-    PaySearch,
-    PayTable
+    CheckSearch,
+    CheckTable
   }
 })
-export default class DealRecode extends Vue {
+export default class RealList extends Vue {
   //发送http请求，获取数据。
-  payData: Array<object> = [];
+  list: Array<object> = [];
   get ID() {
     //计算属性获取值
     return this.$route.params.id;
@@ -32,45 +32,39 @@ export default class DealRecode extends Vue {
   listLoading: boolean = true;
   //关于表单搜索的数据，必须注意的是，组件
   //只接受string | number | Date格式
-  userForm: any;
-  @Watch("ID") //路由参数发生变化的时候重新请求
-  onIdChanged(val: any, oldVal: any) {
-    this.getList();
-  }
+  userForm: any = {
+    upperDate: "",
+    lowerDate: ""
+  };
+
+  // @Watch("ID") //路由参数发生变化的时候重新请求
+  // onIdChanged(val: any, oldVal: any) {
+  //   this.getList();
+  // }
   created() {
     let query: any = this.$route.query; //获取查询参数
     let keys = Object.keys(query);
     if (keys.length) {
       //应对第一次刷新，不需要赋值
-      query.valueStartlowerDate = query.valueStartlowerDate
-        ? Number(query.valueStartlowerDate)
-        : ""; //保证拿出的毫秒数是number类型
-      query.valueStartlowerDate = query.valueStartupperDate
-        ? Number(query.valueStartupperDate)
-        : ""; //保证拿出的毫秒数是number类型
-      query.valueEndlowerDate = query.valueEndlowerDate
-        ? Number(query.valueEndlowerDate)
-        : ""; //保证拿出的毫秒数是number类型
-      query.valueEndupperDate = query.valueEndupperDate
-        ? Number(query.valueEndupperDate)
-        : ""; //保证拿出的毫秒数是number类型
+      query.lowerDate = query.lowerDate ? Number(query.lowerDate) : ""; //保证拿出的毫秒数是number类型
+      query.upperDate = query.upperDate ? Number(query.upperDate) : ""; //保证拿出的毫秒数是number类型
       keys.forEach(value => {
         //foreach循环
         this.userForm[value] = query[value]; //赋值给查询对象
       });
     }
-    this.getList(); //请求数据
+    this.getList(this.userForm); //请求数据
   }
 
   //定义一个请求数据的方法
-  getList() {
-    (this as any).$api.user
-      .getPay(this.$route.params.id, this.userForm)
+  getList(data: any, id: any = 1) {
+    (this as any).$api.real
+      .getList(data, id)
       .then((response: any) => {
         let data = response.data;
         if (data.code) {
           this.total = data.data.total;
-          this.payData = data.data.list;
+          this.list = data.data.list;
         }
       })
       .then(() => {
@@ -80,11 +74,13 @@ export default class DealRecode extends Vue {
   }
   //实现搜索功能
   search() {
-    this.getList();
+    let id = this.$route.params.pages;
+    console.log(this.$route);
+    this.getList(this.userForm, id);
   }
   //实现清空参数功能
   clear() {
-    this.getList();
+    // this.getList();
   }
 }
 </script>

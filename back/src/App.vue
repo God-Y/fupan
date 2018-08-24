@@ -47,9 +47,5 @@
       white-space: nowrap;
     } /* 输入框 左边字体 */
   }
-} /* 新增页面 每一行三个元素时的样式 */
-
-.el-input {
-  width: 200px !important;
-} /* 输入框长度 */
+}
 </style>

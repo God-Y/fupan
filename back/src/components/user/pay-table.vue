@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      {{payList.userName}}的投资记录
+      {{userName}}的投资记录
     </div>
     <div class="card-body">
       <!-- 表格渲染开始 -->
@@ -10,6 +10,7 @@
         border
         style="width: 100%"
         v-loading="loading"
+        v-if="payList.length"
         >
         <el-table-column
           type="index"
@@ -84,6 +85,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <pages :total-num="total"  @page-change="toPage" v-if="payList.length"></pages>    
       <div class="nullMsg" v-if="!payList.length">无有效信息</div>
     </div>
   </div>
@@ -92,15 +94,29 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import Pages from "common_Components/page/pagination.vue";
 
-@Component
+@Component({
+  components: {
+    Pages
+  }
+})
 export default class DealRecode extends Vue {
   @Prop([Array])
   tableParams!: any;
-  @Prop([Array])
-  loading!: any;
+  @Prop([Boolean])
+  loading!: boolean;
+  @Prop([Number])
+  total!: number;
   get payList() {
     return this.tableParams;
+  }
+  userName: string = "";
+  created() {
+    this.userName = this.tableParams[0].userName;
+  }
+  toPage(val: number) {
+    this.$router.push(`/back/user-pay/${val}`);
   }
 }
 </script>

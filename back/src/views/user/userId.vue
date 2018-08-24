@@ -12,7 +12,7 @@
           <el-form :model="userMsg" status-icon :rules="rules" ref="userForm1" label-width="80px" class="ruleForm">
           <!-- 用户编号 -->
             <el-form-item label="用户编号" class="left-item" align="left">
-              <el-input type="text" v-model="userMsg.userNumber" disabled></el-input>
+              <el-input type="text" class="input-item" v-model="userMsg.userNumber" disabled></el-input>
             </el-form-item>
             <!-- 姓名 -->
             <el-form-item label="真实姓名" class="center-item">
@@ -26,6 +26,7 @@
             <el-form-item label="手机号码" prop="phone" ref="phone" class="left-item" align="left">
               <el-input type="tel" v-model="userMsg.phone" 
               auto-complete="off" :disabled="phoneUse"
+              class="input-item"
               @input="changes()"
               > </el-input>
               <el-button type="danger" class="phone-btn" 
@@ -38,12 +39,15 @@
               size="mini"  
               v-if="!phoneUse" @click="cancelPhoneNumber ">取消</el-button>
             </el-form-item>
+
             <el-form-item label="注册时间" class="center-item">
               <el-input type="text" v-model="loginTime" auto-complete="off" disabled></el-input>
             </el-form-item>
+
             <el-form-item label="电子邮箱" >
               <el-input type="text" v-model="userMsg.email" auto-complete="off" disabled></el-input>
             </el-form-item>
+
             <el-form-item label="详细地址" class="address-box">
               <el-input type="text" v-model="userMsg.address" class="address" auto-complete="off" disabled></el-input>
             </el-form-item>
@@ -65,7 +69,7 @@
           <el-form :model="userMsg"  label-width="80px" class="ruleForm center-form">
           <!-- 总资产 -->
             <el-form-item label="总 资 产" class="left-item content-item" align="left">
-              <el-input type="text" v-model="userMsg.assets" disabled></el-input>
+              <el-input type="text" class="input-item" v-model="userMsg.assets" disabled></el-input>
             </el-form-item>
             <!-- 累计收益 -->
             <el-form-item label="累计收益" class="get-earn content-item">
@@ -82,9 +86,9 @@
         </div>
         <div class="card-body">
           <el-form  label-width="80px" class="ruleForm center-form">
-          <!-- 用户编号 -->
+          <!-- 工号 -->
             <el-form-item :label="'工'+' '+'号'" class="left-item content-item" align="left">
-              <el-input type="text" v-model="userMsg.managerNumber" :disabled="userNumberUse"></el-input>
+              <el-input type="text" class="input-item" v-model="userMsg.managerNumber" :disabled="userNumberUse"></el-input>
               <el-button type="danger" class="phone-btn" size="mini" v-if="userNumberUse"
                 @click="userNumberUse = !userNumberUse"
               >修改</el-button>
@@ -133,12 +137,12 @@
           <el-form  v-if="userMsg.bankId != ''"
           label-width="80px" class="ruleForm center-form" v-for="item in userMsg.bankId" :key ="item.cardNumber" >
             <!-- 总资产 -->
-            <el-form-item label="开 户 行" class="left-item " align="left">
-              <el-input type="text" v-model="item.bankName" disabled></el-input>
+            <el-form-item label="开 户 行" align="left">
+              <el-input type="text" class="input-item" v-model="item.bankName" disabled></el-input>
             </el-form-item>
             <!-- 累计收益 -->
             <el-form-item label="银行卡号" class="get-earn ">
-              <el-input type="text" v-model="item.cardNumber" disabled></el-input>
+              <el-input type="text" class="input-item" v-model="item.cardNumber" disabled></el-input>
               <el-button type="primary" plain class="cancel-card"
                 @click="deleteCard(ID,item.cardNumber)">解绑</el-button>
             </el-form-item>
@@ -285,10 +289,6 @@ export default class UserMsg extends Vue {
   @media (min-width: 1520px) {
     width: 1200px;
   }
-  //左侧布局
-  .left-item {
-    flex-basis: 412px;
-  }
   //中间布局
   .center-item {
     margin-left: -30px;
@@ -299,6 +299,13 @@ export default class UserMsg extends Vue {
     .address {
       width: 100% !important;
     }
+  }
+  .left-item {
+    flex-basis: 414px;
+    margin-right: -30px;
+  }
+  .input-item {
+    width: 200px;
   }
   //交易记录，投资记录按钮
   .btn-box {

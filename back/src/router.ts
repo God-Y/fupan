@@ -8,7 +8,7 @@ import UserId from "./views/user/userId.vue";
 import DealRecode from "./views/user/deal-recode.vue";
 import PayRecode from "./views/user/pay-recode.vue";
 
-import BusinessVerified from "./views/business-verified.vue";
+import BusinessVerified from "./views/realName/realList.vue";
 import BusinessProduct from "./views/business-product.vue";
 import addProduct from "./views/business-product/add-product.vue";
 import BusinessCreditor from "./views/business-creditor/business-creditor.vue";
@@ -53,7 +53,7 @@ export default new Router({
         },
         /* 实名认证 */
         {
-          path: "verifiel",
+          path: "verifiel/:pages",
           name: "BusinessVerified",
           component: BusinessVerified
         },

@@ -101,7 +101,7 @@ export default class backAside extends Vue {
         router.push({ name: "BusinessUser" });
         break;
       case 1.2:
-        router.push({ name: "BusinessVerified" });
+        router.push("/back/verifiel/1");
         break;
       case 1.3:
         router.push({ name: "BusinessProduct" });
