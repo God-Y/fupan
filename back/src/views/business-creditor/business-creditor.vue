@@ -7,7 +7,7 @@
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>债权列表</span>
-          <el-button @click="edit" style="float: right; padding: 3px 0" type="text">+新增</el-button>
+          <el-button @click="add" style="float: right; padding: 3px 0" type="text">+新增</el-button>
         </div>
           <el-table :data="dataList" border class="table-style" style="width: 100%;" >
               <el-table-column prop="claimCode" label="债权代号" width="100px" header-align="center"> </el-table-column>
@@ -34,11 +34,11 @@
               <el-table-column prop="claimCode" label="操作" header-align="center"> 
                 <template slot-scope="scope">
                   <div class="operate">
-                    <div :class="changeRateCloor(scope.row.matchingRate,scope.row.status)">
-                      <span @click="matchRate">{{scope.row.matchingRate|matchRate}}</span>
+                    <div @click="matchRate(scope.row.id)" :class="changeRateCloor(scope.row.matchingRate,scope.row.status)">
+                      <span>{{scope.row.matchingRate|matchRate}}</span>
                       <span>{{scope.row.matchingRate|annualized}}</span>
                     </div>
-                    <div class="check">查看</div>
+                    <div @click="edit(scope.row.id)" class="check">查看</div>
                   </div>
                 </template>
               </el-table-column>
@@ -67,6 +67,7 @@ export default class BusinessCreditor extends Vue {
     (this as any).$api.creditor.getCreditor(data).then((res: any) => {
       let list = res.data.data.list;
       this.dataList = list;
+      console.log(this.dataList);
     });
   } /* 获取列表数据 */
   sendSearch(val: any) {
@@ -76,15 +77,23 @@ export default class BusinessCreditor extends Vue {
   sendClear(val: any) {
     this.getList(val);
   } /* 清空搜索 */
-  edit() {
+  add() {
     this.$router.push({
-      path: "addCreditor"
-      // query: {}
+      path: "addCreditor",
+      query: { statu: "add" }
+    });
+  } /* 跳转至新增页面 */
+  edit(val: any) {
+    console.log(val);
+    this.$router.push({
+      path: "addCreditor",
+      query: { id: val }
     });
   } /* 跳转至编辑页面 */
-  matchRate() {
+  matchRate(val: any) {
     this.$router.push({
-      path: "creditorMatch"
+      path: "creditorMatch",
+      query: { id: val }
     });
   } /* 跳转至匹配详情 */
   changeRateCloor(rate: any, statu: any) {

@@ -8,7 +8,7 @@
                   <span>债权人&#12288;</span>
                   <el-input v-model="ruleForm.creditorName" type="text" auto-complete="off" placeholder="请输入内容"></el-input>
                 </el-form-item>
-                <el-form-item prop="creditorIdNumber">
+                <el-form-item prop="creditorIdNumber" ref="creditorIdNumber">
                   <span>身份证号</span>
                   <el-input v-model="ruleForm.creditorIdNumber" type="text" auto-complete="off" clearable size="mini" placeholder="请输入内容"></el-input>
                 </el-form-item>
@@ -48,12 +48,12 @@
                 </el-form-item>
             </div>
             <div class="line-style">
-                <el-form-item prop="creditorPhone"  size="mini">
+                <el-form-item prop="creditorPhone"  size="mini" ref="creditorPhone">
                   <span>手机号&#12288;</span>
                   <el-input v-model="ruleForm.creditorPhone" type="text" auto-complete="off" placeholder="请输入内容"></el-input>
                 </el-form-item>
                  <el-form-item >
-                  <span>出借金额</span>
+                  <span>出借金额&#12288;</span>
                   <el-input v-model="ruleForm.upperLendingAmount" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
                   ~
                   <el-input v-model="ruleForm.lowerLendingAmount" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
@@ -115,6 +115,9 @@ export default class creditorSearchList extends Vue {
     lowerExpirationDate: "" /* 到期 始 */,
     upperExpirationDate: "" /* 到期时间 终 */
   }; /* 表单数据对象 */
+  $refs: any = {
+    ruleForm: HTMLFormElement
+  };
   getLendStart(val: any) {
     this.ruleForm.lowerLendingDate = val;
   } /* 获取出借日期  上限 */
@@ -129,7 +132,9 @@ export default class creditorSearchList extends Vue {
   } /* 到期时间 下限 */
   checkPhone = (rule: any, value: any, callback: any) => {
     let re = /^[0-9]*$/;
-    if (!re.test(value)) {
+    if (value.length === 0) {
+      return this.$refs.creditorPhone.resetField(); //这里必须调用该元素的resetFileld()方法
+    } else if (!re.test(value)) {
       callback(new Error("请输入正确的手机号"));
     } else {
       callback();
@@ -137,7 +142,9 @@ export default class creditorSearchList extends Vue {
   };
   checkId = (rule: any, value: any, callback: any) => {
     let idPattern = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
-    if (!idPattern.test(value)) {
+    if (value.length === 0) {
+      return this.$refs.creditorIdNumber.resetField();
+    } else if (!idPattern.test(value)) {
       callback(new Error("请输入正确的身份证号"));
     } else {
       callback();
