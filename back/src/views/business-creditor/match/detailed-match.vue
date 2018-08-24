@@ -16,6 +16,7 @@
               <span>待匹金额</span>
             </div>
           </el-card>
+
         </el-card>
     </div>
 </template>
@@ -25,7 +26,25 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class matchDetailed extends Vue {}
+export default class matchDetailed extends Vue {
+  id = this.$route.query.id; /* 从路由中获取id号 */
+  created() {
+    // this.getDetailedData();
+    console.log(this.$router);
+    console.log(this.$route);
+  }
+  getDetailedData() {
+    (this as any).$api.creditor.getMatchDetailed(this.id).then((res: any) => {
+      console.log(res);
+    })
+  } /* 获取匹配详情数据 */
+  getCommend() {
+    (this as any).$api.creditor.getCommend(this.id).then((res: any) => {
+      console.log(res);
+    })
+  } /* 获取匹配的接口 */
+
+}
 </script>
 
 //样式
