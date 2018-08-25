@@ -84,6 +84,43 @@ export default class backAside extends Vue {
           visible: true
         }
       ]
+    },
+    {
+      id: 3,
+      name: "后台管理",
+      child: [
+        {
+          id: 3.1,
+          name: "账户管理",
+          visible: true
+        },
+        {
+          id: 3.2,
+          name: "修改密码",
+          visible: true
+        },
+        {
+          id: 3.3,
+          name: "角色管理",
+          visible: true
+        }
+      ]
+    },
+    {
+      id: 4,
+      name: "统计模块",
+      child: [
+        {
+          id: 4.1,
+          name: "销量统计",
+          visible: true
+        },
+        {
+          id: 4.2,
+          name: "查看明细",
+          visible: true
+        }
+      ]
     }
   ]; /* 假数据 */
   show(index: any) {
@@ -98,7 +135,7 @@ export default class backAside extends Vue {
     console.log(id);
     switch (id) {
       case 1.1:
-        router.push({ name: "BusinessUser" });
+        router.push("/back/user/1");
         break;
       case 1.2:
         router.push("/back/verifiel/1");
@@ -107,6 +144,15 @@ export default class backAside extends Vue {
         router.push({ name: "BusinessProduct" });
         break;
       case 1.4:
+        router.push({ name: "BusinessCreditor" });
+        break;
+      case 3.1:
+        router.push("/back/back-account/1");
+        break;
+      case 3.2:
+        router.push({ name: "ModifyPwd" });
+        break;
+      case 3.3:
         router.push({ name: "BusinessCreditor" });
         break;
     }

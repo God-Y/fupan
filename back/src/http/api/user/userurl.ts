@@ -44,13 +44,15 @@ export default {
     });
   },
   //获取交易数据
-  getDeal(id: number, data: any) {
+  getDeal(id: number, data: any, pages: string = "1") {
+    data.pageNum = pages;
     return axios.get(`/api/a/list/trading-flow/${id}`, {
       params: data
     });
   },
   //获取用户投资
-  getPay(id: number, data: any) {
+  getPay(id: number, data: any, pages: string = "1") {
+    data.pageNum = pages;
     return axios.get(`/api/a/list/investment-user/${id}`, {
       params: data
     });

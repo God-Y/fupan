@@ -54,13 +54,12 @@ export default class RealCheckForm extends Vue {
   @Prop([Object])
   searchParams!: any; //定义结束搜索时间
   //关于表单搜索的数据，必须注意的是，组件
-  //只接受string | number | Date格式
   userForm: any = this.searchParams;
   //从子级取到开始时间值
   getStart(value: number) {
     this.userForm.lowerDate = value;
   }
-  //从子级取到开始时间值
+  //从子级取到结束时间值
   getEnd(value: number) {
     this.userForm.upperDate = value;
   }
@@ -111,25 +110,28 @@ export default class RealCheckForm extends Vue {
   };
   //重置清空表单
   resetForm() {
-    let ID = this.$route.params.id;
     //循环所有的项
     for (let key in this.userForm) {
       this.userForm[key] = "";
     }
     this.$router.push({
-      path: `/back/verifiel/${ID}`,
+      path: `/back/verifiel/1`,
       query: {}
     });
-    this.$emit("clearParams");
+    if ((this as any).$route.params.pages == 1) {
+      //这里如何是在第一页搜索的话，父级组件重新请求数据
+      (this as any).$parent.getList(this.userForm);
+    }
   }
   //搜索按钮的实现
   search(): void {
-    let ID = this.$route.params.id;
+    let pages = this.$route.params.pages;
     this.$router.push({
-      path: `/back/verifiel/${ID}`,
+      path: `/back/verifiel/${pages}`,
       query: this.userForm
     });
-    this.$emit("searchList");
+    // this.$emit("searchList");
+    (this as any).$parent.getList(this.userForm, pages);
   }
 }
 </script>
