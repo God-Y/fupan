@@ -78,7 +78,7 @@
       <pages :total-num="total"  @page-change="toPage" v-if="realList.length"></pages>    
       <div class="nullMsg" v-if="!realList.length">无有效信息</div>
     </div>
-    <check-log :visible='checkVisible' @confirm-status="confirmStatus"
+    <check-log :visible='checkVisible' :user-id ="uid"
     ></check-log>
   </div>
 </template>
@@ -101,12 +101,18 @@ export default class RealTable extends Vue {
   loading!: boolean; //是否加载表单
   @Prop([Number])
   total!: number; //条目总数，用于渲染分页
+  //这里取消实名
+  @Emit()
+  cancelRealName() {}
 
-  id: number = 1; //用于确定用户的id
-  idAuthentication: number = 10; //确定用户的实名状态
+  uid: number = 1; //用于确定用户的uid
+  checkVisible: boolean = false; //是否弹出对话框
+  //获取父级的表单数据
   get realList() {
     return this.tableParams;
   }
+
+  //当实名状态为拒绝或者取消时，设置按钮的disabled
   opationCheck(status: number) {
     if (status == 30 || status == 50) {
       return false;
@@ -114,22 +120,14 @@ export default class RealTable extends Vue {
       return true;
     }
   }
-  userName: string = ""; //用户名
-  checkVisible: boolean = false; //是否弹出对话框
-  created() {
-    // this.id = this.realList[0]
+
+  //跳转页面,跳转路由，父级监控pages的变化，获取数据
+  toPage(pages: number) {
+    this.$router.push(`/back/verifiel/${pages}`);
   }
-  //跳转页面
-  toPage(val: number) {
-    this.$router.push(`/back/verifiel/${val}`);
-  }
-  //改变状态会弹窗
-  cancelName(id: number, status: number) {
-    //要传的参数
-    let params = {
-      idAuthentication: status,
-      refusal: ""
-    };
+
+  //取消实名会弹窗
+  cancelName(uid: number) {
     let alertMsg = `<div>
         <p>取消实名将删除用户身份信息</p>
         <h3> 确认取消？</h3></div>`;
@@ -137,18 +135,18 @@ export default class RealTable extends Vue {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
       type: "warning",
-      dangerouslyUseHTMLString: true,
+      dangerouslyUseHTMLString: true, //设置html标签这个值为true
       center: true
     })
       //点击确定按钮
       .then(() => {
-        (this as any).$api.real.modifyRealName(id, params).then((res: any) => {
+        (this as any).$api.real.verificationCancel(uid).then((res: any) => {
           this.$message({
             type: "success",
             message: "取消成功"
           });
           //取消成功后调用父级方法，更新列表.
-          (this as any).$parent.getList();
+          this.cancelRealName();
         });
       })
       .catch(() => {
@@ -162,27 +160,18 @@ export default class RealTable extends Vue {
   //把请求的iD传进去
   checkUser(id: number) {
     this.checkVisible = true;
-    this.id = id;
+    this.uid = id;
   }
   modifyStatus(status: number, id: number) {
-    this.idAuthentication = status;
     if (status == 20) {
-      this.cancelName(id, status);
+      this.cancelName(id);
     } else {
       this.checkUser(id);
     }
   }
-  //从子级接受事件，发送请求，修改参数
-  confirmStatus(checkParams: any) {
-    let params = {
-      idAuthentication: this.idAuthentication,
-      refusal: checkParams.reason
-    };
-    (this as any).$api.real.modifyRealName(this.id, params).then(() => {
-      this.checkVisible = false;
-      (this as any).$parent.getList();
-    });
-    console.log(checkParams.reason);
+  //查看页面 跳转页面
+  getUserMsg(id: number) {
+    this.$router.push(`/back/check-verifiel/${id}`);
   }
 }
 </script>

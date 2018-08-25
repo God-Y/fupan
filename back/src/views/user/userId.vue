@@ -51,15 +51,16 @@
             <el-form-item label="详细地址" class="address-box">
               <el-input type="text" v-model="userMsg.address" class="address" auto-complete="off" disabled></el-input>
             </el-form-item>
-            <!-- 搜索清空那按钮 -->
+            <!-- 交易记录，投资记录按钮 -->
             <el-form-item class="btn-box" >
-              <el-button type="danger" @click="$router.push({name:'UserDeal',params:{id:ID}})">交易记录</el-button>
-              <el-button type="primary" @click="$router.push({name:'UserPay',params:{id:ID}})">投资记录</el-button>
+              <el-button type="danger" @click="$router.push({name:'UserDeal',params:{id:ID, pages: 1}})">交易记录</el-button>
+              <el-button type="primary" @click="$router.push({name:'UserPay',params:{id:ID, pages: 1}})">投资记录</el-button>
             </el-form-item>
           </el-form>
         </div>
       </div>
     </div>
+    <!-- 账户信息 -->
     <div class="card-body two-card">
       <div class="card">
         <div class="card-header">
@@ -135,7 +136,7 @@
         </div>
         <div class="card-body">
           <el-form  v-if="userMsg.bankId != ''"
-          label-width="80px" class="ruleForm center-form" v-for="item in userMsg.bankId" :key ="item.cardNumber" >
+            label-width="80px" class="ruleForm center-form" v-for="item in userMsg.bankId" :key ="item.cardNumber" >
             <!-- 总资产 -->
             <el-form-item label="开 户 行" align="left">
               <el-input type="text" class="input-item" v-model="item.bankName" disabled></el-input>

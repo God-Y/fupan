@@ -1,113 +1,33 @@
 <template>
   <div>
     <div class="card">
+      <div class="card-header">
+        {{}}列表
+      </div>
       <div class="card-body">
-        <el-form :model="userForm" status-icon :rules="rules" ref="userForm1" label-width="80px" class="ruleForm">
-          <!-- 手机号 -->
-          <el-form-item label="手机号码" prop="phone" ref="phone">
-            <el-input type="tel" v-model="userForm.phone" auto-complete="off"></el-input>
+        <el-form :model="ruleForm" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="登录名">
+            <el-input v-model.number="ruleForm2.name"></el-input>
           </el-form-item>
-          <!-- 姓名 -->
-          <el-form-item label="真实姓名" prop="idName" ref="idName">
-            <el-input type="text" v-model="userForm.idName" class="input-item" auto-complete="off"></el-input>
+          <el-form-item label="手机号码">
+            <el-input v-model.number="ruleForm2.phone"></el-input>
           </el-form-item>
-          <!-- 日期组件 -->
-          <el-form-item label="注册日期" prop="idName" ref="idName">
-            <date
-              :upperDate="userForm.upperDate"
-              :lowerDate="userForm.lowerDate"
-              @start-change="getStart"
-              @end-change="getEnd"
-            ></date>
+          <el-form-item label="密码" prop="pass">
+            <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="理财经理" prop="managerNumber">
-            <el-input type="text" v-model="userForm.managerNumber" auto-complete="off"></el-input>
+          <el-form-item label="确认密码" prop="checkPass">
+            <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="账户状态" prop="status" >
+          <el-form-item label="角色名" class="" prop="status" >
             <el-select v-model="userForm.status" placeholder="全部"  class="input-item">
-              <el-option label="正常" value="10"></el-option>
-              <el-option label="冻结" value="20"></el-option>
+              <el-option :label="item.roleName" :value="item.roleName" v-for ="item in roleList" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <!-- 搜索清空那按钮 -->
-          <el-form-item class="btn-box">
-            <el-button type="danger" @click="resetForm('userForm1')">清空</el-button>
-            <el-button type="primary" @click="search">搜索</el-button>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm2')">确定</el-button>
+            <el-button @click="resetForm('ruleForm2')">取消</el-button>
           </el-form-item>
         </el-form>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        用户列表
-      </div>
-      <div class="card-body">
-        <div class="nullMsg" v-if="!userList.length && !listLoading">无有效信息</div>
-        <!-- 表格渲染开始 -->
-        <el-table
-          :data="userList"
-          border
-          style="width: 100%"
-          v-loading="listLoading"
-          >
-          <el-table-column
-            prop="userNumber"
-            label="用户编号"
-            width="140"
-            align="center"  
-          >
-          </el-table-column>
-          <el-table-column
-            label="注册日期"
-            width="140"  align="center" >
-            <template slot-scope="scope" >
-              {{scope.row.gmtCreate|time}}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号"  align="center" >
-          </el-table-column>
-          <el-table-column
-            prop="managerNumber"
-            label="理财经理"  align="center" >
-          </el-table-column>
-          <el-table-column
-            prop="idName"
-            label="真实姓名"  align="center" > 
-          </el-table-column>
-          <el-table-column
-            prop="assets"
-            label="总资产（元）"  align="center" >
-          </el-table-column>
-          <el-table-column
-            prop="profit"
-            label="累计收益（元）" width="120"  align="center" >
-          </el-table-column>
-          <el-table-column label="账户状态"  align="center" >
-            <template slot-scope="scope">
-              <span :class="[scope.row.status==10? 'remove-freeze' :'freeze']">
-                {{scope.row.status|status}}
-              </span>
-            </template>
-          </el-table-column>
-           <el-table-column
-            label="操作"
-            width="100"  align="center" >
-            <template slot-scope="scope">
-              <el-button 
-              @click="changeStatus(scope.row.status)" 
-              type="text" 
-              size="small"
-              :class="[scope.row.status==10 ? 'freeze' :'remove-freeze']"
-              >
-                {{scope.row.status|handleStatus}}
-              </el-button>
-              <el-button type="text" size="small" @click="getUserMsg(scope.row.id)">查看</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      <pages :total-num="total"  @page-change="toPage" v-if="userList.length"></pages>    
       </div>
     </div>
   </div>
@@ -116,14 +36,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import Date from "common_Components/date/double-date.vue";
-import Pages from "common_Components/page/pagination.vue";
-@Component({
-  components: {
-    Date,
-    Pages
-  }
-})
+@Component
 export default class BusinessUser extends Vue {
   //发送http请求，获取数据
   userList: Array<object> = [];

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <check-search :search-params = "userForm" @searchList ="search"
-      @clearParams = "clear"
+    <check-search :search-params = "userForm" 
     ></check-search>
     <check-table :table-params = "list" 
     :loading="listLoading" :total = "total"
+    @calcelRealName="calcelRealName"
     ></check-table>
   </div>
 </template>
@@ -14,6 +14,7 @@
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import CheckSearch from "../../components/realName/list/checkForm.vue";
 import CheckTable from "../../components/realName/list/checkTable.vue";
+import bus from "@/bus/bus";
 @Component({
   components: {
     CheckSearch,
@@ -23,11 +24,12 @@ import CheckTable from "../../components/realName/list/checkTable.vue";
 export default class RealList extends Vue {
   //发送http请求，获取数据。
   list: Array<object> = [];
-  get ID() {
+  get pages() {
     //计算属性获取值
-    return this.$route.params.id;
+    return this.$route.params.pages;
   }
   total: number = 0; //这个总条数
+
   //可以表格加载动画
   listLoading: boolean = true;
   //关于表单搜索的数据，必须注意的是，组件
@@ -37,10 +39,11 @@ export default class RealList extends Vue {
     lowerDate: ""
   };
 
-  // @Watch("ID") //路由参数发生变化的时候重新请求
-  // onIdChanged(val: any, oldVal: any) {
-  //   this.getList();
-  // }
+  @Watch("pages") //路由参数发生变化的时候重新请求
+  onIdChanged(val: any, oldVal: any) {
+    this.getList(this.userForm, this.$route.params.pages);
+  }
+
   created() {
     let query: any = this.$route.query; //获取查询参数
     let keys = Object.keys(query);
@@ -72,15 +75,26 @@ export default class RealList extends Vue {
         this.listLoading = false;
       });
   }
-  //实现搜索功能
-  search() {
-    let id = this.$route.params.pages;
-    console.log(this.$route);
-    this.getList(this.userForm, id);
+  //取消实名后获取数据
+  calcelRealName() {
+    this.getList(this.userForm, this.pages);
   }
-  //实现清空参数功能
-  clear() {
-    // this.getList();
+  //使用中央数据总线来确定审核
+  mounted() {
+    bus.$on("comfirmStatus", (data: any) => {
+      let params: any = {}; //创建一个对象用于传递参数
+      let Id = data.id;
+      if (data.status == "通过") {
+        params.code = 1;
+        params.refusal = "";
+      } else {
+        params.code = 0;
+        params.refusal = data.reason;
+      }
+      (this as any).$api.real.checkRealName(Id, params).then(() => {
+        this.getList(this.userForm, this.pages);
+      });
+    });
   }
 }
 </script>
