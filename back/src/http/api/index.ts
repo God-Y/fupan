@@ -14,7 +14,7 @@ export default {
   creditor,
   content,
   common,
-  message
+  message,
   backAccount,
   backRoles
 };

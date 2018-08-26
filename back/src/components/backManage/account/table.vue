@@ -129,8 +129,7 @@ export default class BackAcconutTable extends Vue {
         });
       });
   }
-  edit(value:any) {
-  }
+  edit(value: any) {}
 }
 </script>
 
@@ -152,8 +151,8 @@ export default class BackAcconutTable extends Vue {
   }
 }
 .card-header {
-  display:flex;
-  justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 .status20 {
