@@ -124,6 +124,9 @@ export default class mtachSearch extends Vue {
 .card {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 } /* 为搜索框添加阴影 */
+.el-input {
+  width: 200px !important;
+}
 .input-width {
   width: 100px !important;
 } /* input输入框的长度 */

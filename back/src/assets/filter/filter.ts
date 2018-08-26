@@ -1,3 +1,5 @@
+import message from '@/http/api/message/message';
+
 //定义filter的接口
 //这里为了方便没有去定义date函数的接口
 //其余的过滤器并没有强制的定义类型
@@ -179,7 +181,59 @@ let filtersObj: Filters = {
         .toFixed(2)
         .replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     }
-  } /* 债权列表出借金额 */
+  } /* 债权列表出借金额 */,
+
+  //内容管理状态
+  contentStatu: function(val: any) {
+    switch (val) {
+      case 10:
+        return "已上线";
+      case 20:
+        return "草稿";
+    }
+  },
+  //内容管理 操作 状态
+  oprateStatu: function(val: any) {
+    switch (val) {
+      case 10:
+        return "下线";
+      case 20:
+        return "上线";
+    }
+  },
+
+  //内容管理 类型
+  contentType: function(val: any) {
+    switch (val) {
+      case 10:
+        return "推荐页banner";
+      case 20:
+        return "帮助中心";
+      case 30:
+        return "关于我们";
+    }
+  },
+
+  //消息管理 人群
+  messageCrowd: function(val: any) {
+    switch (val) {
+      case 10:
+        return "认证投资人";
+      case 20:
+        return "所有人";
+    }
+  },
+  //消息管理 状态
+  messageStatu: function(val: any) {
+    switch (val) {
+      case 0:
+       return "草稿";
+      case 10:
+        return "已上线";
+      case 20:
+        return "等待发送中";
+    }
+  }
 };
 
 export default filtersObj;

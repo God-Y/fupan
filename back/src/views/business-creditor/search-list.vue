@@ -213,6 +213,9 @@ export default class creditorSearchList extends Vue {
 </script>
 //样式
 <style lang='scss' scoped>
+.el-input {
+  width: 200px !important;
+}
 .card {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 } /* 为搜索框添加阴影 */
