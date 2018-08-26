@@ -22,7 +22,7 @@ import WelcomePage from "./views/backMain-welcomPage.vue";
 //实名认证
 import BackAccount from "./views/backManage/account.vue";
 //新增查看用户
-import AddAccount from "./views/backManage/add.vue";
+import Account from "./views/backManage/add.vue";
 //修改密码
 import ModifyPwd from "./views/backManage/modifyPwd.vue";
 Vue.use(Router);
@@ -115,9 +115,9 @@ export default new Router({
         },
         //新增编辑账户
         {
-          path: "add-account",
-          name: "AddAccount",
-          component: AddAccount
+          path: "manage-account/:msg/:id",
+          name: "ManageAccount",
+          component: Account
         },
         //修改密码
         {
