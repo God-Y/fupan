@@ -1,4 +1,4 @@
-import message from '@/http/api/message/message';
+import message from "@/http/api/message/message";
 
 //定义filter的接口
 //这里为了方便没有去定义date函数的接口
@@ -33,10 +33,10 @@ let filtersObj: Filters = {
     let hour = value.getHours();
     let Minutes = value.getMinutes();
     let seconds = value.getSeconds();
-    let twoValue = function(value:number){
-      if(value < 10) {
+    let twoValue = function(value: number) {
+      if (value < 10) {
         return "0" + value;
-      }else {
+      } else {
         return value;
       }
     };
@@ -227,7 +227,7 @@ let filtersObj: Filters = {
   messageStatu: function(val: any) {
     switch (val) {
       case 0:
-       return "草稿";
+        return "草稿";
       case 10:
         return "已上线";
       case 20:

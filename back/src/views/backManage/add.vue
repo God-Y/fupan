@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div class="card-header">
-        {{}}列表
+        {{lebiao}}
       </div>
       <div class="card-body">
         <el-form :model="ruleForm" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
