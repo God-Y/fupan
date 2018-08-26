@@ -130,7 +130,7 @@ export default class BackAcconutTable extends Vue {
       });
   }
   edit(value: any) {
-     this.$router.push("/back/manage-account/edit/"+value);
+    this.$router.push("/back/manage-account/edit/" + value);
   }
   //跳转去新增页面
   add() {

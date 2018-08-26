@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div class="card-header">
-      {{}}列表
+      列表
       </div>
       <div class="card-body">
         <el-form :model="User" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="manage-form">
@@ -39,73 +39,67 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class BusinessUser extends Vue {
   //发送http请求，获取数据
-  User:any = {};
+  User: any = {};
   get msg() {
     //计算属性获取值
     return Number(this.$route.params.msg);
   }
   //获取角色数据
-  roleList: object[] = [];
-  getRoles(pages: any = 1) {
-    (this as any).$api.backRoles.getRole(pages).then((res: any) => {
-      let data = res.data;
-      if (data.code) {
-        this.roleList = data.data.list;
-      }
-    });
-  }
-  created() {
-    //获取角色信息
-    this.getRoles();
-    if (msg == "add") {
-      alert(1)
-    }else if (msg == "edit") {
-      alert(2)
-    }
-  }
- 
-  //如果是编辑用户，获取用户的账号和手机号
-  getList(id: any = 1) {
-    (this as any).$api.user
-      .list(this.userForm, id)
-      .then((response: any) => {
-        let data = response.data;
-        if (data.code) {
-          this.userList = data.data.list;
-          this.total = data.data.total;
-        }
-      })
-      .then(() => {
-        //获取后加载动画取消
-      });
-  }
+  // roleList: object[] = [];
+  // getRoles(pages: any = 1) {
+  //   (this as any).$api.backRoles.getRole(pages).then((res: any) => {
+  //     let data = res.data;
+  //     if (data.code) {
+  //       this.roleList = data.data.list;
+  //     }
+  //   });
+  // }
+  // created() {
+  //   //获取角色信息
+  //   this.getRoles();
+  //   if (msg == "add") {
+  //     alert(1)
+  //   }else if (msg == "edit") {
+  //     alert(2)
+  //   }
+  // }
+  // //如果是编辑用户，获取用户的账号和手机号
+  // getList(id: any = 1) {
+  //   (this as any).$api.user
+  //     .list(this.userForm, id)
+  //     .then((response: any) => {
+  //       let data = response.data;
+  //       if (data.code) {}
+  //     })
+  //     .then(() => {
+  //       //获取后加载动画取消
+  //     });
+  // }
 
-  //自定义表达验证规则
-  private checkPhone = (rule: any, value: string, callback: any) => {
-    console.log(value);
-    let number = Number(value); //转成数字
-    if (value.length == 0) {
-      callback(new Error("请输入密码"));
-    } else if (value.length > 0) {
-      setTimeout(() => {
-        if (!Number.isInteger(number)) {
-          callback(new Error("请输入数字值"));
-        } else {
-          if (value.toString().length > 11) {
-            callback(new Error("已超过手机号位数，应为11位"));
-          } else {
-            callback();
-          }
-        }
-      }, 500);
-    }
-  };
- 
-  //定义验证的虽则
-  rules: object = {
-    phone: [{ validator: this.checkPhone, trigger: "change" }]
-  };
-  
+  // //自定义表达验证规则
+  // private checkPhone = (rule: any, value: string, callback: any) => {
+  //   console.log(value);
+  //   let number = Number(value); //转成数字
+  //   if (value.length == 0) {
+  //     callback(new Error("请输入密码"));
+  //   } else if (value.length > 0) {
+  //     setTimeout(() => {
+  //       if (!Number.isInteger(number)) {
+  //         callback(new Error("请输入数字值"));
+  //       } else {
+  //         if (value.toString().length > 11) {
+  //           callback(new Error("已超过手机号位数，应为11位"));
+  //         } else {
+  //           callback();
+  //         }
+  //       }
+  //     }, 500);
+  //   }
+  // };
+  // //定义验证的虽则
+  // rules: object = {
+  //   phone: [{ validator: this.checkPhone, trigger: "change" }]
+  // };
 }
 </script>
 <style lang="scss" scoped>
