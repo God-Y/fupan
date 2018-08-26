@@ -47,6 +47,7 @@ export default class DatePicker extends Vue {
   startChanged(val: Date) {
     //设定开始时间的变量
     if (val) {
+      console.log(val);
       let upperDateNum: number = val.valueOf();
       this.startChange(upperDateNum);
     } else if (val == null) {

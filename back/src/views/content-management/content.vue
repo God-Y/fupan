@@ -9,7 +9,7 @@
           <el-button @click="jumpAdd" style="float: right; padding: 3px 0" type="text">+新增</el-button>
         </div>
         <el-table :data="dataList" border class="table-style" style="width: 100%;" >
-          <el-table-column type="index" label="序号"  header-align="center"> 
+          <el-table-column type="index" label="序号" width="80" header-align="center"> 
           </el-table-column>
           <el-table-column prop="title" label="标题"   header-align="center" > </el-table-column>
           <el-table-column label="类型"  header-align="center"> 
