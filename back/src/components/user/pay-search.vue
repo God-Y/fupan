@@ -82,12 +82,10 @@ export default class PaySearch extends Vue {
   //重置清空表单
   resetForm() {
     let ID = this.$route.params.id;
-    //循环所有的项
-    for (let key in this.userForm) {
-      this.userForm[key] = "";
-    }
+    let pages = this.$route.params.pages;
+    //跳转路由
     this.$router.push({
-      path: `/back/user-pay/${ID}`,
+      path: `/back/user-pay/${ID}/1`,
       query: {}
     });
     this.$emit("clearParams");
@@ -95,8 +93,9 @@ export default class PaySearch extends Vue {
   //搜索按钮的实现
   search(): void {
     let ID = this.$route.params.id;
+    let pages = this.$route.params.pages;
     this.$router.push({
-      path: `/back/user-pay/${ID}`,
+      path: `/back/user-pay/${ID}/${pages}`,
       query: this.userForm
     });
     this.$emit("searchList");

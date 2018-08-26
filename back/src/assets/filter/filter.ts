@@ -25,6 +25,25 @@ let filtersObj: Filters = {
     let day = value.getDate();
     return year + "-" + month + "-" + day;
   },
+  timeSecond: function(date: number): string {
+    let value = new Date(date);
+    let year = value.getFullYear();
+    let month = value.getMonth() + 1; //getMonth是从0开始，所以加+
+    let day = value.getDate();
+    let hour = value.getHours();
+    let Minutes = value.getMinutes();
+    let seconds = value.getSeconds();
+    let twoValue = function(value:number){
+      if(value < 10) {
+        return "0" + value;
+      }else {
+        return value;
+      }
+    };
+    return `${year}-${month}-${day} ${twoValue(hour)}:${twoValue(
+      Minutes
+    )}:${twoValue(seconds)}`;
+  },
   //查看状态
   status: function(value: number): string {
     return value === 10 ? "正常" : "冻结";
@@ -57,7 +76,36 @@ let filtersObj: Filters = {
         return "审核";
     }
   },
-
+  //交易记录,交易类型
+  dealType: function(value: number) {
+    switch (value) {
+      case 1:
+        return "回款";
+      default:
+        return "付款";
+    }
+  },
+  dealStatus: function(value: number) {
+    switch (value) {
+      case 10:
+        return "成功";
+      case 30:
+        return "回款中";
+      default:
+        return "失败";
+    }
+  },
+  //投资纪记录的过滤器，投资中，退出中，已退出
+  payStatus: function(value: number) {
+    switch (value) {
+      case 10:
+        return "投资中";
+      case 20:
+        return "退出中";
+      default:
+        return "已退出";
+    }
+  },
   // 产品列表年化收益率
   annualized: function(value: number): string {
     return value * 100 + "%";

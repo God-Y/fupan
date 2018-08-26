@@ -7,8 +7,10 @@ import BusinessUser from "./views/user/business-user.vue";
 import UserId from "./views/user/userId.vue";
 import DealRecode from "./views/user/deal-recode.vue";
 import PayRecode from "./views/user/pay-recode.vue";
-
+//实名认证
 import BusinessVerified from "./views/realName/realList.vue";
+import BusinessCheckVerified from "./views/realName/checkId.vue";
+
 import BusinessProduct from "./views/business-product.vue";
 import addProduct from "./views/business-product/add-product.vue";
 import BusinessCreditor from "./views/business-creditor/business-creditor.vue";
@@ -20,6 +22,13 @@ import content from "./views/content-management/content.vue"; /* 内容管理 */
 import contentEdit from "./views/content-management/content-edit.vue"; /* 新增编辑内容管理 */
 import messageManagement from "./views/message-management/message.vue"; /* 消息管理 */
 
+//账户管理
+//实名认证
+import BackAccount from "./views/backManage/account.vue";
+//新增查看用户
+import AddAccount from "./views/backManage/add.vue";
+//修改密码
+import ModifyPwd from "./views/backManage/modifyPwd.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -32,25 +41,25 @@ export default new Router({
       children: [
         /* 用户管理 */
         {
-          path: "user",
+          path: "user/:pages",
           name: "BusinessUser",
           component: BusinessUser
         },
         {
           //用户详情页
-          path: "user/:id",
+          path: "user-detial/:id",
           name: "UserId",
           component: UserId
         },
         {
           //用户交易记录
-          path: "user-deal/:id",
+          path: "user-deal/:id/:pages",
           name: "UserDeal",
           component: DealRecode
         },
         {
           //用户投资记录
-          path: "user-pay/:id",
+          path: "user-pay/:id/:pages",
           name: "UserPay",
           component: PayRecode
         },
@@ -59,6 +68,12 @@ export default new Router({
           path: "verifiel/:pages",
           name: "BusinessVerified",
           component: BusinessVerified
+        },
+        // 实名认证查看
+        {
+          path: "check-verifiel/:id",
+          name: "BusinessCheckVerifiedCheck",
+          component: BusinessCheckVerified
         },
         /* 产品管理 */
         {
@@ -113,6 +128,26 @@ export default new Router({
           component: contentEdit
         },
         /* 新增编辑内容管理 */
+        //后台管理
+        //账户管理
+        {
+          path: "back-account/:pages",
+          name: "BackAccount",
+          component: BackAccount
+        },
+        //新增编辑账户
+        {
+          path: "add-account",
+          name: "AddAccount",
+          component: AddAccount
+        },
+        //修改密码
+        {
+          path: "modify-pwd",
+          name: "ModifyPwd",
+          component: ModifyPwd
+        },
+        /* 默认跳转到欢迎页 */
         {
           path: "",
           name: "backend",

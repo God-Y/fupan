@@ -44,8 +44,8 @@ export default {
 
   //更改债权匹配
   changeCommend(data: any) {
-    return axios.put(`/api/a/investment-credit`,{
+    return axios.put(`/api/a/investment-credit`, {
       params: data
-    })
+    });
   }
 };

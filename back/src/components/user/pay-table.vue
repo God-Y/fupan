@@ -1,7 +1,7 @@
 <template>
   <div class="card">
-    <div class="card-header">
-      {{userName}}的投资记录
+    <div class="card-header" v-if="tableParams[0]" >
+      {{tableParams[0].userName}}的投资记录
     </div>
     <div class="card-body">
       <!-- 表格渲染开始 -->
@@ -73,7 +73,7 @@
           label="投资状态"  width="78" align="center" >
           <template slot-scope="scope">
             <span :class="'status'+scope.row.investmentStatus">
-              {{scope.row.investmentStatus}}
+              {{scope.row.investmentStatus|payStatus}}
             </span>
           </template>
         </el-table-column>
@@ -86,7 +86,7 @@
         </el-table-column>
       </el-table>
       <pages :total-num="total"  @page-change="toPage" v-if="payList.length"></pages>    
-      <div class="nullMsg" v-if="!payList.length">无有效信息</div>
+      <div class="nullMsg" v-if="!payList.length && !loading">无有效信息</div>
     </div>
   </div>
 </template>
@@ -101,7 +101,7 @@ import Pages from "common_Components/page/pagination.vue";
     Pages
   }
 })
-export default class DealRecode extends Vue {
+export default class PayTable extends Vue {
   @Prop([Array])
   tableParams!: any;
   @Prop([Boolean])
@@ -111,12 +111,11 @@ export default class DealRecode extends Vue {
   get payList() {
     return this.tableParams;
   }
-  userName: string = "";
-  created() {
-    this.userName = this.tableParams[0].userName;
+  get ID() {
+    return this.$route.params.id;
   }
   toPage(val: number) {
-    this.$router.push(`/back/user-pay/${val}`);
+    this.$router.push(`/back/user-pay/${this.ID}/${val}`);
   }
 }
 </script>
