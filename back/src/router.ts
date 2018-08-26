@@ -16,6 +16,9 @@ import addCreditor from "./views/business-creditor/add-creditor.vue"; /* 增加�
 import creditorMatch from "./views/business-creditor/match/creditor-match.vue"; /* 匹配债权 */
 import matchDetailed from "./views/business-creditor/match/detailed-match.vue"; /* 匹配详情 */
 import WelcomePage from "./views/backMain-welcomPage.vue";
+import content from "./views/content-management/content.vue"; /* 内容管理 */
+import contentEdit from "./views/content-management/content-edit.vue"; /* 新增编辑内容管理 */
+import messageManagement from "./views/message-management/message.vue"; /* 消息管理 */
 
 Vue.use(Router);
 
@@ -92,12 +95,30 @@ export default new Router({
           name: "creditorMatch",
           component: creditorMatch
         },
-        /* 默认跳转到欢迎页 */
+        {
+          path: "message",
+          name: "message",
+          component: messageManagement
+        },
+        /* 消息管理 */
+        {
+          path: "content",
+          name: "content",
+          component: content
+        },
+        /* 内容管理 */
+        {
+          path: "contentEdit",
+          name: "contentEdit",
+          component: contentEdit
+        },
+        /* 新增编辑内容管理 */
         {
           path: "",
           name: "backend",
           component: WelcomePage
         }
+        /* 默认跳转到欢迎页 */
       ]
     },
     {

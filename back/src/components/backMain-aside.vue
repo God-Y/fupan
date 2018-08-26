@@ -61,26 +61,26 @@ export default class backAside extends Vue {
     },
     {
       id: 2,
-      name: "业务管理",
+      name: "运营管理",
       child: [
         {
           id: 2.1,
-          name: "用户管理",
+          name: "内容管理",
           visible: true
         },
         {
           id: 2.2,
-          name: "实名认证",
+          name: "消息认证",
           visible: true
         },
         {
           id: 2.3,
-          name: "产品管理",
+          name: "银行管理",
           visible: true
         },
         {
           id: 2.4,
-          name: "债券管理",
+          name: "参数管理",
           visible: true
         }
       ]
@@ -108,6 +108,12 @@ export default class backAside extends Vue {
         break;
       case 1.4:
         router.push({ name: "BusinessCreditor" });
+        break;
+      case 2.1:
+        router.push({ name: "content" });
+        break;
+      case 2.2:
+        router.push({ path: "message" });
         break;
     }
   }
