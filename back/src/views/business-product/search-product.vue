@@ -175,19 +175,47 @@ export default class searchProduct extends Vue {
 </script>
 //样式三
 <style lang='scss' scoped>
+.el-input {
+  width: 200px !important;
+}
 .card {
   margin-bottom: 20px;
 } /* 搜索框下边距 */
+// .line-style {
+//   display: flex;
+//   & > div {
+//     margin: 10px 15px;
+//     & > span {
+//       margin-right: 5px;
+//       font-size: 14px;
+//     }
+//   }
+// } /* 每行样式 */
 .line-style {
-  display: flex;
-  & > div {
-    margin: 10px 15px;
-    & > span {
-      margin-right: 5px;
-      font-size: 14px;
-    }
+  margin-bottom: 20px;
+  @include flex-vertical-between;
+  flex-wrap: wrap;
+  width: 100%;
+  div {
+    text-align: left;
   }
-} /* 每行样式 */
+  span {
+    margin-right: 5px;
+  }
+  & > div:nth-child(1) {
+    flex-basis: 28%;
+  }
+  & > div:nth-child(2) {
+    flex-basis: 28%;
+  }
+  & > div:nth-child(3) {
+    flex-basis: 44%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  } /* 为每行的元素分配宽度 */
+} /* 搜索框每行样式 */
 .button-style {
   text-align: right;
   margin-right: 5%;

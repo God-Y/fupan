@@ -2,12 +2,12 @@
     <!-- 上传图片 -->
     <div>
         <div class="uploadButton">
-            <input type="file" :disabled="disabled" id="file" @change='handleFileChange' class="fileInput">
-            <label for="file" >点击上传文件</label>
+            <input type="file" :disabled="disabled" id="fileTwo" @change='handleFile' class="fileInput">
+            <label for="fileTwo" >点击上传文件</label>
         </div>
         <div class="imgPreview" >
             <span>Photo Preview Area</span>
-            <img  :src="dataurl" >
+            <img  :src="base" >
         </div>
         <table class='fileInfo'>
             <thead>
@@ -18,8 +18,8 @@
                     <th>操作</th>
                 </tr>
                 <tr class="info-line">
-                    <td>{{files.name}}</td>
-                    <td>{{filesSize+ 'MB'}}</td>
+                    <td>{{file.name}}</td>
+                    <td>{{fileSize+ 'MB'}}</td>
                     <td>
                         <div class="progressBox">
                             <div v-if="start" class="progress" 
@@ -46,33 +46,37 @@ import uploader from "vue-simple-uploader";
 import Axios from "axios";
 import { Input } from "element-ui";
 @Component
-export default class uploadFile extends Vue {
-  files: any = { name: "" }; /* 文件信息 */
+export default class uploadFileTwo extends Vue {
+  file: any = { name: "" }; /* 文件信息 */
   progress: any = 0; /* 上传文件进度 */
   start: boolean = false; /* 控制进度条显示 */
-  filesSize: any = 0; /* 文件大小 */
+  fileSize: any = 0; /* 文件大小 */
   @Prop([Boolean])
   disabled!: boolean; /* 判断是否禁用 */
+
   @Prop()
-  dataurl!: any; /* 图片base64 */
+  base!: any;
 
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
 
-  handleFileChange(e: any) {
-    this.init(); /* 每次change就初始化一次 */
-    if (e.target.files[0].size >= 2516582) {
+  handleFile(e: any) {
+    this.init(); /* 初始化 */
+    if (
+      e.target.files[0].size !== undefined &&
+      e.target.files[0].size >= 2516582
+    ) {
       this.$alert("请选择文件大小为3MB以下的文件", "错误提示", {
         confirmButtonText: "确定"
       });
       return false;
     } /* 限制文件大小 */
 
-    this.files = e.target.files[0];
-    if (this.files != undefined) {
-      this.filesSize = (this.files.size / 1024 / 1024).toFixed(3);
+    this.file = e.target.files[0];
+    if (this.file != undefined) {
+      this.fileSize = (this.file.size / 1024 / 1024).toFixed(3);
     } /* 文件大小转换 */
-    this.imgPreview(this.files);
+    this.imgPreview(this.file);
   } /* 通过change事件获取文件信息 */
 
   imgPreview(file: any) {
@@ -85,8 +89,8 @@ export default class uploadFile extends Vue {
         reader.readAsDataURL(file);
         // 读取成功后的回调
         reader.onloadend = result => {
-          this.dataurl = result;
-          this.dataurl = this.dataurl.currentTarget.result; /* 提取base64码 */
+          this.base = result;
+          this.base = this.base.currentTarget.result; /* 提取base64码 */
         };
       }
     } else {
@@ -98,7 +102,8 @@ export default class uploadFile extends Vue {
   } /* 通过fileready来实现本地预览 */
 
   uploadImg() {
-    if (this.files.name == "" || this.files.name == undefined) {
+    /* 这里上传的是图片名，接口通了以后要更改返回图片的路径 */
+    if (this.file.name == "" || this.file.name == undefined) {
       this.$alert("请先上传文件", "错误提示", {
         confirmButtonText: "确定"
       });
@@ -107,7 +112,7 @@ export default class uploadFile extends Vue {
 
     this.start = true; /* 进度条显示 */
     let form = new FormData();
-    form.append("file", this.files); /* 添加获取到的文件 */
+    form.append("file", this.file); /* 添加获取到的文件 */
     let config = {
       onUploadProgress: (progressEvent: any) => {
         console.log(progressEvent.loaded);
@@ -124,9 +129,10 @@ export default class uploadFile extends Vue {
         console.log(res);
         let message = res.data.message;
         this.uploadInfo(message); /* 请求成功后返回的url返回给父级 */
+        console.log(this.file);
       })
       .catch(() => {
-        this.uploadInfo("请求错误");
+        this.uploadInfo("message");
         this.$message({
           type: "error",
           message: "请求错误，请稍后重试！"
@@ -137,16 +143,16 @@ export default class uploadFile extends Vue {
 
   init() {
     this.start = false;
-    this.files = "";
-    this.dataurl = "";
+    this.file = "";
+    this.base = "";
     this.progress = 0;
-    this.filesSize = 0;
+    this.fileSize = 0;
   } /* 初始化， 删除按钮 */
 }
 </script>
 
 //样式
-<style lang="scss">
+<style lang="scss" scoped>
 @mixin buttonStyle {
   display: inline-block;
   padding: 6px 25px;

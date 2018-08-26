@@ -129,6 +129,7 @@ export default class BackAcconutTable extends Vue {
         });
       });
   }
+
   edit(value: any) {
     this.$router.push("/back/manage-account/edit/" + value);
   }
@@ -136,6 +137,7 @@ export default class BackAcconutTable extends Vue {
   add() {
     this.$router.push("/back/manage-account/add");
   }
+
 }
 </script>
 

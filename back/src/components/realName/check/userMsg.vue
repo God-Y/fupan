@@ -52,7 +52,7 @@ export default class UserMsg extends Vue {
   get userMsg() {
     return this.userDetial;
   }
-  
+
   get loginTime() {
     //注册时间的
     let value = new Date((this as any).userMsg.gmtCreate);

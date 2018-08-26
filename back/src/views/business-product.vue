@@ -98,7 +98,7 @@ export default class BusinessProduct extends Vue {
 </script>
 
 //样式
-<style lang='scss'>
+<style lang='scss' >
 @mixin border-style {
   border: 1px solid $border-color;
 } /* 边框样式 */

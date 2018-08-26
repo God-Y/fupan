@@ -284,6 +284,9 @@ export default class addProduct extends Vue {
 
 //样式
 <style scoped lang="scss">
+.el-input {
+  width: 200px !important;
+}
 @mixin side-span-padding {
   white-space: nowrap;
   margin-left: 20px;
