@@ -15,7 +15,7 @@ export default {
 
   //新增债权列表
   addCreditor(data: any): any {
-    return axios.post(`/api/a/claim_info`, {
+    return axios.post(`/api/a/claim-info`, {
       params: data
     });
   },
