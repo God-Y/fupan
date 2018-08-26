@@ -24,7 +24,7 @@
           label="ID"
           width="80"
           align="center"
-          prop="id" 
+          prop="id"
         >
         </el-table-column>
         <el-table-column
@@ -63,7 +63,7 @@
             width="160"  align="center" >
             <template slot-scope="scope">
               <el-button 
-              @click="edit(scope.row)" 
+              @click="edit(scope.row.id)" 
               type="primary"
               size="mini"
               >
@@ -129,7 +129,15 @@ export default class BackAcconutTable extends Vue {
         });
       });
   }
-  edit(value: any) {}
+
+  edit(value: any) {
+    this.$router.push("/back/manage-account/edit/" + value);
+  }
+  //跳转去新增页面
+  add() {
+    this.$router.push("/back/manage-account/add");
+  }
+
 }
 </script>
 
