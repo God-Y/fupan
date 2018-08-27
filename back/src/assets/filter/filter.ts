@@ -233,6 +233,11 @@ let filtersObj: Filters = {
       case 20:
         return "等待发送中";
     }
+  },
+
+  // 消息管理 上下线操作判断
+  messageJudgeStatus: function(val: any) {
+    return val === 10 ? "下线" : "上线";
   }
 };
 

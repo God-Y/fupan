@@ -181,16 +181,7 @@ export default class searchProduct extends Vue {
 .card {
   margin-bottom: 20px;
 } /* 搜索框下边距 */
-// .line-style {
-//   display: flex;
-//   & > div {
-//     margin: 10px 15px;
-//     & > span {
-//       margin-right: 5px;
-//       font-size: 14px;
-//     }
-//   }
-// } /* 每行样式 */
+
 .line-style {
   margin-bottom: 20px;
   @include flex-vertical-between;

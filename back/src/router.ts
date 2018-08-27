@@ -25,7 +25,9 @@ import messageManagement from "./views/message-management/message.vue"; /* 消�
 import OptionManagement from "./views/option/manage.vue";
 //意见反馈查看
 import Optioncheck from "./views/option/check.vue";
-
+import messageAdd from "./views/message-management/message-add.vue"; /* 新增消息 */
+import bank from "./views/bank-management/bank.vue"; /* 银行管理 */
+import bankAdd from "./views/bank-management/bank-add.vue"; /* 银行管理， 新增 */
 //账户管理
 //实名认证
 import BackAccount from "./views/backManage/account.vue";
@@ -128,6 +130,23 @@ export default new Router({
           component: messageManagement
         },
         /* 消息管理 */
+        {
+          path: "messageAdd",
+          name: "messageAdd",
+          component: messageAdd
+        },
+        /* 消息新增 */
+        {
+          path: "bank",
+          name: "bank",
+          component: bank
+        },
+        /* 银行管理 */
+        {
+          path: "bankAdd",
+          name: "bankAdd",
+          component: bankAdd
+        },
         {
           path: "content",
           name: "content",

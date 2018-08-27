@@ -11,31 +11,28 @@
         <el-table :data="dataList" border class="table-style" style="width: 100%;" >
           <el-table-column type="index" label="序号" width="80" header-align="center"> 
           </el-table-column>
-          <el-table-column prop="title" label="标题"   header-align="center" > </el-table-column>
-          <el-table-column label="发送人群"  header-align="center"> 
+          <el-table-column prop="bankName" label="银行名称"   header-align="center" > </el-table-column>
+          <el-table-column prop="paymentNumber" label="支付机构号"  header-align="center"> </el-table-column>
+          <el-table-column prop="presentNumber" label="提现机构号" header-align="center" > </el-table-column>
+          <el-table-column prop="editors" label="单笔限额"  header-align="center"> 
             <template slot-scope="scope">
-              {{scope.row.sendingCrowd | messageCrowd}}
+              {{scope.row.SingleLimit| amount}}
             </template>
           </el-table-column>
-          <el-table-column label="状态" header-align="center" > 
-            <template slot-scope="scope">
-              <span :class="scope.row.status == 10 ? 'success' : 'danger'">
-                {{scope.row.status | messageStatu}}
-              </span>
+          <el-table-column prop="editors" label="日累计限额"  header-align="center"> 
+             <template slot-scope="scope">
+              {{scope.row.dailyLimit | amount}}
             </template>
           </el-table-column>
-          <el-table-column prop="editors" label="编辑者"  header-align="center"> </el-table-column>
-          <el-table-column label="编辑时间"   header-align="center">
+          <el-table-column prop="founder" label="编辑者"  header-align="center"> </el-table-column>
+          <el-table-column label="编辑时间" header-align="center" width="200">
             <template slot-scope="scope">
-              {{scope.row.timingTime | timeSecond}}
+              {{scope.row.gmtCreate | timeSecond}}
             </template>
           </el-table-column>
-          <el-table-column prop="" label="操作" header-align="center" width="250">
+          <el-table-column prop="" label="操作" header-align="center">
             <template slot-scope="scope">
-              <div class="oprate">
-              <el-button @click="changeState(scope.row.id, scope.row.state)" :class="scope.row.status == 10 ? 'danger': 'success'"  size="mini">{{scope.row.status | messageJudgeStatus}}</el-button> 
-              <el-button  size="mini"  type="danger" plain>删除</el-button>
-              </div>
+              <el-button  size="mini"  type="info" plain>编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -46,16 +43,14 @@
 
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
-import search from "../../components/message/search.vue";
+import search from "../../components/bank/search.vue";
 
 @Component({
-
   components: {
     search
   }
-
 })
-export default class messageManagement extends Vue {
+export default class bankManagement extends Vue {
   dataList: Array<any> = [];
 
   created() {
@@ -68,7 +63,7 @@ export default class messageManagement extends Vue {
     this.getList("");
   } /* 获取清除命令 */
   getList(val: any) {
-    (this as any).$api.message.getList(val).then((res: any) => {
+    (this as any).$api.bank.getList(val).then((res: any) => {
       console.log(res);
       let data = res.data.data.list;
       this.dataList = data;
@@ -78,7 +73,7 @@ export default class messageManagement extends Vue {
 
   jumpAdd() {
     this.$router.push({
-      path: "messageAdd"
+      path: "bankAdd"
     });
   } /* 跳转至新增页面 */
   changeState(id: any, state: any) {
