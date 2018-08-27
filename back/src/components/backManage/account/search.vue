@@ -5,7 +5,7 @@
         <el-form :model="userForm" ref="userForm1" label-width="96px" class="ruleForm">
           <!-- 产品名称 -->
           <el-form-item label="角色名" class="" prop="status" >
-            <el-select v-model="userForm.role" placeholder="全部"  class="input-item">
+            <el-select v-model="userForm.roleName" placeholder="全部"  class="input-item">
               <el-option :label="item.roleName" :value="item.roleName" v-for ="item in roleList" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -34,10 +34,10 @@ export default class AccountSearch extends Vue {
   userForm: any = this.searchParams;
   roleList: object[] = [];
   getRoles(pages: any = 1) {
-    (this as any).$api.backRoles.getRole(pages).then((res: any) => {
+    (this as any).$api.backRoles.all().then((res: any) => {
       let data = res.data;
       if (data.code) {
-        this.roleList = data.data.list;
+        this.roleList = data.data;
       }
     });
   }

@@ -91,11 +91,12 @@ export default class DealRecode extends Vue {
     this.getList();
   }
   //实现清空参数功能
-  clear() {
+  clear(oldpage:string) {
     for (let key in this.userForm) {
       this.userForm[key] = "";
+    } if (oldpage === "1") {
+      this.getList();
     }
-    this.getList();
   }
 }
 </script>

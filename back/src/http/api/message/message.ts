@@ -6,7 +6,7 @@ export default {
     return axios.get(`/api/a/list/message-platform`, {
       params: data
     });
-  },
+  }
 
   // //更改状态
   changeStatu(id: any, statu: any) {

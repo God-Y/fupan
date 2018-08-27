@@ -54,7 +54,7 @@
 
 
 <script lang='ts'>
-import { Vue, Component, Prop, Emit} from "vue-property-decorator";
+import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import DatePicker from "../common/date/double-date.vue";
 @Component({
   components: {
@@ -93,9 +93,7 @@ export default class search extends Vue {
       query.lowerDate = query.lowerDate
         ? Number(query.lowerDate)
         : ""; //保证拿出的毫秒数是number类型
-      query.upperDate = query.upperDate
-        ? Number(query.upperDate)
-        : ""; //保证拿出的毫秒数是number类型
+      query.upperDate = query.upperDate ? Number(query.upperDate) : ""; //保证拿出的毫秒数是number类型
       keys.forEach((value: any) => {
         this.data[value] = query[value];
       });
@@ -111,7 +109,7 @@ export default class search extends Vue {
       path: `/back/content`,
       query: this.data
     });
-    this.sendSearch(this.data)
+    this.sendSearch(this.data);
   } /* 搜索 */
   clear() {
     let keys = Object.keys(this.data);

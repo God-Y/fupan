@@ -15,5 +15,17 @@ export default {
   //修改密码
   modifyPwd(data: any) {
     return axios.put(`/api/a/backstageUser/password`, data);
+  },
+  //新增用户
+  addAccount(data: any) {
+    return axios.post(`/api/a/backstageUsers`, data);
+  },
+  //编辑账户
+  editAccount(id: number, data: any) {
+    return axios.put(`/api/a/backstageUser/${id}`, data);
+  },
+  //根据单个ID获取用户的账号的手机号
+  getUserMsg(id: string) {
+    return axios.get(`/api/a/backstageUser/${id}`);
   }
 };

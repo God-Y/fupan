@@ -8,14 +8,14 @@
         <el-form :model="modify" status-icon 
           :rules="rules" ref="ruleForm" 
           label-width="100px" class="modify-form" >
-          <el-form-item label="输入旧密码" class="modify-item" prop="oldPwd">
-            <el-input type="password" v-model="modify.oldPwd"></el-input>
+          <el-form-item label="输入旧密码" class="modify-item" prop="oldPassword">
+            <el-input type="password" v-model="modify.oldPassword"></el-input>
           </el-form-item>
-          <el-form-item label="设置新密码" class="modify-item" prop="newPwd">
-            <el-input type="password" v-model="modify.newPwd" auto-complete="off"></el-input>
+          <el-form-item label="设置新密码" class="modify-item" prop="password">
+            <el-input type="password" v-model="modify.password" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="确认新密码" class="modify-item" prop="checkPwd">
-            <el-input type="password" v-model="modify.checkPwd" auto-complete="off"></el-input>
+          <el-form-item label="确认新密码" class="modify-item" prop="rePassword">
+            <el-input type="password" v-model="modify.rePassword" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item class="btn-box">
             <el-button type="primary" class="keep-btn" @click="keep">保存</el-button>
@@ -33,8 +33,9 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class ModifyPassword extends Vue {
   //自定义表达验证规则,这里要保证有个初始值
   modify: any = {
-    newPwd: "",
-    checkPwd: ""
+    oldPassword: "",
+    password: "",
+    rePassword: ""
   };
   private newPwd = (rule: any, value: string, callback: any) => {
     if (value === "") {
@@ -44,12 +45,12 @@ export default class ModifyPassword extends Vue {
         callback(new Error("新密码只少是6位"));
         return;
       }
-      if (value === this.modify.oldPwd) {
+      if (value === this.modify.oldPassword) {
         callback(new Error("新密码不能等于旧密码"));
         return;
       }
-      if (this.modify.checkPwd !== "") {
-        (this as any).$refs.ruleForm.validateField("checkPwd");
+      if (this.modify.rePassword !== "") {
+        (this as any).$refs.ruleForm.validateField("rePassword");
       }
       callback();
     }
@@ -57,7 +58,7 @@ export default class ModifyPassword extends Vue {
   private validatePwd = (rule: any, value: string, callback: any) => {
     if (value === "") {
       callback(new Error("请再次输入密码"));
-    } else if (value !== this.modify.newPwd) {
+    } else if (value !== this.modify.password) {
       callback(new Error("两次输入密码不一致!"));
     } else {
       callback();
@@ -65,9 +66,9 @@ export default class ModifyPassword extends Vue {
   };
   //定义验证的虽则
   rules: object = {
-    oldPwd: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
-    newPwd: [{ validator: this.newPwd, trigger: "blur" }],
-    checkPwd: [{ validator: this.validatePwd, trigger: "blur" }]
+    oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
+    password: [{ validator: this.newPwd, trigger: "blur" }],
+    rePassword: [{ validator: this.validatePwd, trigger: "blur" }]
   };
   //保存密码
   keep() {

@@ -21,6 +21,10 @@ import WelcomePage from "./views/backMain-welcomPage.vue";
 import content from "./views/content-management/content.vue"; /* 内容管理 */
 import contentEdit from "./views/content-management/content-edit.vue"; /* 新增编辑内容管理 */
 import messageManagement from "./views/message-management/message.vue"; /* 消息管理 */
+//意见反馈
+import OptionManagement from "./views/option/manage.vue";
+//意见反馈查看
+import Optioncheck from "./views/option/check.vue";
 import messageAdd from "./views/message-management/message-add.vue"; /* 新增消息 */
 import bank from "./views/bank-management/bank.vue"; /* 银行管理 */
 import bankAdd from "./views/bank-management/bank-add.vue"; /* 银行管理， 新增 */
@@ -31,6 +35,14 @@ import BackAccount from "./views/backManage/account.vue";
 import Account from "./views/backManage/add.vue";
 //修改密码
 import ModifyPwd from "./views/backManage/modifyPwd.vue";
+//角色管理
+import Role from "./views/backManage/role.vue";
+//新增角色
+import AddRole from "./views/backManage/addRole.vue";
+//销量统计
+import SaleStatistics from "./views/statistics/allMsg.vue";
+//产品销量统计
+import ProductionStatistics from "./views/statistics/singleIdMsg.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -146,6 +158,18 @@ export default new Router({
           name: "contentEdit",
           component: contentEdit
         },
+        /* 意见反馈 */
+        {
+          path: "option-management/:pages",
+          name: "OptionManagement",
+          component: OptionManagement
+        },
+        /* 意见查看 */
+        {
+          path: "option-check/:id",
+          name: "OptionCheck",
+          component: Optioncheck
+        },
         /* 新增编辑内容管理 */
         //后台管理
         //账户管理
@@ -165,6 +189,30 @@ export default new Router({
           path: "modify-pwd",
           name: "ModifyPwd",
           component: ModifyPwd
+        },
+        //角色管理
+        {
+          path: "role/:pages",
+          name: "ManegeRole",
+          component: Role
+        },
+        //新增角色
+        {
+          path: "add-role/:msg/:id",
+          name: "AddRole",
+          component: AddRole
+        },
+        //销量统计
+        {
+          path: "sale-statistics/:pages",
+          name: "SaleStatistics",
+          component: SaleStatistics
+        },
+        //产品销量统计
+        {
+          path: "production-statistics/:id/:pages",
+          name: "ProductionStatistics",
+          component: ProductionStatistics
         },
         /* 默认跳转到欢迎页 */
         {

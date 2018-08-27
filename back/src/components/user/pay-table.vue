@@ -85,7 +85,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <pages :total-num="total"  @page-change="toPage" v-if="payList.length"></pages>    
+      <pages :total-num="total"  @page-change="toPage" v-if="payList.length && total > 10"></pages>    
       <div class="nullMsg" v-if="!payList.length && !loading">无有效信息</div>
     </div>
   </div>
