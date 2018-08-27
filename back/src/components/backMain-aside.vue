@@ -20,7 +20,6 @@
                     </li>
                 </transition>
             </ul> 
-            <!-- 列表渲染 -->
         </div>
     </div>
 </template>
