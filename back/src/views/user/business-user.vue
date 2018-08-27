@@ -48,7 +48,7 @@
           :data="userList"
           border
           style="width: 100%"
-          v-loading="listLoading"
+          v-loading = "listLoading"
           >
           <el-table-column
             prop="userNumber"
@@ -107,7 +107,7 @@
             </template>
           </el-table-column>
         </el-table>
-      <pages :total-num="total"  @page-change="toPage" v-if="userList.length"></pages>    
+      <pages :total-num="total"  @page-change="toPage" v-if="userList.length && total>10"></pages>    
       </div>
     </div>
   </div>
@@ -182,7 +182,7 @@ export default class BusinessUser extends Vue {
   private checkPhone = (rule: any, value: string, callback: any) => {
     console.log(value);
     let number = Number(value); //定义数字
-    if (value.length == 0) {
+    if (!value) {
       return this.$refs.phone.resetField(); //这里必须调用该元素的resetFileld()方法
     } else if (value.length > 0) {
       setTimeout(() => {
@@ -200,7 +200,7 @@ export default class BusinessUser extends Vue {
   };
   private checkName = (rule: any, value: string, callback: any) => {
     //真实姓名自定义验证规则
-    if (value.length == 0) {
+    if (!value) {
       return this.$refs.idName.resetField();
     } else {
       setTimeout(() => {
@@ -216,8 +216,8 @@ export default class BusinessUser extends Vue {
   };
   //定义验证的虽则
   rules: object = {
-    phone: [{ validator: this.checkPhone, trigger: "change" }],
-    idName: [{ validator: this.checkName, trigger: "change" }]
+    phone: [{ validator: this.checkPhone, trigger: "blur" }],
+    idName: [{ validator: this.checkName, trigger: "blur" }]
   };
   //改变状态会弹窗
   changeStatus(status: number) {

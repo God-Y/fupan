@@ -18,6 +18,7 @@
         style="width: 100%"
         v-loading="loading"
         v-if="roleList.length"
+        
         >
         <el-table-column
           label="ID"
@@ -27,12 +28,8 @@
         >
         </el-table-column>
         <el-table-column
-          label="登陆名"
-          width="100"  align="center" prop="name">
-        </el-table-column>
-        <el-table-column
-          label="角色"
-          width="100"  align="center" prop="roleName">
+          label="角色名"
+          width="150" align="center" prop="roleName">
         </el-table-column>
         <el-table-column
           prop="founder"    width="140"
@@ -68,7 +65,7 @@
               >
               编辑
               </el-button>
-              <el-button type="danger" size="mini" @click="deleteUser(scope.row.id)">删除</el-button>
+              <el-button type="danger" size="mini" @click="deleteRole(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
       </el-table>
@@ -88,7 +85,7 @@ import Pages from "common_Components/page/pagination.vue";
     Pages
   }
 })
-export default class BackAcconutTable extends Vue {
+export default class BackRoleTable extends Vue {
   @Prop([Array])
   tableParams!: any;
   @Prop([Boolean])
@@ -101,11 +98,11 @@ export default class BackAcconutTable extends Vue {
   }
   //根据页码跳转路由
   toPage(val: number) {
-    this.$router.push(`/back/back-account/${val}`);
+    this.$router.push(`/back/role/${val}`);
   }
   //删除用户会传参
-  deleteUser(id: number) {
-    this.$confirm("你确定删除该用户账号吗？", "操作提示", {
+  deleteRole(id: number) {
+    this.$confirm("你确定删除该角色吗？", "操作提示", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
       type: "warning",
@@ -113,7 +110,7 @@ export default class BackAcconutTable extends Vue {
     })
       //删除账户的操作写在这里
       .then(() => {
-        (this as any).$api.backAccount.delete(id).then((res: any) => {
+        (this as any).$api.backRoles.delete(id).then((res: any) => {
           this.$message({
             type: "success",
             message: "删除成功"
@@ -130,11 +127,11 @@ export default class BackAcconutTable extends Vue {
   }
   //跳转去编辑页面
   edit(value: any) {
-    this.$router.push("/back/manage-account/edit/" + value);
+    this.$router.push("/back/add-role/edit/" + value);
   }
   //跳转去新增页面
   add() {
-    this.$router.push("/back/manage-account/add/1");
+    this.$router.push("/back/add-role/add/1");
   }
 }
 </script>

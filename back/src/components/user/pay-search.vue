@@ -88,7 +88,7 @@ export default class PaySearch extends Vue {
       path: `/back/user-pay/${ID}/1`,
       query: {}
     });
-    this.$emit("clearParams");
+    this.$emit("clearParams", pages);
   }
   //搜索按钮的实现
   search(): void {

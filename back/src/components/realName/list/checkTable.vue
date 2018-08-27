@@ -9,7 +9,7 @@
         :data="realList"
         border
         style="width: 100%"
-        v-loading="loading"
+        v-loading = "loading"
         v-if="realList.length"
         >
         <el-table-column
@@ -75,8 +75,8 @@
             </template>
           </el-table-column>
       </el-table>
-      <pages :total-num="total"  @page-change="toPage" v-if="realList.length"></pages>    
-      <div class="nullMsg" v-if="!realList.length">无有效信息</div>
+      <pages :total-num="total"  @page-change="toPage" v-if="realList.length && total > 10"></pages>    
+      <div class="nullMsg" v-if="!realList.length && !loading">无有效信息</div>
     </div>
     <check-log :visible='checkVisible' :user-id ="uid"
     ></check-log>
@@ -104,7 +104,6 @@ export default class RealTable extends Vue {
   //这里取消实名
   @Emit()
   cancelRealName() {}
-
   uid: number = 1; //用于确定用户的uid
   checkVisible: boolean = false; //是否弹出对话框
   //获取父级的表单数据

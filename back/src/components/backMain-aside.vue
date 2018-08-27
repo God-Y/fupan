@@ -82,6 +82,16 @@ export default class backAside extends Vue {
           id: 2.4,
           name: "参数管理",
           visible: true
+        },
+        {
+          id: 2.5,
+          name: "版本管理",
+          visible: true
+        },
+        {
+          id: 2.6,
+          name: "意见反馈",
+          visible: true
         }
       ]
     },
@@ -113,11 +123,6 @@ export default class backAside extends Vue {
         {
           id: 4.1,
           name: "销量统计",
-          visible: true
-        },
-        {
-          id: 4.2,
-          name: "查看明细",
           visible: true
         }
       ]
@@ -152,6 +157,9 @@ export default class backAside extends Vue {
       case 2.2:
         router.push({ path: "message" });
         break;
+      case 2.6:
+        router.push({ path: "/back/option-management/1" });
+        break;
       case 3.1:
         router.push("/back/back-account/1");
         break;
@@ -159,7 +167,10 @@ export default class backAside extends Vue {
         router.push({ name: "ModifyPwd" });
         break;
       case 3.3:
-        router.push({ name: "BusinessCreditor" });
+        router.push("/back/role/1");
+        break;
+      case 4.1:
+        router.push("/back/sale-statistics/1");
         break;
     }
   }

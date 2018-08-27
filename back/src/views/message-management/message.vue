@@ -50,7 +50,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component({
   // components: {
-    // search
+  // search
   // }
 })
 export default class messageManagement extends Vue {
