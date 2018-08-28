@@ -30,7 +30,7 @@
                     <td>
                         <div class="buttonStyle">
                             <el-button :plain="true" :disabled="disabled" @click="uploadImg">上传</el-button>
-                            <el-button @click="init">删除</el-button>
+                            <el-button @click="init" :disabled="disabled">删除</el-button>
                         </div>
                     </td>
                 </tr>

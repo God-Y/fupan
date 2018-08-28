@@ -6,36 +6,36 @@
         </div>
         <el-form :model="data" :rules="rules" ref="ruleForm" status-icon class="">
           <div class="line-style">
-            <el-form-item prop="title">
+            <el-form-item prop="bankName">
               <span class="span-style">银行名称</span>
-              <el-input v-model="data.bankName" type="text" size="mini" auto-complete="off"></el-input>
+              <el-input v-model="data.bankName" :disabled="disabled" type="text" size="mini" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="title">
+            <el-form-item prop="SingleLimit">
               <span class="span-style">单笔限额</span>
               <el-input v-model="data.SingleLimit" type="text" size="mini" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="title">
+            <el-form-item prop="dailyLimit">
               <span class="span-style">日累计限额</span>
               <el-input v-model="data.dailyLimit" type="text" size="mini" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="title">
+            <el-form-item prop="paymentNumber">
               <span class="span-style">支付机构号</span>
-              <el-input v-model="data.paymentNumber" type="text" size="mini" auto-complete="off"></el-input>
+              <el-input v-model="data.paymentNumber" :disabled="disabled" type="text" size="mini" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="title">
+            <el-form-item prop="presentNumber">
               <span class="span-style">提现机构号</span>
-              <el-input v-model="data.presentNumber" type="text" size="mini" auto-complete="off"></el-input>
+              <el-input v-model="data.presentNumber" :disabled="disabled" type="text" size="mini" auto-complete="off"></el-input>
             </el-form-item>
           </div>
            <div class="upload">
             <span class="span-style">ICON</span>
             <uploadTwo
+            :disabled="disabled"
             :base=data.bankLogo
             @upload-info="getContentPicture"></uploadTwo>
           </div>
           <el-form-item class="button-style">
-            <el-button @click="launch('ruleForm')" type="primary" size="small">发送</el-button>
-            <el-button @click="draft('ruleForm')" size="small" type="info">存为草稿</el-button>
+            <el-button @click="save('ruleForm')" type="primary" size="small">保存</el-button>
             <el-button @click="cancel" size="small" type="danger">取消</el-button>
           </el-form-item>
         </el-form>
@@ -58,47 +58,95 @@ export default class bankAdd extends Vue {
   data: any = {
     bankLogo: ""
   }; /* 数据对象 */
-
+  disabled: boolean = false;
+  created() {
+    let id = this.$route.query.id;
+    if (id) {
+      this.disabled = true;
+      this.getData(id);
+    } /*  */
+  }
+  getData(id: any) {
+    (this as any).$api.bank.editDateiled(id).then((res: any) => {
+      console.log(res);
+      this.data = res.data.data;
+    });
+  } /* 获取编辑数据 */
   getContentPicture(val: any) {
-    console.log(val);
     this.data.bankLogo = val;
   } /* 获取上传图片的的url */
 
-  checkTitle = (rule: any, value: any, callback: any) => {
-    if (value === undefined) {
+  checkBankName = (rule: any, value: any, callback: any) => {
+    if (!value) {
       return callback(new Error("请填写完整！"));
     } else {
       callback();
     }
-  }; /* 校验标题 */
+  }; /* 校验 银行名称 */
 
-  checkBrief = (rule: any, value: any, callback: any) => {
-    if (!value) {
-      return callback(new Error("请必须要输入！"));
+  checkSingleLimit = (rule: any, value: any, callback: any) => {
+    if (!value || !Number(value)) {
+      return callback(new Error("请必须要输入，并且数值为数字"));
     } else {
       callback();
     }
-  }; /* 校验匹配 */
+  }; /* 校验 单笔限额 */
+
+  checkDailyLimit = (rule: any, value: any, callback: any) => {
+    if (!value || !Number(value)) {
+      return callback(new Error("请必须要输入，并且数值为数字"));
+    } else {
+      callback();
+    }
+  }; /* 校验 日累计限额 */
+
+  checkPaymentNumber = (rule: any, value: any, callback: any) => {
+    if (!value) {
+      return callback(new Error("请必须要输入"));
+    } else {
+      callback();
+    }
+  }; /* 校验 支付机构号 */
+
+  checkPresentNumber = (rule: any, value: any, callback: any) => {
+    if (!value) {
+      return callback(new Error("请必须要输入"));
+    } else {
+      callback();
+    }
+  }; /* 校验 支付机构号 */
 
   rules: any = {
-    title: [{ validator: this.checkTitle, trigger: "blur" }],
-    brief: [{ validator: this.checkBrief, trigger: "blur" }]
+    bankName: [{ validator: this.checkBankName, trigger: "blur" }],
+    SingleLimit: [{ validator: this.checkSingleLimit, trigger: "blur" }],
+    dailyLimit: [{ validator: this.checkDailyLimit, trigger: "blur" }],
+    paymentNumber: [{ validator: this.checkPaymentNumber, trigger: "blur" }],
+    presentNumber: [{ validator: this.checkPresentNumber, trigger: "blur" }]
   }; /* 校验规则 */
 
   $refs: any;
   submitForm(formName: any) {
+    let id = this.$route.query.id;
     this.$refs[formName].validate((valid: any) => {
       if (valid) {
-        if (!this.data.content) {
+        if (!this.data.bankLogo) {
           this.$alert("请上传图片", "提示", {
             confirmButtonText: "确定",
             type: "error"
-          });
+          }); /* 判断图片是否存在 */
           return false;
         } else {
-          (this as any).$api.message.send(this.data).then((res: any) => {
-            console.log(res);
-          }); /* 发送HTTP请求 */
+          if (id) {
+            (this as any).$api.bank
+              .editChange(id, this.data)
+              .then((res: any) => {
+                console.log(res);
+              }); /* 如果是编辑页面，发送编辑请求 */
+          } else {
+            (this as any).$api.bank.launch(this.data).then((res: any) => {
+              console.log(res);
+            }); /* 发送新增保存请求 */
+          }
         }
       } else {
         this.$alert("请把带 * 提示的内容填写完成", "提示", {
@@ -106,18 +154,12 @@ export default class bankAdd extends Vue {
           type: "warning"
         });
         return false;
-      }
+      } /* 如果校验不成功，弹窗提示 */
     });
   } /* 发送请求 */
-  launch(formName: any) {
-    this.data.status = "10";
+  save(formName: any) {
     this.submitForm(formName);
-  } /* 立即上线 */
-
-  draft(formName: any) {
-    this.data.status = "20";
-    this.submitForm(formName);
-  } /* 存为草稿 */
+  } /* 保存 */
 
   cancel() {
     this.$confirm("是否取消?", "提示", {

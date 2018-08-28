@@ -24,6 +24,7 @@ import messageManagement from "./views/message-management/message.vue"; /* 消�
 import messageAdd from "./views/message-management/message-add.vue"; /* 新增消息 */
 import bank from "./views/bank-management/bank.vue"; /* 银行管理 */
 import bankAdd from "./views/bank-management/bank-add.vue"; /* 银行管理， 新增 */
+import parameter from "./views/parameter/parameter.vue"; /* 参数设置 */
 //账户管理
 //实名认证
 import BackAccount from "./views/backManage/account.vue";
@@ -130,6 +131,11 @@ export default new Router({
           component: bank
         },
         /* 银行管理 */
+        {
+          path: "parameter",
+          name: "parameter",
+          component: parameter
+        },
         {
           path: "bankAdd",
           name: "bankAdd",
