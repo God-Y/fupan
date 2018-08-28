@@ -154,9 +154,11 @@ let filtersObj: Filters = {
   },
 
   // 债权列表出借日期转换
-  dateString: function(value: string) {
-    let temple = value.replace(/(.{4})/, "$1-");
-    return temple.replace(/(.{7})/, "$1-");
+  dateString: function(value: any) {
+    if (value !== undefined) {
+      let temple = value.replace(/(.{4})/, "$1-");
+      return temple.replace(/(.{7})/, "$1-");
+    }
   },
 
   // 债权列表状态判断
@@ -176,7 +178,7 @@ let filtersObj: Filters = {
   /* 债权列表操作判断 */
 
   amount: function(val: any) {
-    if (val) {
+    if (val !== undefined) {
       return Number(val)
         .toFixed(2)
         .replace(/(\d)(?=(\d{3})+\.)/g, "$1,");

@@ -32,7 +32,7 @@
           </el-table-column>
           <el-table-column prop="" label="操作" header-align="center">
             <template slot-scope="scope">
-              <el-button  size="mini"  type="info" plain>编辑</el-button>
+              <el-button @click="jumpEdit(scope.row.id)" size="mini" type="info" plain>编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -99,10 +99,10 @@ export default class bankManagement extends Vue {
         this.$message("已取消操作");
       });
   }
-  jumpEdit(id: any, statu: any) {
+  jumpEdit(id: any) {
     this.$router.push({
-      path: "contentEdit",
-      query: { id: id, statu: statu }
+      path: "bankAdd",
+      query: { id: id }
     });
   } /* 跳转至编辑页面 */
 }

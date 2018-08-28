@@ -34,7 +34,7 @@ export default {
 
   //获取匹配详情
   getMatchDetailed(id: any): any {
-    return axios.get(`/api/a/claim_info/${id}`);
+    return axios.get(`/api/a/claim-info/${id}`);
   },
 
   //获取推荐匹配
