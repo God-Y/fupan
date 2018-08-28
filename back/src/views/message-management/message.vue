@@ -49,11 +49,9 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import search from "../../components/message/search.vue";
 
 @Component({
-
   components: {
     search
   }
-
 })
 export default class messageManagement extends Vue {
   dataList: Array<any> = [];
