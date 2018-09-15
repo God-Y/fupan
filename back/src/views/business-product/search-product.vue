@@ -5,11 +5,11 @@
             <!-- class one-line的及之内的样式引用至 app页面 -->
             <div> 
                 <span>产品名称</span> 
-                <el-input v-model="productName" placeholder="请输入内容"  size="mini" clearable> </el-input> 
+                <el-input v-model="sendData.name" placeholder="请输入内容"  size="mini" clearable> </el-input> 
             </div>
             <div> 
                 <span>起息日期</span>
-                <el-select v-model="startDate" clearable size="mini" placeholder="请选择">
+                <el-select v-model="sendData.valueDate" clearable size="mini" placeholder="请选择">
                   <el-option
                       v-for="item in startOptions"
                       :key="item.value"
@@ -20,23 +20,27 @@
             </div>
             <div> 
               <span>年化收益</span> 
-              <DatePicker
-              :upperDate="upperDate"
-              :lowerDate="lowerDate"
+              <!-- <DatePicker
+              :lowerDate="sendData.lowerAnnualizedIncome"
+              :upperDate="sendData.upperAnnualizedIncome"
               @start-change="getStart"
               @end-change="getEnd"
-              ></DatePicker>
+              ></DatePicker> -->
+                <el-input class="small-size" v-model="sendData.lowerAnnualizedIncome" size="mini" clearable> </el-input> 
+                ~
+                <el-input class="small-size" v-model="sendData.upperAnnualizedIncome" size="mini" clearable> </el-input> 
+                %
             </div>
           </div>
           <div class="line-style">
               <!-- class one-line的及之内的样式引用至 app页面 -->
               <div> 
                   <span>起投金额</span> 
-                  <el-input v-model="startingAmount" placeholder="请输入内容"  size="mini" clearable> </el-input> 
+                  <el-input v-model="sendData.startingAmount" placeholder="请输入内容"  size="mini" clearable> </el-input> 
               </div>
               <div> 
                   <span>状&#12288;&#12288;态</span>
-                  <el-select v-model="singleStatu" clearable size="mini" placeholder="请选择">
+                  <el-select v-model="sendData.isShelf" clearable size="mini" placeholder="请选择">
                     <el-option
                         v-for="item in status"
                         :key="item.value"
@@ -47,7 +51,7 @@
               </div>
               <div class="deadline-select"> 
                   <span>期&#12288;&#12288;限</span> 
-                  <el-input class="small-size" v-model="upperDeadline" @change="inputMatch(upperDeadline)" size="mini" clearable> </el-input> 
+                  <el-input class="small-size" v-model="sendData.lowerDeadline" size="mini" clearable> </el-input> 
 
                     <el-select class="small-size" v-model="dayMonthSelect" clearable size="mini">
                       <el-option
@@ -58,7 +62,7 @@
                       </el-option>
                     </el-select>
                   ~
-                  <el-input class="small-size" v-model="lowerDeadline"  size="mini" clearable> </el-input> 
+                  <el-input class="small-size" v-model="sendData.upperDeadline"  size="mini" clearable> </el-input> 
 
                     <el-select class="small-size" v-model="dayMonthSelect" clearable size="mini">
                       <el-option
@@ -74,11 +78,11 @@
               <!-- class one-line的及之内的样式引用至 app页面 -->
               <div> 
                   <span>产品代号</span> 
-                  <el-input v-model="productCode" placeholder="请输入内容"  size="mini" clearable> </el-input> 
+                  <el-input v-model="sendData.productCode" placeholder="请输入内容"  size="mini" clearable> </el-input> 
               </div>
           </div>
           <div class="button-style">
-            <el-button  type="primary" plain>搜索</el-button>
+            <el-button @click="search" type="primary" plain>搜索</el-button>
             <el-button @click="clear" type="danger">清空</el-button>
           </div>
         </div>
@@ -87,7 +91,7 @@
 
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import DatePicker from "../../components/common/date/double-date.vue";
 
 @Component({
@@ -96,80 +100,86 @@ import DatePicker from "../../components/common/date/double-date.vue";
   }
 })
 export default class searchProduct extends Vue {
-  productName: string = ""; /* 产品名称 */
-  startDate: string = "全部"; /* 起息日期 */
-  upperDate: any = ""; //结束时间
-  lowerDate: any = ""; //开始时间
-  startingAmount: string = ""; /* 起投金额 */
-  singleStatu: string = "全部"; /* 状态 */
-  dayMonthSelect: string = "日"; /* 期限选择框 */
-  upperDeadline: string = ""; /* 期限上限 */
-  lowerDeadline: string = ""; /* 期限下限 */
-  productCode: string = ""; /* 产品代号 */
-  getStart(value: number) {
-    //从子级取到开始时间值
-    this.lowerDate = value;
+  sendData: any = {}
+  dayMonthSelect: any = 1
+  created() {
+     let query: any = this.$route.query;
+    let keys: any = Object.keys(query);
+    if (keys.length) {
+      keys.forEach((value: any) => {
+        this.sendData[value] = query[value];
+      });
+      console.log(this.sendData);
+    }
   }
-  getEnd(value: number) {
-    //从子级取到开始时间值
-    this.upperDate = value;
-  }
+  mounted() {
+    let query: any = this.$route.query;
+    let keys: any = Object.keys(query);
+    if (keys.length) {
+      keys.forEach((value: any) => {
+        this.sendData[value] = query[value];
+      });
+      console.log(this.sendData);
+      this.sendSearch(this.sendData);
+    }
+  } //发送保存的搜索数据
+  @Emit()
+  sendSearch(val: any) {}
+  @Emit()
+  sendClear(val: any) {}
+
   startOptions: any = [
     {
-      value: "全部",
+      value: 0,
       label: "全部"
     },
     {
-      value: "正常",
+      value: 10,
       label: "正常"
     },
     {
-      value: "已冻结",
+      value: 20,
       label: "已冻结"
     }
   ];
   status: any = [
     {
-      value: "全部",
+      value: 2,
       label: "全部"
     },
     {
-      value: "停售",
+      value: 0,
       label: "停售"
     },
     {
-      value: "在售",
+      value: 1,
       label: "在售"
     }
   ];
   dayMonth: any = [
     {
-      value: "日",
+      value: 1,
       label: "日"
     },
-    {
-      value: "月",
-      label: "月"
-    }
   ];
-  inputMatch(val: string) {
-    console.log(val);
-    let reg = /^[0-3]*$/;
-    if (reg.test(val)) {
-      console.log("hege");
-    }
+  search() {
+    if(this.dayMonthSelect)
+    console.log(this.sendData);
+    this.$router.push({
+      path: "/back/product",
+      query: this.sendData
+    });
+    this.sendSearch(this.sendData);
   }
   clear() {
-    this.productName = ""; /* 产品名称 */
-    this.startDate = "全部"; /* 起息日期 */
-    this.upperDate = ""; //结束时间
-    this.lowerDate = ""; //开始时间
-    this.startingAmount = ""; /* 起投金额 */
-    this.singleStatu = "全部"; /* 状态 */
-    this.dayMonthSelect = "日"; /* 期限选择框 */
-    this.upperDeadline = ""; /* 期限上限 */
-    this.lowerDeadline = ""; /* 期限下限 */
-    this.productCode = ""; /* 产品代号 */
+    let keys = Object.keys(this.sendData);
+    keys.forEach((value: any) => {
+      this.sendData[value] = "";
+    }); /* 表单中的数据清零 */
+    this.$router.push({
+      path: "/back/product"
+    });
+    this.sendClear("");
   }
 }
 </script>

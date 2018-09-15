@@ -60,7 +60,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       "/api/": {
-        "target": "http://47.98.219.40:8080/",
+        "target": "http://47.96.95.132:8080/",
         "secure": false,
         "pathRewrite": {
               "^/api/": ""

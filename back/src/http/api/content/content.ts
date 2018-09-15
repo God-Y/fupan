@@ -10,11 +10,15 @@ export default {
 
   //更改状态
   changeStatu(id: any, type: any) {
-    return axios.put(`/api/a/content-status/${id}`, {
-      params: type
-    });
+    console.log(id ,type);
+    return axios.put(`/api/a/content-status/${id}`, {status: type}
+    );
   },
 
+  //删除
+  deleteContent(id: any) {
+    return axios.delete(`/api/a/content/${id}`);
+  },
   //新增 上线
   launch(data: any): any {
     return axios.post(`/api/a/content`, {

@@ -22,7 +22,7 @@
           <div class="line-style">
               <el-form-item prop="lendingPeriod" size="mini">
                 <span>出借期限</span>
-                <el-input v-model="data.lendingPeriod" @change="changeDate(event)" type="text" auto-complete="off" placeholder="请输入内容"></el-input>&#12288;(月)
+                <el-input v-model="data.lendingPeriod" type="text" auto-complete="off" placeholder="请输入内容"></el-input>&#12288;(月)
               </el-form-item>
               <el-form-item prop="lendingDate">
                 <span>出借日期</span>
@@ -48,9 +48,9 @@
               </el-form-item>
           </div>
           <div class="line-style">
-              <el-form-item label="" prop="describe" size="mini">
+              <el-form-item label="" prop="remarks" size="mini">
                 <span>相关备注</span>
-                <el-input v-model="data.describe" type="text" auto-complete="off" placeholder="请输入内容"></el-input>
+                <el-input v-model="data.remarks" type="text" auto-complete="off" placeholder="请输入内容"></el-input>
               </el-form-item>
           </div>
           <el-form-item class="button">
@@ -81,11 +81,18 @@ export default class addCreditor extends Vue {
       (this as any).$api.creditor.getAddData(id).then((res: any) => {
         console.log(res);
         this.data = res.data.data;
-        let temple = this.data.lendingDate.replace(/(.{4})/, "$1-");
-        this.data.lendingDate = temple.replace(
-          /(.{7})/,
-          "$1-"
-        ); /* 为日期增加横杠 */
+        let temple = this.data.lendingDate;
+        // .replace(/(.{4})/, "$1-");
+        // this.data.lendingDate = temple.replace(
+        //   /(.{7})/,
+        //   "$1-"
+        // ); /* 为日期增加横杠 */
+        let value = new Date(temple);
+        let year = value.getFullYear();
+        let month = ("0" + (value.getMonth() + 1)).slice(-2); //getMonth是从0开始，所以加+
+        let day = ("0" + value.getDate()).slice(-2);
+        this.data.lendingDate = year + "-" + month + "-" + day;
+
         // this.data.lendingAmount = this.data.lendingAmount
         //   .toFixed(2)
         //   .replace(/(\d)(?=(\d{3})+\.)/g, "$1,"); /* 格式化出借金额 */
@@ -126,8 +133,8 @@ export default class addCreditor extends Vue {
     }
   }; /* 出借期限 */
   checkDate: any = (rule: any, value: any, callback: any) => {
-    let re = /((19|20)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01])/;
-    if (!value || !re.test(value)) {
+    // let re = /((19|20)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01])/;
+    if (!value) {
       callback(new Error("请输入正确的日期格式，例如：2018-08-08"));
     } else {
       callback();
@@ -180,7 +187,7 @@ export default class addCreditor extends Vue {
     property: [{ validator: this.checkProperty, trigger: "blur" }],
     claimCode: [{ validator: this.checkCode, trigger: "blur" }],
     interestRate: [{ validator: this.checkRate, trigger: "blur" }],
-    describe: [{ validator: this.checkRemark, trigger: "blur" }]
+    remarks: [{ validator: this.checkRemark, trigger: "blur" }]
   }; /* 验证规则 */
   $refs: any = {
     ruleForm: HTMLFormElement
@@ -190,13 +197,17 @@ export default class addCreditor extends Vue {
     this.$refs[formName].validate((valid: any) => {
       if (valid) {
         console.log(this.data.lendingDate);
-        this.data.lendingDate = this.data.lendingDate.replace(
-          /[-]/g,
-          ""
-        ); /* 把输入的日期格式转换一下 */
-        this.data.interestRate =
-          this.data.interestRate.replace(/[%]/, "") /
-          100; /* 把输入的百分比转换一下 */
+        // this.data.lendingDate = new Date(this.data.lendingDate.replace(
+        //   /[-]/g,
+        //   ""
+        // )); /* 把输入的日期格式转换一下 */
+        // this.data.interestRate =
+        //   this.data.interestRate.replace(/[%]/, "") /
+        //   100; /* 把输入的百分比转换一下 */
+        // this.data.lendingDate = 12354131;
+        this.data.lendingPeriod = 1;
+        this.data.lendingAmount = 2;
+        this.data.interestRate = 10.5;
         console.log(this.data);
         (this as any).$api.creditor.addCreditor(this.data).then((res: any) => {
           console.log(res);

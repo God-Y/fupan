@@ -51,10 +51,11 @@ export default class uploadFile extends Vue {
   progress: any = 0; /* 上传文件进度 */
   start: boolean = false; /* 控制进度条显示 */
   filesSize: any = 0; /* 文件大小 */
+  dataurl: any = "";
   @Prop([Boolean])
   disabled!: boolean; /* 判断是否禁用 */
-  @Prop()
-  dataurl!: any; /* 图片base64 */
+  // @Prop()
+  // dataurl!: any; /* 图片base64 */
 
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
@@ -122,7 +123,7 @@ export default class uploadFile extends Vue {
       .uploadPicture(form, config)
       .then((res: any) => {
         console.log(res);
-        let message = res.data.message;
+        let message = res.data;
         this.uploadInfo(message); /* 请求成功后返回的url返回给父级 */
       })
       .catch(() => {
