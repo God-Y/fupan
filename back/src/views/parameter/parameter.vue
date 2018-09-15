@@ -63,6 +63,7 @@ export default class parameter extends Vue {
   disabled: boolean = false;
 
   getContentPicture(val: any) {
+    console.log(val);
     this.data.seal = val;
   } /* 获取上传图片的的url */
 
@@ -108,6 +109,7 @@ export default class parameter extends Vue {
           }); /* 判断图片是否存在 */
           return false;
         } else {
+          console.log(this.data);
           (this as any).$api.parameter.sendData(this.data).then((res: any) => {
             console.log(res);
           }); /* 发送新增保存请求 */

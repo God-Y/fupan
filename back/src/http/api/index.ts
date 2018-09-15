@@ -1,5 +1,6 @@
 import user from "./user/userurl"; //用户管理
 import real from "./realName/real"; //实名认证
+import product from "./product/product"; //产品管理
 import creditor from "./creditor/creditor"; /* 债权管理 */
 import content from "./content/content"; /* 内容管理 */
 import common from "./common/common"; /* 共用接口 */
@@ -26,5 +27,6 @@ export default {
   backAccount,
   backRoles,
   statistics,
-  option
+  option,
+  product
 };
