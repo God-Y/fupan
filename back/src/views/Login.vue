@@ -26,8 +26,8 @@ export default class login extends Vue {
     };
     (this as any).$api.user.login(user).then((res: any) => {
       console.log(res);
+    this.$router.push({ name: "backend" });
     });
-    // this.$router.push({ name: "backend" });
     return false;
   }
   /* 暂时使用任务6-10的接口来测试反向代理和请求，此数据需要更改 */

@@ -167,7 +167,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 @Component
 export default class UserMsg extends Vue {
   //获取数据
@@ -289,9 +289,9 @@ export default class UserMsg extends Vue {
   }
   //取消修改手机号
   cancelPhoneNumber() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.$refs.phone.clearValidate();
-    },500)
+    }, 500);
     this.userMsg.phone = this.phoneNumber;
     this.phoneUse = !this.phoneUse;
   }

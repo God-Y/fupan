@@ -94,17 +94,12 @@ export default class DealRecode extends Vue {
   //实现清空参数功能
   clear(oldpage: string) {
     for (let key in this.userForm) {
-
-      this.userForm[key] = null;
-    }
-    this.userForm.valueStartlowerDate = "";
-    this.userForm.valueStartupperDate = "";
-    this.userForm.valueEndlowerDate = "";
-    this.userForm.valueEndupperDate = "";
-
       this.userForm[key] = "";
     }
-
+    // this.userForm.valueStartlowerDate = "";
+    // this.userForm.valueStartupperDate = "";
+    // this.userForm.valueEndlowerDate = "";
+    // this.userForm.valueEndupperDate = "";
     if (oldpage === "1") {
       this.getList();
     }
