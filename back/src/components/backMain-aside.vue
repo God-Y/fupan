@@ -151,11 +151,17 @@ export default class backAside extends Vue {
       case 2.2:
         router.push({ path: "message" });
         break;
+
+
+      case 2.6:
+        router.push({ path: "/back/option-management/1" });
+        break;
       case 2.3:
         router.push({ name: "bank" });
         break;
-      case 2.6:
-        router.push({ path: "/back/option-management/1" });
+      case 2.4:
+        router.push({ name: "parameter" });
+
         break;
       case 3.1:
         router.push("/back/back-account/1");

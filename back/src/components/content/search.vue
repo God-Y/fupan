@@ -90,9 +90,7 @@ export default class search extends Vue {
     let query: any = this.$route.query;
     let keys: any = Object.keys(query);
     if (keys.length) {
-      query.lowerDate = query.lowerDate
-        ? Number(query.lowerDate)
-        : ""; //保证拿出的毫秒数是number类型
+      query.lowerDate = query.lowerDate ? Number(query.lowerDate) : ""; //保证拿出的毫秒数是number类型
       query.upperDate = query.upperDate ? Number(query.upperDate) : ""; //保证拿出的毫秒数是number类型
       keys.forEach((value: any) => {
         this.data[value] = query[value];

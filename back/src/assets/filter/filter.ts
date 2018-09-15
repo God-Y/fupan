@@ -108,7 +108,8 @@ let filtersObj: Filters = {
   },
   // 产品列表年化收益率
   annualized: function(value: number): string {
-    return value * 100 + "%";
+    // console.log(value);
+    return (value * 100).toFixed(2) + "%";
   },
 
   // 产品列表 起息日期
@@ -132,14 +133,21 @@ let filtersObj: Filters = {
         return "推荐";
     }
   },
-
+  //产品列表 期限90
+  deadline: function(value: number) {
+    if(value === 7) {
+      return "7日"
+    } else {
+      return (value / 30) + "月"
+    }
+  },
   // 产品列表 状态判断
   statu: function(value: number) {
     switch (value) {
       case 0:
-        return "在售";
-      case 1:
         return "停售";
+      case 1:
+        return "在售";
     }
   },
 
@@ -147,16 +155,18 @@ let filtersObj: Filters = {
   shelf: function(value: number) {
     switch (value) {
       case 0:
-        return "下架";
-      case 1:
         return "上架";
+      case 1:
+        return "下架";
     }
   },
 
   // 债权列表出借日期转换
-  dateString: function(value: string) {
-    let temple = value.replace(/(.{4})/, "$1-");
-    return temple.replace(/(.{7})/, "$1-");
+  dateString: function(value: any) {
+    if (value !== undefined) {
+      // let temple = value.replace(/(.{4})/, "$1-");
+      // return temple.replace(/(.{7})/, "$1-");
+    }
   },
 
   // 债权列表状态判断
@@ -176,7 +186,7 @@ let filtersObj: Filters = {
   /* 债权列表操作判断 */
 
   amount: function(val: any) {
-    if (val) {
+    if (val !== undefined) {
       return Number(val)
         .toFixed(2)
         .replace(/(\d)(?=(\d{3})+\.)/g, "$1,");

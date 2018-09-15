@@ -32,7 +32,7 @@
               <div class="oprate">
               <el-button @click="changeState(scope.row.id, scope.row.state)" :class="scope.row.state == 10 ? 'danger': 'success'"  size="mini">{{scope.row.state | oprateStatu}}</el-button> 
               <el-button  size="mini" @click="jumpEdit(scope.row.id, scope.row.state)">编辑</el-button> 
-              <el-button  size="mini"  type="danger" plain>删除</el-button>
+              <el-button @click="deleteContent(scope.row.id)" size="mini"  type="danger" plain>删除</el-button>
               </div>
             </template>
           </el-table-column>
@@ -93,7 +93,30 @@ export default class contentManagement extends Vue {
       .then(() => {
         (this as any).$api.content.changeStatu(id, statu).then((res: any) => {
           console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          this.$router.go(0); /* 操作成功刷新一下路由 */
+          if(res.data.code === 1) {
+            this.getList("");
+          }
+        });
+      })
+      .catch(() => {
+        this.$message("已取消操作");
+      });
+  }
+  deleteContent(id: any) {
+     this.$confirm(
+      "是否删除？",
+      "提示",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }
+    ).then(() => {
+        (this as any).$api.content.deleteContent(id).then((res: any) => {
+          console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
+          if(res.data.code === 1) {
+            this.getList("");
+          }
         });
       })
       .catch(() => {

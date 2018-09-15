@@ -30,7 +30,7 @@
                     <td>
                         <div class="buttonStyle">
                             <el-button :plain="true" :disabled="disabled" @click="uploadImg">上传</el-button>
-                            <el-button @click="init">删除</el-button>
+                            <el-button @click="init" :disabled="disabled">删除</el-button>
                         </div>
                     </td>
                 </tr>
@@ -51,11 +51,12 @@ export default class uploadFileTwo extends Vue {
   progress: any = 0; /* 上传文件进度 */
   start: boolean = false; /* 控制进度条显示 */
   fileSize: any = 0; /* 文件大小 */
+  base: any = "";
   @Prop([Boolean])
   disabled!: boolean; /* 判断是否禁用 */
 
-  @Prop()
-  base!: any;
+  // @Prop()
+  // base!: any;
 
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
@@ -127,7 +128,7 @@ export default class uploadFileTwo extends Vue {
       .uploadPicture(form, config)
       .then((res: any) => {
         console.log(res);
-        let message = res.data.message;
+        let message = res.data;
         this.uploadInfo(message); /* 请求成功后返回的url返回给父级 */
         console.log(this.file);
       })

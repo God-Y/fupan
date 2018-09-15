@@ -15,9 +15,7 @@ export default {
 
   //新增债权列表
   addCreditor(data: any): any {
-    return axios.post(`/api/a/claim-info`, {
-      params: data
-    });
+    return axios.post(`/api/a/claim-info`, data);
   },
 
   //获取匹配列表
@@ -34,7 +32,7 @@ export default {
 
   //获取匹配详情
   getMatchDetailed(id: any): any {
-    return axios.get(`/api/a/claim_info/${id}`);
+    return axios.get(`/api/a/claim-info/${id}`);
   },
 
   //获取推荐匹配

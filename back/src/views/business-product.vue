@@ -1,6 +1,9 @@
 <template>
 <div>
-    <searchProduct></searchProduct>
+    <searchProduct
+    @send-search="sendSearch"
+    @send-clear="sendClear"
+    ></searchProduct>
     <div class="box">
         <div class="addTitle">
             <span>产品列表</span>
@@ -25,14 +28,14 @@
                         <td>{{item.productCode}}</td>
                         <td>{{item.name}}</td>
                         <td>{{item.annualizedIncome | annualized }}</td>
-                        <td>{{item.deadline}}</td>
+                        <td>{{item.deadline | deadline}}</td>
                         <td>{{item.startingAmount}}</td>
                         <td>{{item.valueDate | valueDate}}</td>
-                        <td>{{item.recommend | reconmend}}</td>
-                        <td :class="{success:item.shelf===0, danger:item.shelf===1}">{{item.shelf | statu}}</td>
+                        <td>{{item.isRecommend | reconmend}}</td>
+                        <td :class="{success:item.isShelf===1, danger:item.isShelf===0}">{{item.isShelf | statu}}</td>
                         <td class="handle">
-                            <el-button type="text" @click="shelfOperate(item.id,item.shelf)" >
-                              <a :class="{success:item.shelf===1, danger:item.shelf===0}" >{{item.shelf | shelf}}</a>
+                            <el-button type="text" @click="shelfOperate(item.id,item.isShelf)" >
+                              <a :class="{success:item.isShelf===0, danger:item.isShelf===1}" >{{item.isShelf | shelf}}</a>
                             </el-button>
                             <a @click="jumpEdit(item.id)">编辑</a>
                         </td>
@@ -40,6 +43,7 @@
                 </thead>
             </table>
             <!-- 列表 -->
+            <Pages :total-num="total" @page-change="toPage"></Pages>
         </div>
     </div>
 </div>
@@ -50,20 +54,56 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import axios from "axios";
 import searchProduct from "./business-product/search-product.vue"; /*  */
+import Pages from "common_Components/page/pagination.vue";
 
 @Component({
   components: {
-    searchProduct
+    searchProduct,
+    Pages
   }
 })
 export default class BusinessProduct extends Vue {
   list: any[] = [];
+  total: number = 0;
+  pagination: any = {};
   created() {
-    axios.get("/api/a/list/investment-product").then(response => {
-      this.list = response.data.data.list;
-      console.log(this.list);
-    });
+    this.getList(this.pagination);
   } /* 组件生成后获取HTTP请求数据 */
+  getList(data: any) {
+    if (this.$route.query.pages) {
+      this.pagination.pageNum = this.$route.query.pages;
+    } else {
+      this.pagination.pageNum = 1;
+    }
+    this.pagination.pageSize = 10;
+    console.log(this.pagination);
+    axios
+      .get("/api/a/list/investment-product", {
+        params: data
+      })
+      .then(response => {
+        console.log(response);
+        this.list = response.data.data.list;
+        this.total = response.data.data.total;
+        console.log(this.list);
+      });
+  }
+  toPage(val: any) {
+    this.$router.push({
+      path:`/back/product`,query: {
+        pages:val
+      }
+    });
+    this.getList(this.pagination);
+  }
+  sendSearch(val: any) {
+    console.log(val);
+    this.getList(val);
+  } /* 搜索数据 */
+  sendClear(val: any) {
+    console.log(val);
+    this.getList(val);
+  } /* 清空搜索 */
   jumpEdit(id: string) {
     this.$router.push({
       path: "addProduct",
@@ -71,7 +111,7 @@ export default class BusinessProduct extends Vue {
     }); /* 路由加入参数 */
   } /* 跳转至编辑页面 */
   shelfOperate(id: number, shelf: number) {
-    let statu = shelf === 0 ? 0 : 1; /* 判断上下架状态 */
+    let isShelf = shelf === 0 ? 1 : 0; /* 判断上下架状态 */
     // 弹窗提示
     this.$confirm("是否执行此操作?", "提示", {
       confirmButtonText: "确定",
@@ -79,13 +119,16 @@ export default class BusinessProduct extends Vue {
       type: "warning"
     })
       .then(() => {
-        axios.get(`api/a/product_shelf/${id}`).then(res => {
+        axios.put(`/api/a/product-shelf/${id}`,{isShelf: isShelf}).then(res => {
           console.log(res);
+          if(res.data.code === 1) {
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+            this.getList("");
+          }
         }); /* 点击确定发送请求 */
-        this.$message({
-          type: "success",
-          message: "操作成功!"
-        });
       })
       .catch(() => {
         this.$message({
