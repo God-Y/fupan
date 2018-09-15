@@ -60,7 +60,6 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       "/api/": {
-
         target: "http://47.96.95.132:8080/",
         secure: false,
         pathRewrite: {
@@ -69,7 +68,6 @@ module.exports = {
         changeOrigin: true,
         logLevel: "debug"
       } /* 配置反向代理 ，暂时配置任务6-10的地址，此地址需要改动 */
-
     }
   }
   // 第三方插件配置
