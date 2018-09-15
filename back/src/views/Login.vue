@@ -26,7 +26,7 @@ export default class login extends Vue {
     };
     (this as any).$api.user.login(user).then((res: any) => {
       console.log(res);
-    this.$router.push({ name: "backend" });
+      this.$router.push({ name: "backend" });
     });
     return false;
   }
