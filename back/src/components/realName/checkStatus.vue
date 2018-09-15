@@ -42,8 +42,7 @@ export default class CheckStatus extends Vue {
   }
   checkForm: object = {
     reason: "",
-    status: "通过",
-    id: this.userId
+    status: "通过"
   };
   //拒绝理由为空时，不能点击发送,以及超过25字符
   get refusalBtn() {
@@ -61,6 +60,7 @@ export default class CheckStatus extends Vue {
 
   //点击确定按钮发送http请求,把数据传送出去
   comfirm() {
+    (this as any).checkForm.id = this.userId;
     bus.$emit("comfirmStatus", this.checkForm);
   }
   handleClose(done: any) {

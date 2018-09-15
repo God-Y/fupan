@@ -74,54 +74,53 @@ export default class search extends Vue {
     value = +value;
     if (!value) {
       return this.$refs.lowerSingleLimit.resetField();
-    } else if(!Number(value) || value > num) {
+    } else if (!Number(value) || value > num) {
       callback(new Error("请输入，数值不能大于下限值"));
     } else {
       callback();
     }
-  } /* 校验单笔限额上线 */
+  }; /* 校验单笔限额上线 */
   checkUpperSingle: any = (rule: any, value: any, callback: any) => {
     let num = +this.data.lowerSingleLimit;
     value = +value;
     if (!value) {
       return this.$refs.upperSingleLimit.resetField();
-    } else if(!Number(value) || value < num) {
+    } else if (!Number(value) || value < num) {
       callback(new Error("请输入，数值不能小于下限值"));
     } else {
       callback();
     }
-  } /* 校验单笔限额 下限 */
-  
+  }; /* 校验单笔限额 下限 */
   checkLowerDailyLimit: any = (rule: any, value: any, callback: any) => {
     let num = +this.data.upperDailyLimit;
     value = +value;
     if (!value) {
       return this.$refs.lowerDailyLimit.resetField();
-    } else if(!Number(value) || value > num) {
+    } else if (!Number(value) || value > num) {
       callback(new Error("请输入，数值不能大于下限值"));
     } else {
       callback();
     }
-  } /* 校验日累计 上限 */
+  }; /* 校验日累计 上限 */
 
   checkUpperDailyLimit: any = (rule: any, value: any, callback: any) => {
     let num = +this.data.lowerDailyLimit;
     value = +value;
     if (!value) {
       return this.$refs.upperDailyLimit.resetField();
-    } else if(!Number(value) || value < num) {
+    } else if (!Number(value) || value < num) {
       callback(new Error("请输入，数值不能小于下限值"));
     } else {
       callback();
     }
-  } /* 校验日累计 下限 */
+  }; /* 校验日累计 下限 */
 
   rules: any = {
     lowerSingleLimit: [{ validator: this.checklowerSingle, bigger: "blur" }],
     upperSingleLimit: [{ validator: this.checkUpperSingle, bigger: "blur" }],
     lowerDailyLimit: [{ validator: this.checkLowerDailyLimit, bigger: "blur" }],
     upperDailyLimit: [{ validator: this.checkUpperDailyLimit, bigger: "blur" }]
-  }
+  };
   created() {
     let query: any = this.$route.query;
     let keys: any = Object.keys(query);

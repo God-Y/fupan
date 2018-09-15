@@ -11,7 +11,7 @@
             <el-input type="text" v-model="userForm.idName" class="input-item" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 日期组件 -->
-          <el-form-item label="申请日期" prop="idName" ref="idName">
+          <el-form-item label="申请日期">
             <date
               :lowerDate="userForm.lowerDate"
               :upperDate="userForm.upperDate"
@@ -89,7 +89,7 @@ export default class RealCheckForm extends Vue {
   };
   private checkName = (rule: any, value: string, callback: any) => {
     //真实姓名自定义验证规则
-    if (value.length == 0) {
+    if (!value) {
       return this.$refs.idName.resetField();
     } else {
       setTimeout(() => {
@@ -105,16 +105,19 @@ export default class RealCheckForm extends Vue {
   };
   //定义验证的虽则
   rules: object = {
-    phone: [{ validator: this.checkPhone, trigger: "change" }],
-    idName: [{ validator: this.checkName, trigger: "change" }]
+    phone: [{ validator: this.checkPhone, trigger: "blur" }],
+    idName: [{ validator: this.checkName, trigger: "blur" }]
   };
   //重置清空表单
   resetForm() {
     //循环所有的项
+    this.$refs["userForm1"].resetFields();
     let pages = (this as any).$route.params.pages;
     for (let key in this.userForm) {
-      this.userForm[key] = "";
+      this.userForm[key] = undefined;
     }
+    this.userForm.upperDate = "";
+    this.userForm.lowerDate = "";
     this.$router.push({
       path: `/back/verifiel/1`,
       query: {}

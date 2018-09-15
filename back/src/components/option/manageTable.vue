@@ -104,7 +104,7 @@ export default class OptionTable extends Vue {
             message: "删除成功"
           });
           //取消成功后调用父级方法，更新列表.
-          this.deleteOption();
+          (this as any).$parent.deleteOption();
         });
       })
       .catch(() => {

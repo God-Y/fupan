@@ -27,6 +27,7 @@
               <el-input type="tel" v-model="userMsg.phone" 
               auto-complete="off" :disabled="phoneUse"
               class="input-item"
+              maxlength="11"
               @input="changes()"
               > </el-input>
               <el-button type="danger" class="phone-btn" 
@@ -53,8 +54,14 @@
             </el-form-item>
             <!-- 交易记录，投资记录按钮 -->
             <el-form-item class="btn-box" >
-              <el-button type="danger" @click="$router.push({name:'UserDeal',params:{id:ID, pages: 1}})">交易记录</el-button>
-              <el-button type="primary" @click="$router.push({name:'UserPay',params:{id:ID, pages: 1}})">投资记录</el-button>
+              <el-button 
+                type="danger" 
+                @click="$router.push({name:'UserDeal',params:{id:ID, pages: 1}})"
+              >交易记录</el-button>
+              <el-button 
+                type="primary"
+                @click="$router.push({name:'UserPay',params:{id:ID, pages: 1}})"
+              >投资记录</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -93,7 +100,7 @@
               <el-button type="danger" class="phone-btn" size="mini" v-if="userNumberUse"
                 @click="userNumberUse = !userNumberUse"
               >修改</el-button>
-              <el-button type="primary" 
+              <el-button type="primary"
                 class="phone-btn" 
                 size="mini" 
                 v-if="!userNumberUse" :disabled="userMsg.managerNumber == ''"
@@ -113,17 +120,18 @@
         </div>
         <div class="card-body">
            <el-form  label-width="84px" class="ruleForm center-form">
-          <!-- 用户编号 -->
+          <!-- 取消实名 -->
             <el-form-item label="身份证正面" class="left-item content-item" align="left">
-              <img :src="userMsg.idFront" alt="" class="idImg">
-              <div class="nullMsg" v-if="!userMsg.idFront">无有效信息</div>
+              <img :src="userMsg.idFront " v-if="realStatus" alt="" class="idImg">
+              <div class="nullMsg" v-if="!realStatus">无有效信息</div>
             </el-form-item>
             <el-form-item label="身份证反面" class="left-item content-item" align="left">
-              <img :src="userMsg.idBack" alt="" class="idImg">
-              <div class="nullMsg" v-if="!userMsg.idBack">无有效信息</div>
+              <img :src="userMsg.idBack " v-if="realStatus" alt="" class="idImg">
+              <div class="nullMsg" v-if="!realStatus">无有效信息</div>
             </el-form-item>
               <el-button type="primary" plain class="cancel-Id"
-                @click="cancelId(ID,30,null)"
+                @click="cancelId(ID)"
+                :disabled="! (userMsg.idAuthentication == 20)"
               >取消实名</el-button>
           </el-form>
         </div> 
@@ -135,20 +143,20 @@
           银行卡信息（最多绑两张卡）
         </div>
         <div class="card-body">
-          <el-form  v-if="userMsg.bankId != ''"
-            label-width="80px" class="ruleForm center-form" v-for="item in userMsg.bankId" :key ="item.cardNumber" >
-            <!-- 总资产 -->
+          <el-form  v-if="!showBank"
+            label-width="80px" class="ruleForm center-form" v-for="(item,index) in userMsg.bankId" :key ="index" >
+            <!-- 银行卡信息 -->
             <el-form-item label="开 户 行" align="left">
               <el-input type="text" class="input-item" v-model="item.bankName" disabled></el-input>
             </el-form-item>
-            <!-- 累计收益 -->
-            <el-form-item label="银行卡号" class="get-earn ">
+            <!-- 银行卡信息-->
+            <el-form-item label="银行卡号" class="get-earn">
               <el-input type="text" class="input-item" v-model="item.cardNumber" disabled></el-input>
               <el-button type="primary" plain class="cancel-card"
                 @click="deleteCard(ID,item.cardNumber)">解绑</el-button>
             </el-form-item>
           </el-form>
-          <div class="nullMsg" v-if="userMsg.bankId == ''">无有效信息</div>
+          <div class="nullMsg" v-if="showBank">无有效信息</div>
           <!-- 这里通过相等操作符判断这个数组如果是空数组，就会显示无有效信息 -->
         </div> 
       </div>
@@ -159,6 +167,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { setTimeout } from 'timers';
 @Component
 export default class UserMsg extends Vue {
   //获取数据
@@ -168,7 +177,6 @@ export default class UserMsg extends Vue {
   userNumberUse: boolean = true; //工号修改
   manageNumber: string = ""; //工号值
   phoneNumber: string = ""; //电话号码值
-
   created() {
     //获得数据请求参数
     this.getUserMsg();
@@ -186,6 +194,14 @@ export default class UserMsg extends Vue {
   }
   get ID() {
     return this.$route.params.id; //计算属性获取路由参数 id
+  }
+  get realStatus() {
+    return this.userMsg.idAuthentication === 20;
+  }
+  get showBank() {
+    if (this.userMsg.bankId) {
+      return this.userMsg.bankId.length == 0;
+    }
   }
   get loginTime() {
     //注册时间的
@@ -216,7 +232,7 @@ export default class UserMsg extends Vue {
   };
   //定义验证的规则
   rules: object = {
-    phone: [{ validator: this.checkPhone, trigger: "change" }]
+    phone: [{ validator: this.checkPhone, trigger: "blur" }]
   };
   //重置表单，定义$refs保证元素能调用方法
   $refs: any = {
@@ -227,20 +243,31 @@ export default class UserMsg extends Vue {
     let msg: string =
       "<div><p>解绑将删除该银行卡信息</p><h3>确定解绑</h3></div>";
     let successMsg: string = "解绑成功";
-    let callbacks: any = function(): void {
-      console.log(id, cardNumber);
+    let that: any = this;
+    let callback: any = function() {
+      return (that as any).$api.user.deleteCard(id, cardNumber);
     };
-    (this as any).$alertMsg(msg, successMsg, callbacks);
+    //删除后重新获取数据
+    (this as any).$alertMsg(msg, successMsg, callback).then(() => {
+      setTimeout(() => {
+        that.getUserMsg();
+      }, 200);
+    });
   }
   //取消实名
-  cancelId(id: number, idAuthentication: string, refusal: string) {
+  cancelId(id: number) {
     let msg: string = "是否取消实名";
     let successMsg: string = "取消实名成功";
     let that: any = this;
     let callback: any = function() {
-      (that as any).$api.user.changeVerification(id, idAuthentication, refusal);
+      return (that as any).$api.user.changeVerification(id);
     };
-    (this as any).$alertMsg(msg, successMsg, callback);
+    //删除后重新获取数据
+    (this as any).$alertMsg(msg, successMsg, callback).then(() => {
+      setTimeout(() => {
+        that.getUserMsg();
+      }, 200);
+    });
   }
   //取消修改工号
   cancelManageNumber() {
@@ -254,11 +281,17 @@ export default class UserMsg extends Vue {
     (this as any).$api.user.changeManage(id, number).then(() => {
       this.getUserMsg();
       this.userNumberUse = !this.userNumberUse;
+      this.$message({
+        type: "success",
+        message: "工号修改成功"
+      });
     }); //保存工号后刷新页面
   }
   //取消修改手机号
   cancelPhoneNumber() {
-    this.$refs.phone.resetField();
+    setTimeout(()=>{
+      this.$refs.phone.clearValidate();
+    },500)
     this.userMsg.phone = this.phoneNumber;
     this.phoneUse = !this.phoneUse;
   }
@@ -267,8 +300,13 @@ export default class UserMsg extends Vue {
     if (number == this.phoneNumber) return (this.phoneUse = !this.phoneUse);
     (this as any).$api.user.changePhone(id, number).then(() => {
       this.getUserMsg();
+      this.$refs.phone.clearValidate();
       this.phoneUse = !this.phoneUse;
-    }); //保存工号后刷新页面
+      this.$message({
+        type: "success",
+        message: "手机号修改成功"
+      });
+    });
   }
   changes() {
     this.$refs.userForm1.validate((valid: boolean) => {

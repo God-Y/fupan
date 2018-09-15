@@ -4,10 +4,10 @@
       <div class="card-body">
         <el-form :model="userForm" ref="userForm1" label-width="96px" class="ruleForm">
           <!-- 产品名称 -->
-          <el-form-item label="产品名称"  class="form-item">
+          <el-form-item label="产品名称"  class="form-item" prop="productName">
             <el-input type="tel" v-model="userForm.productName" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="出借合同编号"  class="form-item">
+          <el-form-item label="出借合同编号"  class="form-item" prop="lendingContractNumber">
             <el-input type="tel" v-model="userForm.lendingContractNumber" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 日期组件 -->
@@ -19,19 +19,20 @@
               @end-change="getStartup"
             ></date>
           </el-form-item>
-           <el-form-item label="投资状态" prop="status" class="form-item">
-            <el-select v-model="userForm.investmentSatus" placeholder="全部" >
+           <el-form-item label="投资状态" prop="investmentStatus" class="form-item">
+            <el-select v-model="userForm.investmentStatus" placeholder="全部" >
+              <el-option label="全部" value=""></el-option>
               <el-option label="投资中" value="10"></el-option>
               <el-option label="退出中" value="20"></el-option>
               <el-option label="已退出" value="30"></el-option>
             </el-select>
           </el-form-item>
-           <el-form-item label="债权协议编号" class="form-item">
+           <el-form-item label="债权协议编号" class="form-item" prop="creditContractNumber">
             <el-input type="tel" v-model="userForm.creditContractNumber" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 姓名 -->
           <!-- 日期组件 -->
-           <el-form-item label="起息日期" prop="idName" ref="idName">
+           <el-form-item label="到息日期">
             <date
               :upperDate="userForm.valueEndupperDate"
               :lowerDate="userForm.valueEndlowerDate"
@@ -80,9 +81,10 @@ export default class PaySearch extends Vue {
     this.userForm.valueEndupperDate = value;
   }
   //重置清空表单
-  resetForm() {
+  resetForm(value: any) {
     let ID = this.$route.params.id;
     let pages = this.$route.params.pages;
+    (this as any).$refs[value].resetFields();
     //跳转路由
     this.$router.push({
       path: `/back/user-pay/${ID}/1`,

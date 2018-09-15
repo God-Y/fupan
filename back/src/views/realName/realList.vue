@@ -4,7 +4,8 @@
     ></check-search>
     <check-table :table-params = "list" 
     :loading="listLoading" :total = "total"
-    @calcelRealName="calcelRealName"
+    @cancel="calcelReal"
+    ref="checkTable"
     ></check-table>
   </div>
 </template>
@@ -41,6 +42,7 @@ export default class RealList extends Vue {
 
   @Watch("pages") //路由参数发生变化的时候重新请求
   onIdChanged(val: any, oldVal: any) {
+    console.log(1);
     this.getList(this.userForm, this.$route.params.pages);
   }
 
@@ -76,11 +78,13 @@ export default class RealList extends Vue {
       });
   }
   //取消实名后获取数据
-  calcelRealName() {
+  calcelReal() {
+    console.log(1);
     this.getList(this.userForm, this.pages);
   }
   //使用中央数据总线来确定审核
   mounted() {
+    console.log(this.$refs.checkTable);
     bus.$on("comfirmStatus", (data: any) => {
       let params: any = {}; //创建一个对象用于传递参数
       let Id = data.id;
@@ -91,9 +95,20 @@ export default class RealList extends Vue {
         params.code = 0;
         params.refusal = data.reason;
       }
-      (this as any).$api.real.checkRealName(Id, params).then(() => {
-        this.getList(this.userForm, this.pages);
-      });
+      (this as any).$api.real
+        .checkRealName(Id, params)
+        .then(() => {
+          (this as any).$refs.checkTable.checkVisible = false;
+          console.log(1);
+          this.getList(this.userForm, this.pages);
+        })
+        .then(() => {
+          this.$message({
+            showClose: true,
+            message: "操作成功",
+            type: "success"
+          });
+        });
     });
   }
 }

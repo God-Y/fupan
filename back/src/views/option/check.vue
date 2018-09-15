@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { setTimeout } from "timers";
 @Component
 export default class CheckAdvise extends Vue {
   //发送http请求，获取数据
@@ -70,7 +71,9 @@ export default class CheckAdvise extends Vue {
             type: "success",
             message: "删除成功"
           });
-          //取消成功后调用父级方法，更新列表.
+          setTimeout(() => {
+            this.$router.go(-1);
+          }, 300);
         });
       })
       .catch(() => {

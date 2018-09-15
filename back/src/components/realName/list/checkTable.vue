@@ -78,7 +78,7 @@
       <pages :total-num="total"  @page-change="toPage" v-if="realList.length && total > 10"></pages>    
       <div class="nullMsg" v-if="!realList.length && !loading">无有效信息</div>
     </div>
-    <check-log :visible='checkVisible' :user-id ="uid"
+    <check-log :visible='checkVisible' :userId ="uid"
     ></check-log>
   </div>
 </template>
@@ -102,8 +102,11 @@ export default class RealTable extends Vue {
   @Prop([Number])
   total!: number; //条目总数，用于渲染分页
   //这里取消实名
-  @Emit()
-  cancelRealName() {}
+  @Emit("cancel")
+  cancelRealName() {
+    console.log(2);
+  }
+
   uid: number = 1; //用于确定用户的uid
   checkVisible: boolean = false; //是否弹出对话框
   //获取父级的表单数据

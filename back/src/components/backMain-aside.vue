@@ -20,7 +20,6 @@
                     </li>
                 </transition>
             </ul> 
-            <!-- 列表渲染 -->
         </div>
     </div>
 </template>
@@ -81,11 +80,6 @@ export default class backAside extends Vue {
         {
           id: 2.4,
           name: "参数管理",
-          visible: true
-        },
-        {
-          id: 2.5,
-          name: "版本管理",
           visible: true
         },
         {
@@ -157,6 +151,8 @@ export default class backAside extends Vue {
       case 2.2:
         router.push({ path: "message" });
         break;
+
+
       case 2.6:
         router.push({ path: "/back/option-management/1" });
         break;
@@ -165,6 +161,7 @@ export default class backAside extends Vue {
         break;
       case 2.4:
         router.push({ name: "parameter" });
+
         break;
       case 3.1:
         router.push("/back/back-account/1");

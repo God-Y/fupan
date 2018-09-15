@@ -50,7 +50,7 @@ export default class UserMsg extends Vue {
   userDetial!: object;
   //定义一个计算属性属性，用来接收父级传过来的属性值
   get userMsg() {
-    return this.userDetial;
+    return (this as any).userDetial;
   }
 
   get loginTime() {

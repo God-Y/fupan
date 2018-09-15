@@ -5,18 +5,43 @@
         {{title}}角色
       </div>
       <div class="card-body">
-        <el-form :model="Roler" label-position="left"  label-width="100px" class="manage-form">
-          <el-form-item label="角色名" class="role-name">
+        <el-form :model="Roler" label-position="left" label-width="100px" class="manage-form">
+          <el-form-item label="角色名" class="role-name"  prop="rolenName">
             <el-input v-model="Roler.roleName" :disabled="nameUse" ></el-input>
           </el-form-item>
-          <!-- <el-form-item :label="roles.name" prop="type"
-           v-for="roles in allRoles" :key="roles.id">
-            <el-checkbox-group v-model="Roler.permissionsId">
-              <el-checkbox :label="item.permission" name="type" class="check-item"  v-for="item in roles.permissionList" :key="item.id"></el-checkbox>
+          <el-form-item label="业务管理" prop="type">
+            <el-checkbox-group v-model="Roler.permissions">
+              <el-checkbox 
+                v-for="item in list1" :key="item.id"
+                :label="item.id" name="type">{{item.permission}}</el-checkbox>
             </el-checkbox-group>
-          </el-form-item> -->
+          </el-form-item>
+          <el-form-item label="运营管理" prop="type">
+            <el-checkbox-group v-model="Roler.permissions">
+              <el-checkbox 
+                v-for="item in list2" :key="item.id"
+                :label="item.id" name="type">{{item.permission}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="统计管理" prop="type">
+            <el-checkbox-group v-model="Roler.permissions">
+              <el-checkbox 
+                v-for="item in list3" :key="item.id"
+                :label="item.id" name="type">{{item.permission}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="后台管理" prop="type">
+            <el-checkbox-group v-model="Roler.permissions">
+              <el-checkbox 
+                v-for="item in list4" :key="item.id"
+                :label="item.id" name="type">{{item.permission}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
           <el-form-item align="left">
-            <el-button type="primary" @click="submit()">确定</el-button>
+            <el-button type="primary"
+             @click="submit()"
+             :disabled="!submitUse"
+             >确定</el-button>
             <el-button @click="$router.go(-1)">取消</el-button>
           </el-form-item>
         </el-form>
@@ -39,21 +64,48 @@ export default class ManageRole extends Vue {
     roleName: "",
     permissions: []
   };
-  //所有模块的信息
   allRoles: any = [];
+  // 业务管理
+  list1: any = [
+    { permission: "用户管理", id: 1 },
+    { permission: "实名认证", id: 2 },
+    { permission: "产品管理", id: 3 },
+    { permission: "债券管理", id: 4 }
+  ];
+  // 运营管理
+  list2: any = [
+    { permission: "内容管理", id: 11 },
+    { permission: "消息管理", id: 12 },
+    { permission: "银行管理", id: 13 },
+    { permission: "参数管理", id: 14 },
+    { permission: "意见反馈", id: 15 }
+  ];
+  // 销量统计
+  list3: any = [{ permission: "销量统计", id: 21 }];
+  // 后台管理
+  list4: any = [
+    { permission: "账户管理", id: 31 },
+    { permission: "修改密码", id: 32 },
+    { permission: "角色管理", id: 33 }
+  ];
+
   get msg() {
     //计算属性获取值
     return this.$route.params.msg;
+  }
+  //提交按钮在没有输入的时候不能点击
+  get submitUse() {
+    let lengthBoolean = this.Roler.permissions.length > 0;
+    return this.Roler.roleName && lengthBoolean;
   }
   //根据id获取相关账户的角色相关信心
   getRoleMsg() {
     let ID = this.$route.params.id;
     (this as any).$api.backRoles.getRoleMsg(ID).then((res: any) => {
       let data = res.data;
-      if (data.code) {
-        this.Roler.permissions = data.data.permissionsId;
-        this.Roler.roleName = data.data.roleName;
-      }
+      console.log(data);
+      this.Roler.permissions = data.data.permissionsId;
+      this.Roler.roleName = data.data.name;
     });
   }
   //所有的角色
@@ -96,11 +148,6 @@ export default class ManageRole extends Vue {
             message: res.data.message,
             type: "error"
           });
-          //失败
-          // this.Roler = {
-          //   name: "",
-          //   permissions: []
-          // };
         }
       });
     }
@@ -135,5 +182,8 @@ export default class ManageRole extends Vue {
 }
 .card-header {
   text-align: left;
+}
+.role-name {
+  width: 400px;
 }
 </style>

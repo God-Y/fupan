@@ -5,14 +5,23 @@
         <el-form :model="userForm" status-icon :rules="rules" ref="userForm1" label-width="80px" class="ruleForm">
           <!-- 手机号 -->
           <el-form-item label="手机号码" prop="phone" ref="phone">
-            <el-input type="tel" v-model="userForm.phone" auto-complete="off"></el-input>
+            <el-input type="tel" 
+              v-model="userForm.phone" 
+              auto-complete="off"
+              placeholder="请输入完整的手机号"
+            ></el-input>
           </el-form-item>
           <!-- 姓名 -->
           <el-form-item label="真实姓名" prop="idName" ref="idName">
-            <el-input type="text" v-model="userForm.idName" class="input-item" auto-complete="off"></el-input>
+            <el-input type="text" 
+              v-model="userForm.idName" 
+                class="input-item" 
+                auto-complete="off"
+                 placeholder="请输入中文名"
+                ></el-input>
           </el-form-item>
           <!-- 日期组件 -->
-          <el-form-item label="注册日期" prop="idName" ref="idName">
+          <el-form-item label="注册日期"  >
             <date
               :upperDate="userForm.upperDate"
               :lowerDate="userForm.lowerDate"
@@ -21,7 +30,11 @@
             ></date>
           </el-form-item>
           <el-form-item label="理财经理" prop="managerNumber">
-            <el-input type="text" v-model="userForm.managerNumber" auto-complete="off"></el-input>
+            <el-input type="text"
+               v-model="userForm.managerNumber" 
+               auto-complete="off"
+                 placeholder="请输入理财经理号"
+              ></el-input>
           </el-form-item>
           <el-form-item label="账户状态" prop="status" >
             <el-select v-model="userForm.status" placeholder="全部"  class="input-item">
@@ -31,7 +44,7 @@
           </el-form-item>
           <!-- 搜索清空那按钮 -->
           <el-form-item class="btn-box">
-            <el-button type="danger" @click="resetForm('userForm1')">清空</el-button>
+            <el-button type="danger"  @click="resetForm('userForm1')">清空</el-button>
             <el-button type="primary" @click="search">搜索</el-button>
           </el-form-item>
         </el-form>
@@ -46,6 +59,7 @@
         <!-- 表格渲染开始 -->
         <el-table
           :data="userList"
+          v-if="userList.length"
           border
           style="width: 100%"
           v-loading = "listLoading"
@@ -95,8 +109,9 @@
             label="操作"
             width="100"  align="center" >
             <template slot-scope="scope">
+              <!-- 冻结 -->
               <el-button 
-              @click="changeStatus(scope.row.status)" 
+              @click="changeStatus(scope.row.id,scope.row.status)" 
               type="text" 
               size="small"
               :class="[scope.row.status==10 ? 'freeze' :'remove-freeze']"
@@ -107,7 +122,7 @@
             </template>
           </el-table-column>
         </el-table>
-      <pages :total-num="total"  @page-change="toPage" v-if="userList.length && total>10"></pages>    
+      <pages :total-num="total"  @page-change="toPage" v-if="userList.length  && total>10"></pages>    
       </div>
     </div>
   </div>
@@ -160,7 +175,9 @@ export default class BusinessUser extends Vue {
       .list(this.userForm, id)
       .then((response: any) => {
         let data = response.data;
+        console.log(data);
         if (data.code) {
+          console.log(data.data.list);
           this.userList = data.data.list;
           this.total = data.data.total;
         }
@@ -182,7 +199,9 @@ export default class BusinessUser extends Vue {
   private checkPhone = (rule: any, value: string, callback: any) => {
     console.log(value);
     let number = Number(value); //定义数字
+    console.log(this.$refs.phone);
     if (!value) {
+      console.log("a");
       return this.$refs.phone.resetField(); //这里必须调用该元素的resetFileld()方法
     } else if (value.length > 0) {
       setTimeout(() => {
@@ -201,7 +220,7 @@ export default class BusinessUser extends Vue {
   private checkName = (rule: any, value: string, callback: any) => {
     //真实姓名自定义验证规则
     if (!value) {
-      return this.$refs.idName.resetField();
+      return this.$refs["idName"].resetField();
     } else {
       setTimeout(() => {
         //中文验证
@@ -220,7 +239,7 @@ export default class BusinessUser extends Vue {
     idName: [{ validator: this.checkName, trigger: "blur" }]
   };
   //改变状态会弹窗
-  changeStatus(status: number) {
+  changeStatus(id: any, status: number) {
     //判断当前的状态
     let alertMsg: string =
       status == 10 ? "冻结后将禁止用户登录App" : "解冻后将恢复用户登录权限";
@@ -232,7 +251,8 @@ export default class BusinessUser extends Vue {
     })
       //冻结 ，解冻的操作写在这里
       .then(() => {
-        this.freeze(status).then((res: any) => {
+        let anthorStatus = status === 10 ? 20 : 10;
+        this.freeze(id, anthorStatus).then((res: any) => {
           let msg: string = status == 10 ? "冻结成功" : "解冻成功";
           this.$message({
             type: "success",
@@ -272,8 +292,8 @@ export default class BusinessUser extends Vue {
     }
   }
   //冻结账号功能
-  freeze(id: number | string): any {
-    return (this as any).$api.user.changeStatus(id);
+  freeze(id: number | string, status: any): any {
+    return (this as any).$api.user.changeStatus(id, status);
   }
   //查看个人详情信息
   getUserMsg(id: number | string): any {

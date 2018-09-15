@@ -8,7 +8,7 @@
             <el-input type="text" v-model="statisticsForm.productName"  auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="产品代号"  class="form-item">
-            <el-input type="text" v-model="statisticsForm.poductCode" auto-complete="off"></el-input>
+            <el-input type="text" v-model="statisticsForm.productCode" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 搜索清空那按钮 -->
           <el-form-item class="btn-box ">

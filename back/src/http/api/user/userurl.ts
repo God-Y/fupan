@@ -10,7 +10,9 @@ export default {
   },
   //改变用户状态
   changeStatus(id: number, data: any): any {
-    return axios.put(`/api/a/user-status/${id}`, data);
+    return axios.put(`/api/a/user-status/${id}`, {
+      status:data
+    });
   },
   //查看用户详情
   getMsg(id: number) {
@@ -37,11 +39,8 @@ export default {
     });
   },
   //修改实名认证状态
-  changeVerification(id: number, idAuthentication: string, refusal: string) {
-    return axios.put(`/api/a/user-verification/${id}`, {
-      idAuthentication: idAuthentication,
-      refusal: refusal
-    });
+  changeVerification(id: number,  refusal: string) {
+    return axios.put(`/api/a/user-verification-cancel/${id}`);
   },
   //获取交易数据
   getDeal(id: number, data: any, pages: string = "1") {
@@ -56,5 +55,15 @@ export default {
     return axios.get(`/api/a/list/investment-user/${id}`, {
       params: data
     });
+  },
+  //用户列表接口，包括查询
+  Contract (data: any, id: any = 1): any {
+    data.pageNum = id;
+    return axios.get(`/api/a/list/user`, {
+      params: data
+    });
+  },
+  login(data:any){
+    return axios.post(`/api/backstageLogin`, data);
   }
 };
