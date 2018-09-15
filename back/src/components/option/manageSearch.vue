@@ -4,11 +4,16 @@
         <el-form :model="optionForm" status-icon :rules="rules" ref="optionForm1" label-width="80px" class="ruleForm">
           <!-- 手机号 -->
           <el-form-item label="手机号码" prop="phone" ref="phone">
-            <el-input type="tel" v-model="optionForm.phone" auto-complete="off"></el-input>
+            <el-input type="text" 
+                v-model="optionForm.phone" 
+                auto-complete="off"
+                placeholder="请输入完整手机号"
+                @input="setPhone(optionForm.phone)"
+                ></el-input>
           </el-form-item>
           <!-- 姓名 -->
           <el-form-item label="真实姓名" prop="name"  ref="name">
-            <el-input type="text" v-model="optionForm.name" class="input-item" auto-complete="off"></el-input>
+            <el-input type="text"  placeholder="请输入中文名" v-model="optionForm.name" class="input-item" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 日期组件 -->
           <el-form-item label="提交日期" prop="idName" ref="idName">
@@ -20,7 +25,7 @@
             ></date>
           </el-form-item>
           <el-form-item label="邮箱">
-            <el-input type="text" v-model="optionForm.email" auto-complete="off"></el-input>
+            <el-input type="text" placeholder="请输入邮箱"  v-model="optionForm.email" auto-complete="off"></el-input>
           </el-form-item>
           <!-- 搜索清空那按钮 -->
           <el-form-item class="btn-box">
@@ -60,7 +65,6 @@ export default class OptionForm extends Vue {
   };
   //自定义表达验证规则
   private checkPhone = (rule: any, value: string, callback: any) => {
-    console.log(value);
     let number = Number(value); //定义数字
     if (!value) {
       return this.$refs.phone.resetField(); //这里必须调用该元素的resetFileld()方法
@@ -103,9 +107,12 @@ export default class OptionForm extends Vue {
   resetForm() {
     //循环所有的项
     let pages = (this as any).$route.params.pages;
+    this.$refs.optionForm1.clearValidate();
     for (let key in this.optionForm) {
       this.optionForm[key] = "";
     }
+    this.optionForm.upperGmtCreate = "";
+    this.optionForm.lowerGmtCreate = "";
     this.$router.push({
       path: `/back/option-management/1`,
       query: {}
@@ -123,6 +130,10 @@ export default class OptionForm extends Vue {
       query: this.optionForm
     });
     (this as any).$parent.getList(this.optionForm, pages);
+  }
+  setPhone(value: string): void {
+    this.optionForm.phone = this.optionForm.phone.replace(/\D/g, "");
+    console.log(value);
   }
 }
 </script>

@@ -1,6 +1,6 @@
 export default {
   alertMsg: function(msg: string, successMsg: string, callback: any): void {
-    (this as any)
+    return  (this as any)
       .$confirm(msg, "操作提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -9,7 +9,7 @@ export default {
         dangerouslyUseHTMLString: true
       })
       .then(() => {
-        callback().them(() => {
+        callback().then(() => {
           (this as any).$message({
             type: "success",
             message: successMsg

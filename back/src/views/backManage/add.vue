@@ -9,8 +9,8 @@
           <el-form-item label="登录名" prop= "name">
             <el-input v-model="User.name" :disabled="nameUse"></el-input>
           </el-form-item>
-          <el-form-item label="手机号码" prop= "phone">
-            <el-input v-model="User.phone"></el-input>
+          <el-form-item label="手机号码" prop= "phone" >
+            <el-input v-model="User.phone" max-length="11"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
             <el-input type="password" v-model="User.password" auto-complete="off"></el-input>

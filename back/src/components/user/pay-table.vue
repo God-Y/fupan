@@ -15,7 +15,7 @@
         <el-table-column
           type="index"
           label="序号"
-          width="80"
+          width="60"
           align="center"  
         >
         </el-table-column>
@@ -34,7 +34,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="phone"    width="140"
+          prop="phone"    width="120"
           label="手机号"  align="center" >
         </el-table-column>
         <el-table-column

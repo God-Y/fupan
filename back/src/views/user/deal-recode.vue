@@ -40,7 +40,7 @@
     </div>
     <div class="card">
       <div class="card-header">
-        用户列表
+        交易记录
       </div>
       <div class="card-body">
         <!-- 表格渲染开始 -->
@@ -49,6 +49,7 @@
           border
           style="width: 100%"
           v-loading="listLoading"
+          v-if="dealData.length"
           >
           <el-table-column
             type="index"
@@ -77,7 +78,7 @@
             label="交易流水"  align="center" >
           </el-table-column>
           <el-table-column
-            prop="productName" width="90"
+            prop="productName" width=""
             label="产品名称"  align="center" >
           </el-table-column>
           <el-table-column
@@ -106,7 +107,7 @@
             label="交易银行"  align="center" >
           </el-table-column>
         </el-table>
-        <pages :total-num="total"  @page-change="toPage" v-if="dealData.length"></pages>    
+        <pages :total-num="total"  @page-change="toPage" v-if="dealData.length && total > 10"></pages>    
         <div class="nullMsg" v-if="!dealData.length">无有效信息</div>
       </div>
     </div>
@@ -183,6 +184,9 @@ export default class DealRecode extends Vue {
   }
   //重置清空表单
   resetForm() {
+    for (let key in this.userForm) {
+      this.userForm[key] = null;
+    }
     (this as any).userForm = {
       upperDate: "",
       lowerDate: ""

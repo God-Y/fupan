@@ -83,11 +83,6 @@ export default class backAside extends Vue {
           visible: true
         },
         {
-          id: 2.5,
-          name: "版本管理",
-          visible: true
-        },
-        {
           id: 2.6,
           name: "意见反馈",
           visible: true

@@ -48,6 +48,7 @@ export default class DealRecode extends Vue {
   created() {
     let query: any = this.$route.query; //获取查询参数
     let keys = Object.keys(query);
+    console.log(2);
     if (keys.length) {
       //应对第一次刷新，不需要赋值
       query.valueStartlowerDate = query.valueStartlowerDate
@@ -91,10 +92,15 @@ export default class DealRecode extends Vue {
     this.getList();
   }
   //实现清空参数功能
-  clear(oldpage:string) {
+  clear(oldpage: string) {
     for (let key in this.userForm) {
-      this.userForm[key] = "";
-    } if (oldpage === "1") {
+      this.userForm[key] = null;
+    }
+    this.userForm.valueStartlowerDate = "";
+    this.userForm.valueStartupperDate = "";
+    this.userForm.valueEndlowerDate = "";
+    this.userForm.valueEndupperDate = "";
+    if (oldpage === "1") {
       this.getList();
     }
   }

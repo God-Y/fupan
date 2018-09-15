@@ -17,7 +17,7 @@ export default {
   delete(id: any) {
     return axios.delete(`/api/a/role/${id}`);
   },
-  //根据ID获取角色信息
+  //根据ID获取角色信息,返回的是数组
   getRoleMsg(id: any) {
     return axios.get(`/api/a/rolePermission/${id}`);
   },
