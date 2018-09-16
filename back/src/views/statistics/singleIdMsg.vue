@@ -3,7 +3,7 @@
     <search :search-params = "statisticsForm" @searchList ="search"
       @clear = "clear"
     ></search>
-    <tables :table-params = "roleData" production-name= "productName"
+    <tables :table-params = "roleData" 
     :loading="listLoading" :total = "total"
     ></tables>    
   </div>
@@ -66,7 +66,7 @@ export default class ProductionStatistics extends Vue {
         if (data.code) {
           this.total = data.data.total;
           this.roleData = data.data.list;
-          this.productName = data.data.productName;
+          // this.productName = data.data.list;
         }
       })
       .then(() => {

@@ -21,14 +21,14 @@
         >
         <el-table-column
           label="ID"
-          width="80"
+          width="60"
           align="center"
           prop="id"
         >
         </el-table-column>
         <el-table-column
-          label="登陆名"
-          width="100"  align="center" prop="name">
+          label="用户名"
+            align="center" prop="name">
         </el-table-column>
         <el-table-column
           label="角色"
@@ -65,10 +65,16 @@
               @click="edit(scope.row.id)" 
               type="primary"
               size="mini"
+              :disabled="amdin(scope.row.name)"
               >
               编辑
               </el-button>
-              <el-button type="danger" size="mini" @click="deleteUser(scope.row.id)">删除</el-button>
+              <el-button 
+                type="danger" 
+                size="mini" 
+                @click="deleteUser(scope.row.id)"
+                :disabled="amdin(scope.row.name)"
+              >删除</el-button>
             </template>
           </el-table-column>
       </el-table>
@@ -98,6 +104,10 @@ export default class BackAcconutTable extends Vue {
   //获取角色
   get roleList() {
     return this.tableParams;
+  }
+  //超级管理员不能被删除和编辑
+  amdin(name: any) {
+    return name === "admin";
   }
   //根据页码跳转路由
   toPage(val: number) {

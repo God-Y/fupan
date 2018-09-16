@@ -11,7 +11,7 @@ export default {
   //更改状态
   changeStatu(id: any, type: any) {
     console.log(id ,type);
-    return axios.put(`/api/a/content-status/${id}`, {status: type}
+    return axios.put(`/api/a/content-status/${id}`, { status: type }
     );
   },
 

@@ -79,26 +79,22 @@ export default class ModifyPassword extends Vue {
         (this as any).$api.backAccount
           .modifyPwd(this.modify)
           .then((res: any) => {
-            if (res.data.code) {
+            if (res.data.code == 1) {
               //成功
               this.$message({
                 message: "密码修改成功，跳转回登陆页",
                 type: "success"
               });
               setTimeout(() => {
-                this.$router.push({ name: "backend" });
-              }, 2000);
+                this.$router.push("/");
+              }, 1000);
             } else {
               //失败，重置表单
               this.$message({
                 message: res.data.message,
                 type: "error"
               });
-              this.modify = {
-                newPwd: "",
-                checkPwd: "",
-                oldPwd: ""
-              };
+              (this as any).$refs.ruleForm.resetFields();
             }
           });
       } else {

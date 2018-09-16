@@ -93,7 +93,7 @@ export default class contentManagement extends Vue {
       .then(() => {
         (this as any).$api.content.changeStatu(id, statu).then((res: any) => {
           console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          if(res.data.code === 1) {
+          if (res.data.code === 1) {
             this.getList("");
           }
         });
@@ -103,18 +103,15 @@ export default class contentManagement extends Vue {
       });
   }
   deleteContent(id: any) {
-     this.$confirm(
-      "是否删除？",
-      "提示",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }
-    ).then(() => {
+    this.$confirm("是否删除？", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
+      .then(() => {
         (this as any).$api.content.deleteContent(id).then((res: any) => {
           console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          if(res.data.code === 1) {
+          if (res.data.code === 1) {
             this.getList("");
           }
         });

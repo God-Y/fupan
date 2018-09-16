@@ -1,17 +1,16 @@
-//  后台 header
 <template>
     <div class="header">
         <div>
-            <p>管理员</p>
+            <p>{{userMsg.roleName}}</p>
         </div>
         <span>|</span>
         <div>
             <i class="iconfont icon-caigoutonggerenbangaobaozhenzhucedenglu17"></i>
-            <p>{{user}}</p>
+            <p>{{userMsg.name}}</p>
         </div>
         <span>|</span>
         <div>
-            <p>logout</p>
+            <p @click="loginout">logout</p>
         </div>
     </div>
 </template>
@@ -22,6 +21,35 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class backHead extends Vue {
   user: string = "admin"; /* 通过后台渲染用户 */
+  userMsg: any = JSON.parse(localStorage.getItem("backUser"));
+  loginout() {
+    this.$confirm("确定退出账户?", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
+      .then(() => {
+        (this as any).$api.user.loginOut().then(() => {
+          localStorage.removeItem("backUser");
+          localStorage.removeItem("modulars");
+          localStorage.removeItem("isLogin");
+          this.$store.commit("loginOut");
+          this.$message({
+            type: "success",
+            message: "退出登陆!"
+          });
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 500);
+        });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "取消操作"
+        });
+      });
+  }
 }
 </script>
 

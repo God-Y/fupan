@@ -48,7 +48,9 @@
         <el-table-column
           label="出借合同编号"  align="center" >
             <template slot-scope="scope" >
-            {{scope.row.lendingContractNumber}}
+              <span class="contract" @click='showDialog'>
+                {{scope.row.lendingContractNumber}}
+              </span>
           </template>
         </el-table-column>
         <el-table-column
@@ -87,6 +89,26 @@
       </el-table>
       <pages :total-num="total"  @page-change="toPage" v-if="payList.length && total > 10"></pages>    
       <div class="nullMsg" v-if="!payList.length && !loading">无有效信息</div>
+      <el-dialog 
+        title="查看合同" 
+        :visible.sync="outerVisible"
+        width='30%'
+        class="dialog"
+      >
+        <div class="dialog-detial" @click="showinnerDialog">出借咨询与服务协议</div>
+        <div class="dialog-detial" @click="showinnerDialog">授权委托书 - 出借确认和债权转让</div>
+        <div class="dialog-detial" @click="showinnerDialog">授权委托书 - 催收及诉讼</div>
+        <div class="dialog-detial" @click="showinnerDialog">出借本金确认书</div>
+        <el-dialog
+          width="80%"
+          title="内层 Dialog"
+          :visible.sync="innerVisible"
+          append-to-body>
+        </el-dialog>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="outerVisible = false">取 消</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -95,7 +117,6 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Pages from "common_Components/page/pagination.vue";
-
 @Component({
   components: {
     Pages
@@ -108,6 +129,9 @@ export default class PayTable extends Vue {
   loading!: boolean;
   @Prop([Number])
   total!: number;
+
+  outerVisible: boolean = false;
+  innerVisible: boolean = false;
   get payList() {
     return this.tableParams;
   }
@@ -116,6 +140,12 @@ export default class PayTable extends Vue {
   }
   toPage(val: number) {
     this.$router.push(`/back/user-pay/${this.ID}/${val}`);
+  }
+  showDialog() {
+    this.outerVisible = true;
+  }
+  showinnerDialog() {
+    this.innerVisible = true;
   }
 }
 </script>
@@ -148,5 +178,18 @@ export default class PayTable extends Vue {
 }
 .status30 {
   color: #409eff;
+}
+.contract {
+  color: #409eff;
+  cursor: pointer;
+}
+.dialog {
+  text-align: left !important;
+  .dialog-detial {
+    padding-left: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #409eff;
+  }
 }
 </style>

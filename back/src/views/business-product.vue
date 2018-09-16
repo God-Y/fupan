@@ -90,8 +90,9 @@ export default class BusinessProduct extends Vue {
   }
   toPage(val: any) {
     this.$router.push({
-      path:`/back/product`,query: {
-        pages:val
+      path: `/back/product`,
+      query: {
+        pages: val
       }
     });
     this.getList(this.pagination);
@@ -119,16 +120,18 @@ export default class BusinessProduct extends Vue {
       type: "warning"
     })
       .then(() => {
-        axios.put(`/api/a/product-shelf/${id}`,{isShelf: isShelf}).then(res => {
-          console.log(res);
-          if(res.data.code === 1) {
-            this.$message({
-              type: "success",
-              message: "操作成功!"
-            });
-            this.getList("");
-          }
-        }); /* 点击确定发送请求 */
+        axios
+          .put(`/api/a/product-shelf/${id}`, { isShelf: isShelf })
+          .then(res => {
+            console.log(res);
+            if (res.data.code === 1) {
+              this.$message({
+                type: "success",
+                message: "操作成功!"
+              });
+              this.getList("");
+            }
+          }); /* 点击确定发送请求 */
       })
       .catch(() => {
         this.$message({

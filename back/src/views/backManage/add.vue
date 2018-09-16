@@ -19,8 +19,13 @@
             <el-input type="password" v-model="User.rePassword" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="角色名" align="left" prop="roleName" >
-            <el-select v-model="User.roleName" placeholder="全部"  class="input-item">
-              <el-option :label="item.roleName" :value="item.roleName" v-for ="item in roleList" :key="item.id"></el-option>
+            <el-select v-model="role" placeholder="全部"  class="input-item">
+              <el-option 
+                v-for ="item in roleList" 
+                :label="item.roleName" 
+                :value="item.roleName"
+                :key="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item align="left">
@@ -49,6 +54,7 @@ export default class ManageAccount extends Vue {
     phone: "",
     name: ""
   };
+  role: string = "";
   get msg() {
     //计算属性获取值
     return this.$route.params.msg;
@@ -71,7 +77,8 @@ export default class ManageAccount extends Vue {
       if (data.code) {
         this.User.phone = data.data.phone;
         this.User.name = data.data.name;
-        this.User.roleName = data.data.roleName;
+        // this.User.roleName = data.data.roleName;
+        this.role = data.data.roleName;
       }
     });
   }
@@ -160,6 +167,7 @@ export default class ManageAccount extends Vue {
   };
   //提交按钮
   submit() {
+    this.User.roleName = this.role;
     (this as any).$refs["ruleForm"].validate((valid: boolean) => {
       if (valid) {
         //新增账户的逻辑，发送http请求
@@ -175,7 +183,7 @@ export default class ManageAccount extends Vue {
                 });
                 setTimeout(() => {
                   this.$router.go(-1);
-                }, 2000);
+                }, 1000);
               } else {
                 //失败，重置表单
                 this.$message({
@@ -206,7 +214,7 @@ export default class ManageAccount extends Vue {
                 });
                 setTimeout(() => {
                   this.$router.go(-1);
-                }, 2000);
+                }, 1000);
               } else {
                 //失败，重置表单
                 this.$message({

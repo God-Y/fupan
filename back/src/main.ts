@@ -22,6 +22,16 @@ for (let key in vfilters) {
   Vue.filter(key, vfilters[key]);
 }
 
+router.beforeEach((to: any, from: any, next: any) => {
+  let isLogin = store.state.isLogin || localStorage.getItem("isLogin");
+  next();
+  if (isLogin) {
+    next();
+  } else {
+    next({ path: "/" });
+  }
+});
+
 new Vue({
   router,
   store,

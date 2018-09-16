@@ -105,7 +105,7 @@ export default class ManageRole extends Vue {
       let data = res.data;
       console.log(data);
       this.Roler.permissions = data.data.permissionsId;
-      this.Roler.roleName = data.data.name;
+      this.Roler.roleName = data.data.roleName;
     });
   }
   //所有的角色
@@ -141,7 +141,7 @@ export default class ManageRole extends Vue {
           });
           setTimeout(() => {
             this.$router.go(-1);
-          }, 2000);
+          }, 1000);
         } else {
           //失败，重置表单
           this.$message({
@@ -158,12 +158,12 @@ export default class ManageRole extends Vue {
         if (res.data.code) {
           //成功
           this.$message({
-            message: "新增成功，返回角色列表",
+            message: "编辑成功，返回角色列表",
             type: "success"
           });
           setTimeout(() => {
             this.$router.go(-1);
-          }, 2000);
+          }, 1000);
         } else {
           //失败，重置表单
           this.$message({

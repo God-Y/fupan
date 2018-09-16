@@ -5,8 +5,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isLogin:false
+    isLogin: false || localStorage.getItem("isLogin"),
+    productionName: ""
   },
-  mutations: {},
+  mutations: {
+    login(state: any) {
+      state.isLogin = true;
+    },
+    loginOut(state: any) {
+      state.isLogin = false;
+    },
+    production(state, value) {
+      state.productionName = value;
+    }
+  },
   actions: {}
 });

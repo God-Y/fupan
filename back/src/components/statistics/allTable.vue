@@ -45,7 +45,7 @@
             label="操作"
             width="160"  align="center" >
             <template slot-scope="scope">
-              <el-button type="text"  @click="goDetail(scope.row.productId)">查看明细</el-button>
+              <el-button type="text"  @click="goDetail(scope.row.productId,scope.row.productName)">查看明细</el-button>
             </template>
           </el-table-column>
       </el-table>
@@ -81,7 +81,8 @@ export default class BackAcconutTable extends Vue {
     this.$router.push(`/back/sale-statistics/${val}`);
   }
   //查看明细
-  goDetail(id: number) {
+  goDetail(id: number, name: string) {
+    this.$store.commit("production", name);
     this.$router.push(`/back/production-statistics/${id}/1`);
   }
 }
