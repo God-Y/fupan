@@ -70,6 +70,6 @@ export default {
     return axios.get(`/api/logout`);
   },
   contract(id: any) {
-    return axios.get(`/api/u/investment-contract/${id}`);
+    return axios.get(`/api/a/investment-contract/${id}`);
   }
 };
