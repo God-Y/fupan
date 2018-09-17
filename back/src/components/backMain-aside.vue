@@ -146,10 +146,14 @@ export default class backAside extends Vue {
         router.push({ name: "BusinessCreditor" });
         break;
       case 2.1:
-        router.push({ name: "content" });
+        router.push({ name: "content",query:{
+          pages: "1"
+        } });
         break;
       case 2.2:
-        router.push({ path: "message" });
+        router.push({ path: "message",query: {
+          pages: "1"
+        } });
         break;
 
 
@@ -157,7 +161,9 @@ export default class backAside extends Vue {
         router.push({ path: "/back/option-management/1" });
         break;
       case 2.3:
-        router.push({ name: "bank" });
+        router.push({ name: "bank", query: {
+          pages: "1"
+        } });
         break;
       case 2.4:
         router.push({ name: "parameter" });

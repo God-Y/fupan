@@ -123,6 +123,7 @@ export default class search extends Vue {
   };
   created() {
     let query: any = this.$route.query;
+    console.log(query);
     let keys: any = Object.keys(query);
     if (keys.length) {
       query.lowerDate = query.lowerDate ? Number(query.lowerDate) : ""; //保证拿出的毫秒数是number类型
@@ -147,12 +148,13 @@ export default class search extends Vue {
 
   clear() {
     let keys = Object.keys(this.data);
+    console.log(keys);
     keys.forEach((value: any) => {
       this.data[value] = "";
     }); /* 表单中的数据清零 */
-    this.$router.push({
-      path: `/back/bank`
-    }); /* 清空路由 */
+    // this.$router.push({
+    //   path: `/back/bank`
+    // }); /* 清空路由 */
     this.sendClear("");
   } /* 清除 */
 }

@@ -25,7 +25,7 @@
             <div class="line-style">
                 <el-form-item  size="mini">
                   <span>状态</span>
-                  <el-select v-model="data.statu" placeholder="请选择">
+                  <el-select v-model="data.state" placeholder="请选择">
                     <el-option label="上线" value="10"></el-option>
                     <el-option label="草稿" value="20"></el-option>
                   </el-select>
@@ -114,9 +114,9 @@ export default class search extends Vue {
     keys.forEach((value: any) => {
       this.data[value] = "";
     }); /* 表单中的数据清零 */
-    this.$router.push({
-      path: `/back/content`
-    }); /* 清空路由 */
+    // this.$router.push({
+    //   path: `/back/content`
+    // }); /* 清空路由 */
     this.sendClear("");
   } /* 清除 */
 }

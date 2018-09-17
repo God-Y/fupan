@@ -7,7 +7,7 @@
         </div>
         <div class="imgPreview" >
             <span>Photo Preview Area</span>
-            <img  :src="dataurl" >
+            <img  :src="getdataurl" >
         </div>
         <table class='fileInfo'>
             <thead>
@@ -54,9 +54,22 @@ export default class uploadFile extends Vue {
   dataurl: any = "";
   @Prop([Boolean])
   disabled!: boolean; /* 判断是否禁用 */
-  // @Prop()
-  // dataurl!: any; /* 图片base64 */
+  @Prop()
+  geturl!: any; /* 图片base64 */
 
+  get getdataurl() {
+    if(this.geturl){
+      return this.dataurl = this.geturl;
+    }else {
+      return this.dataurl;
+    }
+  }
+  created() {
+  //  if(this.geturl){
+  //    console.log(this.geturl);
+  //    this.dataurl = this.geturl;
+  //  } 
+  }
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
 

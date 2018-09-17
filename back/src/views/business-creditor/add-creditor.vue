@@ -45,6 +45,7 @@
               <el-form-item prop="interestRate">
                 <span>债权年利率</span>
                 <el-input v-model="data.interestRate" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                %
               </el-form-item>
           </div>
           <div class="line-style">
@@ -54,8 +55,8 @@
               </el-form-item>
           </div>
           <el-form-item class="button">
-            <el-button type="primary" @click="save('ruleForm')">保存</el-button>
-            <el-button type="danger" @click="previous">取消</el-button>
+            <el-button type="primary" :disabled=show @click="save('ruleForm')">保存</el-button>
+            <el-button type="danger" :disabled=show @click="previous">取消</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -69,6 +70,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class addCreditor extends Vue {
   data: any = {}; /* 数据对象 */
+  show: boolean = false;
   created() {
     this.judgeEdit();
     console.log(this.$refs);
@@ -78,26 +80,17 @@ export default class addCreditor extends Vue {
     console.log(id);
     let statu = this.$route.query.statu;
     if (statu !== "add") {
+      this.show = true;
       (this as any).$api.creditor.getAddData(id).then((res: any) => {
         console.log(res);
         this.data = res.data.data;
         let temple = this.data.lendingDate;
-        // .replace(/(.{4})/, "$1-");
-        // this.data.lendingDate = temple.replace(
-        //   /(.{7})/,
-        //   "$1-"
-        // ); /* 为日期增加横杠 */
         let value = new Date(temple);
         let year = value.getFullYear();
         let month = ("0" + (value.getMonth() + 1)).slice(-2); //getMonth是从0开始，所以加+
         let day = ("0" + value.getDate()).slice(-2);
         this.data.lendingDate = year + "-" + month + "-" + day;
-
-        // this.data.lendingAmount = this.data.lendingAmount
-        //   .toFixed(2)
-        //   .replace(/(\d)(?=(\d{3})+\.)/g, "$1,"); /* 格式化出借金额 */
-        this.data.interestRate =
-          this.data.interestRate * 100 + "%"; /* 格式化年率利 */
+        this.data.interestRate = this.data.interestRate * 100 + "%"; /* 格式化年率利 */
       });
     }
   } /* 判断是否 编辑页面 */
@@ -110,14 +103,14 @@ export default class addCreditor extends Vue {
     }
   }; /* 验证身份证号 */
   checkName: any = (rule: any, value: any, callback: any) => {
-    if (!value) {
-      callback(new Error("请输入债权人姓名"));
+    if (!value || value.length>5 || value.length<2) {
+      callback(new Error("请输入债权人姓名,字数限制在2-5位以内"));
     } else {
       callback();
     }
   }; /* 验证债权人 */
   checPhone: any = (rule: any, value: any, callback: any) => {
-    let re = /^[0-9]*$/;
+    let re = /^1[34578]\d{9}$/;
     if (!value || !re.test(value)) {
       callback(new Error("请输入正确的手机号"));
     } else {
@@ -133,8 +126,9 @@ export default class addCreditor extends Vue {
     }
   }; /* 出借期限 */
   checkDate: any = (rule: any, value: any, callback: any) => {
-    // let re = /((19|20)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01])/;
-    if (!value) {
+    console.log(value);
+    let re = /((19|20)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\ d|3[01])/;
+    if (!value || !re.test(value)) {
       callback(new Error("请输入正确的日期格式，例如：2018-08-08"));
     } else {
       callback();
@@ -163,9 +157,10 @@ export default class addCreditor extends Vue {
     }
   }; /* 债权性质！ */
   checkRate: any = (rule: any, value: any, callback: any) => {
-    let re = /^(100|[0-9]{1,2})%$/;
+    // let re = /^(100|[0-9]{1,2})%$/;
+    let re = /^[0-9]*$/;
     if (!value || !re.test(value)) {
-      callback(new Error("请按格式输入,比如18%"));
+      callback(new Error("请输入数字"));
     } else {
       callback();
     }
@@ -197,20 +192,21 @@ export default class addCreditor extends Vue {
     this.$refs[formName].validate((valid: any) => {
       if (valid) {
         console.log(this.data.lendingDate);
-        // this.data.lendingDate = new Date(this.data.lendingDate.replace(
-        //   /[-]/g,
-        //   ""
-        // )); /* 把输入的日期格式转换一下 */
-        // this.data.interestRate =
-        //   this.data.interestRate.replace(/[%]/, "") /
-        //   100; /* 把输入的百分比转换一下 */
-        // this.data.lendingDate = 12354131;
-        this.data.lendingPeriod = 1;
-        this.data.lendingAmount = 2;
-        this.data.interestRate = 10.5;
+        this.data.lendingDate = new Date(this.data.lendingDate).valueOf();
+        console.log(this.data.lendingDate);
         console.log(this.data);
         (this as any).$api.creditor.addCreditor(this.data).then((res: any) => {
           console.log(res);
+          if(res.data.code === 1) {
+             this.$message({
+              message: "增加成功",
+              type: "success",
+              center: true
+            });
+            this.$router.push({
+              path: "/back/creditor"
+            })
+          }
         });
       } else {
         this.$message({

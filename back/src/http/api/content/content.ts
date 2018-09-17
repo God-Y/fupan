@@ -2,7 +2,9 @@ import axios from "@/http/http2"; //导入创建好的axios实例
 
 export default {
   //获取列表
-  getList(data: any): any {
+  getList(data: any, pages: any): any {
+    // pages = Number(pages);
+    data.pageNum = pages;
     return axios.get(`/api/a/list/content`, {
       params: data
     });
@@ -21,9 +23,7 @@ export default {
   },
   //新增 上线
   launch(data: any): any {
-    return axios.post(`/api/a/content`, {
-      params: data
-    });
+    return axios.post(`/api/a/content`, data);
   },
 
   //编辑 获取详情
@@ -33,8 +33,6 @@ export default {
 
   //编辑 修改内容
   editChange(id: any, data: any): any {
-    return axios.put(`/api/a/content/${id}`, {
-      params: data
-    });
+    return axios.put(`/api/a/content/${id}`, data);
   }
 };

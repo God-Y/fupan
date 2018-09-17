@@ -22,7 +22,7 @@
             <i class="star">*</i>
             <span>封&#12288;&#12288;面</span>
             <upload
-            :dataurl=data.cover
+            :geturl=data.cover
             @upload-info="getCover"></upload>
           </div>
            <div class="upload">
@@ -59,30 +59,55 @@ export default class contentEdit extends Vue {
     cover: ""
   }; /* 数据对象 */
   banner: any = false; /* 判断是否是banner的Boolean值 */
+  // get bannershow() {
+  //   if(this.$route.query.statu === "10"){
+  //     return true;
+  //   }else {
+  //     return false;
+  //   }
+  // }
   created() {
+    console.log("1");
+    //  if (this.$route.query.statu === "10") {
+    //   this.banner = true;
+    // }
     this.getDetailed();
   }
+  activated() {
+    console.log("2");
+    this.getDetailed();
+    // if (this.$route.query.statu === "10") {
+    //   this.banner = true;
+    // }
+  }
   getDetailed() {
+    this.banner = false;
     let id = this.$route.query.id;
-    if (this.$route.query.state === "10") {
-      this.banner = true;
-    } /* 如果后台返回的参数中有banner，则显示 */
     if (id) {
       (this as any).$api.content.editDateiled(id).then((res: any) => {
+        console.log(res);
         this.data = res.data.data;
+        console.log(this.data.cover);
+        console.log(this.data.content);
         console.log(this.data.type);
+        console.log(res.data.data.type);
+        if(res.data.data.type == 10) {
+          this.banner = true;
+        }
         switch (this.data.type) {
           case 10:
-            return (this.data.type = "推荐页banner");
+            return (this.data.type = "10");
           case 20:
-            return (this.data.type = "帮助中心");
+            return (this.data.type = "20");
           case 30:
-            return (this.data.type = "关于我们");
+            return (this.data.type = "30");
         }
       });
     }
   } /* 获取数据详情 */
   judgeType(val: any) {
+    this.data.content = "";
+    this.data.cover = "";
     console.log(val);
     this.banner = false;
     if (val === "10") {
@@ -113,6 +138,8 @@ export default class contentEdit extends Vue {
 
   request(type: any) {
     let id = this.$route.query.id;
+    this.data.editors = "zheng";
+    console.log(this.data);
     //   如果有路由id，请求的是修改的接口
     if (id) {
       if (type === "10") {
@@ -121,6 +148,9 @@ export default class contentEdit extends Vue {
           .editChange(id, this.data)
           .then((res: any) => {
             console.log(res);
+            if(res.data.code === 1) {
+            this.goback();
+          }
           });
         //如果state== "10" 那么是banner进来的，则两个图片都需要上传
       } else {
@@ -129,6 +159,9 @@ export default class contentEdit extends Vue {
           .editChange(id, this.data)
           .then((res: any) => {
             console.log(res);
+            if(res.data.code === 1) {
+            this.goback();
+          }
           });
       } /* 如果不是banner， 发送请求 */
     } else {
@@ -137,12 +170,19 @@ export default class contentEdit extends Vue {
         this.bannerError();
         (this as any).$api.content.launch(this.data).then((res: any) => {
           console.log(res);
+          if(res.data.code === 1) {
+            this.goback();
+          }
         });
         //如果state== "10" 那么是banner进来的，则两个图片都需要上传
       } else {
         this.validate();
+        console.log(this.data);
         (this as any).$api.content.launch(this.data).then((res: any) => {
           console.log(res);
+          if(res.data.code === 1) {
+            this.goback();
+          }
         });
       } /* 如果不是banner， 发送请求 */
     }
@@ -162,6 +202,13 @@ export default class contentEdit extends Vue {
       });
       return false;
     } /* 如果未填写完全，弹窗返回错误 */
+  }
+  goback() {
+    this.$message({
+      message: '操作成功',
+      type: 'success'
+    });
+    this.$router.go(-1); /* 点击确定后返回上一页 */
   }
   cancel() {
     this.$confirm("是否取消?", "提示", {

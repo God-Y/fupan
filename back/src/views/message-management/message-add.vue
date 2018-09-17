@@ -118,6 +118,10 @@ export default class messageAdd extends Vue {
         } else {
           (this as any).$api.message.send(this.data).then((res: any) => {
             console.log(res);
+            if(res.data.code === 1){
+              this.$message("操作成功");
+              this.$router.go(-1);
+            }
           }); /* 发送HTTP请求 */
         }
       } else {

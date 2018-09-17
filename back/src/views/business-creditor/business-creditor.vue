@@ -117,11 +117,13 @@ export default class BusinessCreditor extends Vue {
   } /* 跳转至编辑页面 */
   matchRate(val: any) {
     this.$router.push({
-      path: "creditorMatch",
-      query: { id: val }
+      path: `/back/creditorMatch/${val}/1`,
+      // params: {id: val}
+      // query: { id: val,pages: "1" }
     });
   } /* 跳转至匹配详情 */
   changeRateCloor(rate: any, statu: any) {
+    console.log(rate,statu);
     if (statu === 0 || statu === 2) {
       return "info";
     } else if (rate === 1) {

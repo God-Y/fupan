@@ -5,12 +5,12 @@
           <el-form status-icon  ref="ruleForm2">
             <div class="line-style">
                 <el-form-item label="" prop="pass" size="mini">
-                  <span>匹配日期&#12288;</span>
-                  <el-input v-model="formData.matchDate" type="text" auto-complete="off" placeholder="请输入内容"></el-input>
+                  <span>匹配产品&#12288;</span>
+                  <el-input v-model="formData.productName" type="text" auto-complete="off" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item prop="checkPass">
                   <span>匹配用户&#12288;</span>
-                  <el-input v-model="formData.matchUser" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
+                  <el-input v-model="formData.userName" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item prop="age" size="mini">
                   <span>到期日期&#12288;</span>
@@ -43,7 +43,7 @@
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop,  Emit} from "vue-property-decorator";
 import DatePicker from "../../../components/common/date/double-date.vue";
 
 @Component({
@@ -70,20 +70,17 @@ export default class mtachSearch extends Vue {
   getStartlowerDate(val: any) {
     this.formData.valueStartupperDate = val;
   }
+  @Emit()
+  sendSearch(val: any) {} /* 向父级组件发送搜索数据 */
+  @Emit()
+  sendClear(val: any) {} /* 向父级发送清空的消息 */
+
   created() {
     this.getRouteData(); /* 获取从路由中储存的数据 */
   }
   search() {
-    let id = this.$route.query.id;
-    this.formData.id = id; /* 获取的路由id 存至对象 */
-    let data = this.formData;
-    (this as any).$api.creditor.matchSearch(id, data).then((res: any) => {
-      console.log(res);
-    });
-    this.$router.push({
-      path: `/back/creditorMatch`,
-      query: this.formData
-    });
+ 
+    this.sendSearch(this.formData);
   } /* 搜索按钮 */
   clear() {
     let query: any = this.$route.query;
@@ -91,10 +88,11 @@ export default class mtachSearch extends Vue {
     keys.forEach((value: any) => {
       this.formData[value] = "";
     });
-    this.$router.push({
-      path: `/back/creditorMatch`,
-      query: { id: query.id }
-    });
+    // this.$router.push({
+    //   path: `/back/creditorMatch`,
+    //   // query: { id: query.id }
+    // });
+    this.sendClear("");
   } /* 清空按钮 */
   getRouteData() {
     let query: any = this.$route.query;

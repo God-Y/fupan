@@ -7,7 +7,7 @@
         </div>
         <div class="imgPreview" >
             <span>Photo Preview Area</span>
-            <img  :src="base" >
+            <img  :src="getbase" >
         </div>
         <table class='fileInfo'>
             <thead>
@@ -51,13 +51,25 @@ export default class uploadFileTwo extends Vue {
   progress: any = 0; /* 上传文件进度 */
   start: boolean = false; /* 控制进度条显示 */
   fileSize: any = 0; /* 文件大小 */
-  base: any = "";
+  baseurl: any = "";
   @Prop([Boolean])
   disabled!: boolean; /* 判断是否禁用 */
 
-  // @Prop()
-  // base!: any;
+  @Prop()
+  base!: any;
 
+  get getbase() {
+    if(this.base){
+      return this.baseurl = this.base;
+    }else {
+      return this.baseurl;
+    }
+  }
+  created() {
+   if(this.base) {
+     this.baseurl = this.base;
+   } 
+  }
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
 
@@ -90,8 +102,8 @@ export default class uploadFileTwo extends Vue {
         reader.readAsDataURL(file);
         // 读取成功后的回调
         reader.onloadend = result => {
-          this.base = result;
-          this.base = this.base.currentTarget.result; /* 提取base64码 */
+          this.baseurl = result;
+          this.baseurl = this.baseurl.currentTarget.result; /* 提取base64码 */
         };
       }
     } else {
@@ -145,7 +157,7 @@ export default class uploadFileTwo extends Vue {
   init() {
     this.start = false;
     this.file = "";
-    this.base = "";
+    this.baseurl = "";
     this.progress = 0;
     this.fileSize = 0;
   } /* 初始化， 删除按钮 */

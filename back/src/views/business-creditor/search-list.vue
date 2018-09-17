@@ -54,9 +54,9 @@
                 </el-form-item>
                  <el-form-item >
                   <span>出借金额&#12288;</span>
-                  <el-input v-model="ruleForm.upperLendingAmount" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
-                  ~
                   <el-input v-model="ruleForm.lowerLendingAmount" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                  ~
+                  <el-input v-model="ruleForm.upperLendingAmount" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
                 </el-form-item>
                 <el-form-item >
                   <span>出借期限</span>

@@ -65,3 +65,16 @@ $Info:#909399;
   font-size: 50px;
   color: #d8d8d8;
 }
+
+.select-box {
+  display: flex;
+  flex-wrap: wrap;  
+  .single-select {
+    margin-left: 15px;
+    margin-bottom: 10px;
+  }
+} //匹配投资选择框
+
+.match-input {
+  min-width: 300px;
+}

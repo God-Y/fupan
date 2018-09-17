@@ -16,7 +16,7 @@
           <el-table-column prop="presentNumber" label="提现机构号" header-align="center" > </el-table-column>
           <el-table-column prop="editors" label="单笔限额"  header-align="center"> 
             <template slot-scope="scope">
-              {{scope.row.SingleLimit| amount}}
+              {{scope.row.singleLimit| amount}}
             </template>
           </el-table-column>
           <el-table-column prop="editors" label="日累计限额"  header-align="center"> 
@@ -36,6 +36,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <pages :total-num="total"  @page-change="toPage" v-if="total>10"></pages>    
       </el-card>
     </div>
 </template>
@@ -44,61 +45,81 @@
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
 import search from "../../components/bank/search.vue";
+import Pages from "common_Components/page/pagination.vue";
 
 @Component({
   components: {
-    search
+    search,
+    Pages
   }
 })
 export default class bankManagement extends Vue {
   dataList: Array<any> = [];
+  sendData: any = {}
+  total: number = 0; //总条数
 
   created() {
-    this.getList("");
+    this.getList(this.sendData);
   }
   getSearch(val: any) {
-    this.getList(val);
+    console.log(val);
+    this.sendData = val;
+    this.getList(this.sendData);
   } /* 获取搜索组件的数据，再次请求列表数据 */
   getClear(val: any) {
-    this.getList("");
+    this.getList(this.sendData);
+    this.$router.push({ 
+       path: "/back/bank",query:{
+        pages: "1"
+      }
+    });
   } /* 获取清除命令 */
   getList(val: any) {
-    (this as any).$api.bank.getList(val).then((res: any) => {
+    let pages = this.$route.query.pages;
+    (this as any).$api.bank.getList(val, pages).then((res: any) => {
       console.log(res);
       let data = res.data.data.list;
+      this.total = res.data.data.total;
       this.dataList = data;
       console.log(this.dataList);
     });
   } /* 获取文章列表 */
-
+ toPage(val: any) {
+     this.$router.push({ 
+       path: "/back/bank",query:{
+        pages: val
+    }
+     });
+    this.getList(this.sendData);
+  }
   jumpAdd() {
     this.$router.push({
       path: "bankAdd"
     });
   } /* 跳转至新增页面 */
-  changeState(id: any, state: any) {
-    let statu = state == "10" ? "20" : "10"; /* 根据当前状态来改变 */
-    this.$confirm(
-      statu == "10"
-        ? "上线将在前台展示此内容,确认上线？"
-        : "下线将使前台不再展示此内容，确认下线？",
-      "提示",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }
-    )
-      .then(() => {
-        (this as any).$api.message.changeStatu(id, statu).then((res: any) => {
-          console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          this.$router.go(0); /* 操作成功刷新一下路由 */
-        });
-      })
-      .catch(() => {
-        this.$message("已取消操作");
-      });
-  }
+  // changeState(id: any, state: any) {
+  //   let statu = state == "10" ? "20" : "10"; /* 根据当前状态来改变 */
+  //   this.$confirm(
+  //     statu == "10"
+  //       ? "上线将在前台展示此内容,确认上线？"
+  //       : "下线将使前台不再展示此内容，确认下线？",
+  //     "提示",
+  //     {
+  //       confirmButtonText: "确定",
+  //       cancelButtonText: "取消",
+  //       type: "warning"
+  //     }
+  //   )
+  //     .then(() => {
+  //       (this as any).$api.message.changeStatu(id, statu).then((res: any) => {
+  //         console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
+  //         this.$router.go(0); /* 操作成功刷新一下路由 */
+  //       });
+  //     })
+  //     .catch(() => {
+  //       this.$message("已取消操作");
+  //     });
+  // }
   jumpEdit(id: any) {
     this.$router.push({
       path: "bankAdd",
