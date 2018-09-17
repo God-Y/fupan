@@ -10,7 +10,7 @@
                 </el-form-item>
                 <el-form-item>
                   <span>编辑者</span>
-                  <el-input v-model="data.redactor" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
+                  <el-input v-model="data.editors" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item  size="mini">
                   <span>编辑时间</span>
@@ -32,9 +32,9 @@
                 </el-form-item>
                 <el-form-item  size="mini">
                   <span>类型&#12288;</span>
-                  <el-select v-model="data.type" placeholder="请选择">
+                  <el-select v-model="data.sendingCrowd" placeholder="请选择">
                     <el-option label="所有人" value="20"></el-option>
-                    <el-option label="认证投资人" value="30"></el-option>
+                    <el-option label="认证投资人" value="10"></el-option>
                   </el-select>
                 </el-form-item>
             </div>
@@ -86,7 +86,7 @@ export default class search extends Vue {
   sendClear(data: any) {}
   search() {
     this.$router.push({
-      path: `/back/content`,
+      path: `/back/message`,
       query: this.data
     });
     this.sendSearch(this.data);
@@ -97,9 +97,14 @@ export default class search extends Vue {
     keys.forEach((value: any) => {
       this.data[value] = "";
     }); /* 表单中的数据清零 */
-    this.$router.push({
-      path: `/back/content`
-    }); /* 清空路由 */
+    this.$router.push({ 
+       path: "/back/message",query:{
+        pages: "1"
+      }
+    });
+    // this.$router.push({
+    //   path: `/back/content`
+    // }); /* 清空路由 */
     this.sendClear("");
   } /* 清除 */
 }

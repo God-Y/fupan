@@ -10,17 +10,19 @@
               <span>{{detailedData.claimCode}}债权信息</span>
             </div>
             <div class="title">
-              <span>出借日期&#12288; {{detailedData.lendingDate | dateString}} </span>
-              <span>到期日期&#12288; {{detailedData.expirationDate  | dateString}} </span>
+              <span>出借日期&#12288; {{detailedData.lendingDate | time}} </span>
+              <span>到期日期&#12288; {{detailedData.expirationDate  | time}} </span>
               <span>出借金额&#12288; {{detailedData.lendingAmount | amount}}（元）</span>
               <span>待匹金额&#12288; {{detailedData.unMatchAmount | amount}}（元）</span>
             </div>
           </el-card>
           <div class="commend-style">
             <div class="commend-list">
-              <span>推荐匹配</span>
-              <el-button v-if="index<5" v-for="(item,index) of commendData" :key="item.id" @click="singleButton(item)" type="success" plain>{{item.lendingContractNumber}}</el-button>
-              <el-button type="success" @click="dialogTableVisible = true" plain>全部投资>></el-button>
+              <span class="match-title">推荐匹配</span>
+              <div class="select-box">
+                <el-button class="single-select" v-if="index<4" v-for="(item,index) of commendData" :key="item.id" @click="singleButton(item)" type="success" plain>{{item.lendingContractNumber}}</el-button>
+                <el-button class="single-select" type="success" @click="dialogTableVisible = true" plain>全部投资>></el-button>
+              </div>
             </div>
             <el-dialog title="推荐匹配" :visible.sync="dialogTableVisible">
               <el-table :data="commendData"  border>
@@ -43,7 +45,7 @@
             <div>
               <div class="line-style">
                 <span>匹配投资</span>
-                <el-select v-model="data.lendingContractNumber" filterable placeholder="请选择" size="mini">
+                <el-select class="match-input" v-model="data.lendingContractNumber" filterable placeholder="请选择" size="mini">
                   <el-option
                     v-for="item in commendData"
                     :key="item.value"
@@ -57,7 +59,7 @@
               <div class="line-style">
                 <span>匹配产品</span>
                 <el-input :disabled="true" v-model="data.productName" size="mini"></el-input>
-                <span class="span-style">到期日期:&#12288;{{data.valueDateEnd | dateString}}</span>
+                <span class="span-style">到期日期:&#12288;{{data.valueDateEnd | time}}</span>
               </div>
               <div class="line-style">
                 <span>匹配用户</span>
@@ -66,7 +68,7 @@
               </div>
               <el-card class="frame">
                 预计剩余待匹金额
-                <span v-if="countAmount" style="color:#F56C6C">{{countAmount | amount}}（元）</span>
+                <span v-if="data.investmentAmount" style="color:#F56C6C">{{countAmount | amount}}（元）</span>
               </el-card>
                <div class="button-style">
                 <el-button type="primary" @click="save">保存</el-button>
@@ -98,13 +100,13 @@ export default class matchDetailed extends Vue {
       console.log(res);
       this.detailedData = res.data.data;
     });
-  } /* 获取匹配详情数据 */
+  } /* 获取匹配详情数据  title*/
   getCommend(id: any) {
     (this as any).$api.creditor.getCommend(id).then((res: any) => {
       console.log(res);
       this.commendData = res.data.data;
     });
-  } /* 获取匹配的接口 */
+  } /* 获取匹配列表的接口 */
   singleButton(val: any) {
     console.log(val);
     this.data = val;
@@ -121,24 +123,34 @@ export default class matchDetailed extends Vue {
   get countAmount() {
     let unMatchAmount = +this.detailedData.unMatchAmount;
     let investmentAmount = +this.data.investmentAmount;
+    console.log(unMatchAmount, investmentAmount);
     return unMatchAmount - investmentAmount;
   } /* 通过计算属性计算剩余匹配金额 */
   save() {
     this.sendData.claimId = this.$route.query.id;
-    this.sendData.lending_contract_number = this.data.lendingContractNumber;
-    this.sendData.investmentUserID = this.data.id;
+    this.sendData.lendingContractNumber = this.data.lendingContractNumber;
+    // this.sendData.investmentUserID = this.data.id;
     console.log(this.sendData);
-    if (!this.sendData.lending_contract_number) {
+    if (!this.sendData.lendingContractNumber) {
       this.$alert("请选择匹配产品再点保存喂！", "提示", {
         confirmButtonText: "确定",
         type: "error"
       }); /* 判断如果没有产品代号，就弹窗 */
       return false;
     } else {
+      console.log(this.sendData);
       (this as any).$api.creditor
         .changeCommend(this.sendData)
         .then((res: any) => {
           console.log(res);
+          if(res.data.code === 1) {
+             this.$message({
+              message: "操作成功",
+              type: "success",
+              center: true
+            });
+            this.$router.go(-1); /* 点击确定后返回上一页 */
+          }
         });
     }
   }
@@ -172,6 +184,14 @@ export default class matchDetailed extends Vue {
   justify-content: space-between;
   align-items: center;
 }
+.select-box {
+  display: flex;
+  flex-wrap: wrap;  
+} //设置了全局样式
+.match-title {
+  white-space: nowrap;
+}
+
 .card-box {
   text-align: left;
 } /* 卡片格式 */

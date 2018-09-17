@@ -10,9 +10,9 @@
               <span class="span-style">银行名称</span>
               <el-input v-model="data.bankName" :disabled="disabled" type="text" size="mini" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item prop="SingleLimit">
+            <el-form-item prop="singleLimit">
               <span class="span-style">单笔限额</span>
-              <el-input v-model="data.SingleLimit" type="text" size="mini" auto-complete="off"></el-input>
+              <el-input v-model="data.singleLimit" type="text" size="mini" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item prop="dailyLimit">
               <span class="span-style">日累计限额</span>
@@ -141,10 +141,24 @@ export default class bankAdd extends Vue {
               .editChange(id, this.data)
               .then((res: any) => {
                 console.log(res);
+                if(res.data.code === 1){
+                  this.$message({
+                    message: '操作成功',
+                    type: 'success'
+                  });
+                  this.$router.go(-1);
+                }
               }); /* 如果是编辑页面，发送编辑请求 */
           } else {
             (this as any).$api.bank.launch(this.data).then((res: any) => {
               console.log(res);
+              if(res.data.code === 1){
+                this.$message({
+                  message: '操作成功',
+                  type: 'success'
+                });
+                this.$router.go(-1);
+              }
             }); /* 发送新增保存请求 */
           }
         }

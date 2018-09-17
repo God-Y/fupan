@@ -26,6 +26,9 @@
           </el-table-column>
           <el-table-column prop="editors" label="编辑者"  header-align="center"> </el-table-column>
           <el-table-column label="编辑时间"   header-align="center"> 
+            <template slot-scope="scope">
+              {{scope.row.gmtUpdate | time}}
+            </template>
           </el-table-column>
           <el-table-column prop="" label="操作" header-align="center" width="250">
             <template slot-scope="scope">
@@ -37,6 +40,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <pages :total-num="total"  @page-change="toPage" v-if="total>10"></pages>    
       </el-card>
     </div>
 </template>
@@ -45,33 +49,54 @@
 <script lang='ts'>
 import { Vue, Component, Prop } from "vue-property-decorator";
 import search from "../../components/content/search.vue";
+import Pages from "common_Components/page/pagination.vue";
 
 @Component({
   components: {
-    search
+    search,
+    Pages
   }
 })
 export default class contentManagement extends Vue {
   dataList: Array<any> = [];
-
+  sendData: any = {}
+  total: number = 0; //总条数
   created() {
-    this.getList("");
+    this.getList(this.sendData);
   }
   getSearch(val: any) {
-    this.getList(val);
+    console.log(val);
+    this.sendData = val;
+    console.log(this.sendData);
+    this.getList(this.sendData);
   } /* 获取搜索组件的数据，再次请求列表数据 */
   getClear(val: any) {
-    this.getList("");
+    this.getList(this.sendData);
+      this.$router.push({ 
+       path: "/back/content",query:{
+        pages: "1"
+      }
+    });
   } /* 获取清除命令 */
   getList(val: any) {
-    (this as any).$api.content.getList(val).then((res: any) => {
+    let pages = this.$route.query.pages;
+    console.log(pages);
+    (this as any).$api.content.getList(val, pages).then((res: any) => {
       console.log(res);
       let data = res.data.data.list;
       this.dataList = data;
+      this.total = res.data.data.total;
       console.log(this.dataList);
     });
   } /* 获取文章列表 */
-
+  toPage(val: any) {
+     this.$router.push({ 
+       path: "/back/content",query:{
+        pages: val
+    }
+     });
+    this.getList(this.sendData);
+  }
   jumpAdd() {
     this.$router.push({
       path: "contentEdit"
@@ -93,8 +118,11 @@ export default class contentManagement extends Vue {
       .then(() => {
         (this as any).$api.content.changeStatu(id, statu).then((res: any) => {
           console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          if (res.data.code === 1) {
-            this.getList("");
+
+          if(res.data.code === 1) {
+            this.getList(this.sendData);
+
+
           }
         });
       })
@@ -111,8 +139,9 @@ export default class contentManagement extends Vue {
       .then(() => {
         (this as any).$api.content.deleteContent(id).then((res: any) => {
           console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          if (res.data.code === 1) {
-            this.getList("");
+
+          if(res.data.code === 1) {
+            this.getList(this.sendData);
           }
         });
       })
@@ -123,7 +152,7 @@ export default class contentManagement extends Vue {
   jumpEdit(id: any, statu: any) {
     this.$router.push({
       path: "contentEdit",
-      query: { id: id, statu: statu }
+      query: { id: id }
     });
   } /* 跳转至编辑页面 */
 }

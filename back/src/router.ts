@@ -121,7 +121,7 @@ export default new Router({
           component: matchDetailed
         },
         {
-          path: "creditorMatch",
+          path: "creditorMatch/:id/:pages",
           name: "creditorMatch",
           component: creditorMatch
         },

@@ -19,16 +19,21 @@ export default {
   },
 
   //获取匹配列表
-  getMatchList(data: any): any {
-    return axios.get(`/api/a/list/claim-match/${data}`);
-  },
-
-  //匹配 查找
-  matchSearch(id: any, data: any): any {
-    return axios.get(`/api/a/list/claim-match/${id}`, {
+  getMatchList(id: any, data: any, pages: any): any {
+    data.pageNum = pages;
+    console.log(id,data);
+    console.log(`/api/a/list/claim-match/${id}`);
+    return axios.get(`/api/a/list/claim-match/${id}`,{
       params: data
     });
   },
+
+  //匹配 查找
+  // matchSearch(id: any, data: any): any {
+  //   return axios.get(`/api/a/list/claim-match/${id}`, {
+  //     params: data
+  //   });
+  // },
 
   //获取匹配详情
   getMatchDetailed(id: any): any {
@@ -42,8 +47,6 @@ export default {
 
   //更改债权匹配
   changeCommend(data: any) {
-    return axios.put(`/api/a/investment-credit`, {
-      params: data
-    });
+    return axios.put(`/api/a/investment-credit`,  data);
   }
 };
