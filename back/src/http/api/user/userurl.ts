@@ -11,7 +11,7 @@ export default {
   //改变用户状态
   changeStatus(id: number, data: any): any {
     return axios.put(`/api/a/user-status/${id}`, {
-      status:data
+      status: data
     });
   },
   //查看用户详情
@@ -39,7 +39,7 @@ export default {
     });
   },
   //修改实名认证状态
-  changeVerification(id: number,  refusal: string) {
+  changeVerification(id: number) {
     return axios.put(`/api/a/user-verification-cancel/${id}`);
   },
   //获取交易数据
@@ -57,13 +57,19 @@ export default {
     });
   },
   //用户列表接口，包括查询
-  Contract (data: any, id: any = 1): any {
+  Contract(data: any, id: any = 1): any {
     data.pageNum = id;
     return axios.get(`/api/a/list/user`, {
       params: data
     });
   },
-  login(data:any){
+  login(data: any) {
     return axios.post(`/api/backstageLogin`, data);
+  },
+  loginOut() {
+    return axios.get(`/api/logout`);
+  },
+  contract(id: any) {
+    return axios.get(`/api/a/investment-contract/${id}`);
   }
 };

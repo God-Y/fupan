@@ -67,12 +67,8 @@ export default class BusinessCreditor extends Vue {
   created() {
     this.getList(""); /* 初始值不需要加参数，所以只是传的空字符串 */
   }
-  // activated() {
-  //   console.log("activa");
-  //   this.getList(""); /* 初始值不需要加参数，所以只是传的空字符串 */    
-  // }
   getList(data: any) {
-     if (this.$route.query.pages) {
+    if (this.$route.query.pages) {
       this.pagination.pageNum = this.$route.query.pages;
     } else {
       this.pagination.pageNum = 1;
@@ -89,8 +85,9 @@ export default class BusinessCreditor extends Vue {
   } /* 获取列表数据 */
   toPage(val: any) {
     this.$router.push({
-      path:`/back/creditor`,query: {
-        pages:val
+      path: `/back/creditor`,
+      query: {
+        pages: val
       }
     });
     this.getList(this.pagination);

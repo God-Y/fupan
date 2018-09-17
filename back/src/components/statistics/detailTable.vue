@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header account-header"  >
-    {{productionName}}销量明细
+    {{productionName}}的销量明细
     </div>
     <div class="card-body">
       <!-- 表格渲染开始 -->
@@ -10,7 +10,7 @@
         border
         style="width: 100%"
         v-loading="loading"
-        v-if="productListst.length"
+        v-if="!showNullMsg"
         >
         <el-table-column
           label="序号"
@@ -31,7 +31,7 @@
            align="center" prop="purchaseNumber">
         </el-table-column>
         <el-table-column
-          prop="purchases"    width="140"
+          prop="purchase"    width="140"
           label="购买次数"  align="center" >
         </el-table-column>
         <el-table-column
@@ -42,8 +42,8 @@
         </el-table-column>
         
       </el-table>
-      <pages :total-num="total"  @page-change="toPage" v-if="productListst.length && total > 10"></pages>    
-      <div class="nullMsg" v-if="!productListst.length && !loading">无有效信息</div>
+      <pages :total-num="total"  @page-change="toPage" v-if="!showNullMsg && total > 10"></pages>    
+      <div class="nullMsg" v-if="showNullMsg && !loading">无有效信息</div>
     </div>
   </div>
 </template>
@@ -65,11 +65,15 @@ export default class BackAcconutTable extends Vue {
   loading!: boolean;
   @Prop([Number])
   total!: number;
-  @Prop([String])
-  productionName!: string;
   //获取数据
   get productListst() {
     return this.tableParams;
+  }
+  get productionName() {
+    return this.$store.state.productionName;
+  }
+  get showNullMsg() {
+    return this.tableParams.length == 0;
   }
   //根据页码跳转路由
   toPage(val: number) {

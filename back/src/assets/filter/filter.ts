@@ -140,7 +140,7 @@ let filtersObj: Filters = {
     if(value === 7) {
       return "7日"
     } else {
-      return (value / 30) + "月"
+      return ( value / 30 ) + "月"
     }
   },
   // 产品列表 状态判断

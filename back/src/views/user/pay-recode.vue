@@ -14,6 +14,7 @@
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import PaySearch from "../../components/user/pay-search.vue";
 import PayTable from "../../components/user/pay-table.vue";
+
 @Component({
   components: {
     PaySearch,

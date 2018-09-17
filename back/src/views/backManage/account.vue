@@ -31,7 +31,10 @@ export default class BackAccount extends Vue {
   //可以表格加载动画
   listLoading: boolean = true;
   //关于表单搜索的数据，只有两个参数.先设置一个空对象
-  userForm: any = {};
+  userForm: any = {
+    roleName: "",
+    name: ""
+  };
   @Watch("pages") //路由参数发生变化的时候重新请求
   onIdChanged(val: any, oldVal: any) {
     this.getList();

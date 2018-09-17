@@ -100,10 +100,10 @@ import DatePicker from "../../components/common/date/double-date.vue";
   }
 })
 export default class searchProduct extends Vue {
-  sendData: any = {}
-  dayMonthSelect: any = 1
+  sendData: any = {};
+  dayMonthSelect: any = 1;
   created() {
-     let query: any = this.$route.query;
+    let query: any = this.$route.query;
     let keys: any = Object.keys(query);
     if (keys.length) {
       keys.forEach((value: any) => {
@@ -160,11 +160,10 @@ export default class searchProduct extends Vue {
     {
       value: 1,
       label: "日"
-    },
+    }
   ];
   search() {
-    if(this.dayMonthSelect)
-    console.log(this.sendData);
+    if (this.dayMonthSelect) console.log(this.sendData);
     this.$router.push({
       path: "/back/product",
       query: this.sendData

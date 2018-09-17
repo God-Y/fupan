@@ -199,7 +199,6 @@ export default class addProduct extends Vue {
     isPurchaseLimit: 1,
     isRecommend: 0,
     type: 10
-
   }; /* 表单验证 数据对象 */
   private checkCode = (rule: any, value: string, callback: any) => {
     if (!value) {
@@ -257,7 +256,7 @@ export default class addProduct extends Vue {
       (this as any).$api.product.productInfo(this.id).then((res: any) => {
         console.log(res);
         this.form = res.data.data;
-      })
+      });
     } /* 禁用按钮 */
   } /* 如果是新增按钮跳转，禁用一些按钮 */
   getUpload(file: any) {
@@ -274,7 +273,7 @@ export default class addProduct extends Vue {
         this.form.annualizedIncome = Number(this.form.annualizedIncome);
         this.form.deadline = Number(this.form.deadline);
         this.form.startingAmount = Number(this.form.startingAmount); //转换为number类型
-        if(this.selectDate == 2){
+        if (this.selectDate == 2) {
           this.form.deadline *= 30;
         } //期限判断
         if (this.edit) {
@@ -282,42 +281,44 @@ export default class addProduct extends Vue {
           this.editData.isRecommend = this.form.isRecommend;
           this.editData.isPurchaseLimit = this.form.isPurchaseLimit;
           console.log(this.editData);
-          (this as any).$api.product.editProduct(this.id, this.editData).then((res: any) => {
-            console.log(res);
-            if(res.data.code === 1) {
-              this.$alert('保存成功，点击取消可以返回上一页', '提示', {
-                confirmButtonText: '确定',
+          (this as any).$api.product
+            .editProduct(this.id, this.editData)
+            .then((res: any) => {
+              console.log(res);
+              if (res.data.code === 1) {
+                this.$alert("保存成功，点击取消可以返回上一页", "提示", {
+                  confirmButtonText: "确定"
+                });
+              } else {
+                let error = res.data.message;
+                console.log(error);
+                this.$alert(error, "提示", {
+                  confirmButtonText: "确定"
+                });
+                return false;
+              }
             });
-            } else {
-              let error = res.data.message;
-              console.log(error);
-               this.$alert(error, "提示", {
-                confirmButtonText: "确定",
-              });
-              return false;
-            }
-          })
-        }else {
-          if(!this.form.moreDetails) {
-             this.$alert('请先上传图片', '提示', {
-                confirmButtonText: '确定',
+        } else {
+          if (!this.form.moreDetails) {
+            this.$alert("请先上传图片", "提示", {
+              confirmButtonText: "确定"
             });
             return false;
           }
           (this as any).$api.product.addProduct(this.form).then((res: any) => {
             console.log(res);
-             if(res.data.code === 1) {
-              this.$alert('保存成功，点击取消可以返回上一页', '提示', {
-                confirmButtonText: '确定',
-            });
+            if (res.data.code === 1) {
+              this.$alert("保存成功，点击取消可以返回上一页", "提示", {
+                confirmButtonText: "确定"
+              });
             } else {
               let error = res.data.message;
               console.log(error);
-               this.$alert(error, "提示", {
-                confirmButtonText: "确定",
+              this.$alert(error, "提示", {
+                confirmButtonText: "确定"
               });
             }
-        })
+          });
           console.log(this.form);
         }
       } else {

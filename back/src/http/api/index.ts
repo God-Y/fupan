@@ -17,7 +17,6 @@ import bank from "./bank/bank"; /* 银行管理 */
 
 import parameter from "./parameter/parameter"; /* 参数设置 */
 
-
 // 其他模块的接口……
 // 导出接口
 export default {

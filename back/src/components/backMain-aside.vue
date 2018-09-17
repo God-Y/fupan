@@ -4,7 +4,7 @@
             <i class="iconfont icon-house"></i>
             <span>欢迎页</span>
         </div>
-        <div class="line-box" v-for="(item, index) in list" :key="item.id">
+        <div class="line-box" v-for="(item,index) in asideList" :key="item.id">
             <span @click="show(index)" class="line-title">
                 <div>
                     <i class="iconfont icon-tool-"></i>
@@ -13,10 +13,10 @@
                 <!-- 标题渲染 -->
                 <i class="iconfont icon-arrow-left"></i>
             </span>
-            <ul class="tabulation">
-                <transition name="fade" v-for="child in item.child" :key="child.id">
-                    <li v-show="child.visible" @click="routerJump(child.id)" >
-                        {{child.name}}
+            <ul class="tabulation" >
+                <transition name="fade" v-for="child in item.permissionsList" :key="child.id">
+                    <li @click="routerJump(child.id)" v-show="child.visible">
+                        {{child.permission}}
                     </li>
                 </transition>
             </ul> 
@@ -31,154 +31,64 @@ import router from "@/router";
 @Component
 export default class backAside extends Vue {
   visible: boolean = true;
-  list: Array<any> = [
-    {
-      id: 1,
-      name: "业务管理",
-      child: [
-        {
-          id: 1.1,
-          name: "用户管理",
-          visible: true
-        },
-        {
-          id: 1.2,
-          name: "实名认证",
-          visible: true
-        },
-        {
-          id: 1.3,
-          name: "产品管理",
-          visible: true
-        },
-        {
-          id: 1.4,
-          name: "债券管理",
-          visible: true
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "运营管理",
-      child: [
-        {
-          id: 2.1,
-          name: "内容管理",
-          visible: true
-        },
-        {
-          id: 2.2,
-          name: "消息认证",
-          visible: true
-        },
-        {
-          id: 2.3,
-          name: "银行管理",
-          visible: true
-        },
-        {
-          id: 2.4,
-          name: "参数管理",
-          visible: true
-        },
-        {
-          id: 2.6,
-          name: "意见反馈",
-          visible: true
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: "后台管理",
-      child: [
-        {
-          id: 3.1,
-          name: "账户管理",
-          visible: true
-        },
-        {
-          id: 3.2,
-          name: "修改密码",
-          visible: true
-        },
-        {
-          id: 3.3,
-          name: "角色管理",
-          visible: true
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: "统计模块",
-      child: [
-        {
-          id: 4.1,
-          name: "销量统计",
-          visible: true
-        }
-      ]
-    }
-  ]; /* 假数据 */
+  asideList: any = JSON.parse(localStorage.getItem("modulars"));
   show(index: any) {
-    let temp = this.list;
-    temp = this.list[index].child;
-    for (let num = 0; num < temp.length; num++) {
-      temp[num].visible = !temp[num].visible;
-    }
+    const temp = this.asideList[index].permissionsList;
+    temp.forEach(value => {
+      value.visible = !value.visible;
+    });
   } /* 点击显示、隐藏界面板 */
 
   routerJump(id: number) {
     console.log(id);
     switch (id) {
-      case 1.1:
+      case 1:
         router.push("/back/user/1");
         break;
-      case 1.2:
+      case 2:
         router.push("/back/verifiel/1");
         break;
-      case 1.3:
+      case 3:
         router.push({ name: "BusinessProduct" });
         break;
-      case 1.4:
+      case 4:
         router.push({ name: "BusinessCreditor" });
         break;
-      case 2.1:
-        router.push({ name: "content",query:{
-          pages: "1"
-        } });
+      case 11:
+        router.push({
+          name: "content",
+          query: {
+            pages: "1"
+          }
+        });
         break;
-      case 2.2:
-        router.push({ path: "message",query: {
-          pages: "1"
-        } });
+      case 12:
+        router.push({
+          path: "message",
+          query: {
+            pages: "1"
+          }
+        });
         break;
-
-
-      case 2.6:
+      case 13:
+        router.push({ name: "bank" });
+        break;
+      case 14:
+        router.push({ name: "parameter" });
+        break;
+      case 15:
         router.push({ path: "/back/option-management/1" });
         break;
-      case 2.3:
-        router.push({ name: "bank", query: {
-          pages: "1"
-        } });
-        break;
-      case 2.4:
-        router.push({ name: "parameter" });
-
-        break;
-      case 3.1:
+      case 31:
         router.push("/back/back-account/1");
         break;
-      case 3.2:
+      case 32:
         router.push({ name: "ModifyPwd" });
         break;
-      case 3.3:
+      case 33:
         router.push("/back/role/1");
         break;
-      case 4.1:
+      case 21:
         router.push("/back/sale-statistics/1");
         break;
     }
@@ -186,7 +96,6 @@ export default class backAside extends Vue {
 }
 </script>
 
-// 样式------------
 <style lang="scss">
 @mixin line-padding {
   padding: 0px 15px;
@@ -217,6 +126,7 @@ $line-height: 48px; /* 行高 */
 .line-title {
   @include flex-vertical-between;
   @include line-padding();
+  cursor: pointer;
   flex-basis: 100%;
   min-height: $line-height;
   border-bottom: 1px solid $border-color;
