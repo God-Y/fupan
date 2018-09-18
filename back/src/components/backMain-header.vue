@@ -21,7 +21,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class backHead extends Vue {
   user: string = "admin"; /* 通过后台渲染用户 */
-  userMsg: any = JSON.parse(localStorage.getItem("backUser"));
+  userMsg: any = JSON.parse((localStorage as any).getItem("backUser"));
   loginout() {
     this.$confirm("确定退出账户?", "提示", {
       confirmButtonText: "确定",
