@@ -64,8 +64,10 @@ let filtersObj: Filters = {
       case 30:
         return "已拒绝";
       case 40:
-        return "再申请";
+        return "申请中";
       case 50:
+        return "再取消";
+      case 60:
         return "已取消";
     }
   },

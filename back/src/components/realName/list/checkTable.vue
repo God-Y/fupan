@@ -206,7 +206,6 @@ export default class RealTable extends Vue {
 .status20 {
   color: #67c23a;
 }
-// .modify10,
 .status40 {
   color: #0000ff;
 }
