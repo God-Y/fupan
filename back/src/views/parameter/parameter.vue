@@ -61,7 +61,15 @@ export default class parameter extends Vue {
     seal: ""
   }; /* 数据对象 */
   disabled: boolean = false;
-
+  created() {
+    this.getParameter();
+  }
+  getParameter() {
+    console.log("?");
+    (this as any).$api.parameter.getData().then((res: any) => {
+      console.log(res);
+    })
+  }
   getContentPicture(val: any) {
     console.log(val);
     this.data.seal = val;
