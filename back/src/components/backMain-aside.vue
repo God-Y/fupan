@@ -34,7 +34,7 @@ export default class backAside extends Vue {
   asideList: any = JSON.parse((localStorage as any).getItem("modulars"));
   show(index: any) {
     const temp = this.asideList[index].permissionsList;
-    temp.forEach(value => {
+    temp.forEach((value:any) => {
       value.visible = !value.visible;
     });
   } /* 点击显示、隐藏界面板 */
