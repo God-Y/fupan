@@ -4,7 +4,7 @@ function resolve(dir) {
 }
 module.exports = {
   // 基本路径
-  baseUrl: "./",
+  baseUrl: "/",
   // 输出文件目录
   outputDir: "dist",
   // eslint-loader 是否在保存的时候检查
@@ -60,7 +60,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       "/api/": {
-        target: "http://47.96.95.132:8080/",
+        target: "http://118.126.113.248:20581/",
         secure: false,
         pathRewrite: {
           "^/api/": ""
