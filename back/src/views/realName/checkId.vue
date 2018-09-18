@@ -3,7 +3,7 @@
     <div class="card-header">申请详情</div>
     <div class="card-body">
       <user-msg :user-detial = "data"></user-msg>
-      <div class="card" v-if="status != 50">
+      <div class="card" >
         <div class="card-header">证件信息</div>
         <div class="card-body">
           <Certificates :user-detial = "data"></Certificates>
@@ -45,7 +45,7 @@ export default class UserDetial extends Vue {
   }
   //当user的status为30或者50不能点击审核
   get checkStatus() {
-    if (this.status == 30 || this.status == 50) {
+    if (this.status == 30 || this.status == 60 || this.status == 10) {
       return true;
     } else {
       return false;

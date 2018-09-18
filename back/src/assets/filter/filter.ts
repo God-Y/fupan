@@ -19,7 +19,7 @@ interface Filters {
 let filtersObj: Filters = {
   //时间过滤，
   time: function(date: number): any {
-    if(date != undefined){
+    if (date != undefined) {
       let value = new Date(date);
       let year = value.getFullYear();
       let month = value.getMonth() + 1; //getMonth是从0开始，所以加+
@@ -66,7 +66,7 @@ let filtersObj: Filters = {
       case 40:
         return "申请中";
       case 50:
-        return "再取消";
+        return "再申请";
       case 60:
         return "已取消";
     }
@@ -139,10 +139,10 @@ let filtersObj: Filters = {
   },
   //产品列表 期限90
   deadline: function(value: number) {
-    if(value === 7) {
-      return "7日"
+    if (value === 7) {
+      return "7日";
     } else {
-      return ( value / 30 ) + "月"
+      return value / 30 + "月";
     }
   },
   // 产品列表 状态判断

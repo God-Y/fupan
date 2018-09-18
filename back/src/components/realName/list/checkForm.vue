@@ -27,8 +27,9 @@
               <el-option label="未认证" value="10"></el-option>
               <el-option label="已认证" value="20"></el-option>
               <el-option label="已拒绝" value="30"></el-option>
-              <el-option label="再申请" value="40"></el-option>
-              <el-option label="已取消" value="50"></el-option>
+              <el-option label="申请中" value="40"></el-option>
+              <el-option label="再申请" value="50"></el-option>
+              <el-option label="已取消" value="60"></el-option>
             </el-select>
           </el-form-item>
           <!-- 搜索清空那按钮 -->

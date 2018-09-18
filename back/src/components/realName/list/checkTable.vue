@@ -116,7 +116,7 @@ export default class RealTable extends Vue {
 
   //当实名状态为拒绝或者取消时，设置按钮的disabled
   opationCheck(status: number) {
-    if (status == 30 || status == 50) {
+    if (status == 30 || status == 60 || status == 10) {
       return false;
     } else {
       return true;
@@ -206,14 +206,16 @@ export default class RealTable extends Vue {
 .status20 {
   color: #67c23a;
 }
-.status40 {
+.status40,
+.status50 {
   color: #0000ff;
 }
-.modify40 {
+.modify40,
+.modify50 {
   color: #ffa500;
 }
 .modify30,
-.modify50 {
+.modify60 {
   color: #808080;
 }
 </style>
