@@ -121,15 +121,33 @@ export default class BusinessCreditor extends Vue {
   } /* 跳转至匹配详情 */
   changeRateCloor(rate: any, statu: any) {
     console.log(rate,statu);
-    if (statu === 0 || statu === 2) {
-      return "info";
-    } else if (rate === 1) {
-      return "success";
-    } else if (statu === 1 && rate === 0) {
+    if(rate === 0) {
       return "blue";
-    } else {
+    }
+    if(rate === 1) {
+      return "success";
+    }
+    if(rate > 0 && rate < 1){
       return "warning";
     }
+    //  if (rate === 0 && statu === 0) {
+    //   return "info";
+    // }
+    // if (rate === 1 && statu === 0) {
+    //   return "warning";
+    // } //匹配完成未使用
+    // if (rate === 1 && statu === 2) {
+    //   return "info";
+    // }
+    // if (rate === 1 && statu === 1) {
+    //   return "success";
+    // }
+    // if (rate === 0 && statu === 1) {
+    //   return "blue";
+    // }
+    // if(rate > 0 && rate < 1 && statu === 0 ){
+    //   return "warning";
+    // }
   } /* 判断匹配状态的颜色 */
 }
 </script>
