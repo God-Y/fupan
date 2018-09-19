@@ -63,10 +63,10 @@ export default class search extends Vue {
     lowerDate: ""
   };
   getupperDate(val: any) {
-    this.data.lowerDate = val;
+    this.data.upperDate = val;
   } /* 获取时间 */
   getlowerDate(val: any) {
-    this.data.upperDate = val;
+    this.data.lowerDate = val;
   } /* 获取时间 */
   $refs: any;
   checklowerSingle: any = (rule: any, value: any, callback: any) => {
