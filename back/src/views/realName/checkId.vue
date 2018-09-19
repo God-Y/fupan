@@ -21,7 +21,7 @@
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import UserMsg from "../../components/realName/check/userMsg.vue";
 import Certificates from "../../components/realName/check/Certificates.vue";
-import checkLog from "@/components/realName/checkStatus.vue";
+import checkLog from "@/components/realName/checkStatus2.vue";
 import bus from "@/bus/bus";
 @Component({
   components: {
@@ -84,7 +84,8 @@ export default class UserDetial extends Vue {
   }
   //通过mouted 来实现中央数据总线来监听事件
   mounted() {
-    bus.$on("comfirmStatus", (data: any) => {
+    bus.$on("comfirmStatus2", (data: any) => {
+      this.checkVisible = false;
       let params: any = {}; //创建一个对象用于传递参数
       if (data.status == "通过") {
         params.code = 1;
@@ -94,8 +95,12 @@ export default class UserDetial extends Vue {
         params.refusal = data.reason;
       }
       (this as any).$api.real.checkRealName(this.ID, params).then(() => {
+        this.$message({
+          message: "实名认证成功",
+          type: "success"
+        });
         //成功后跳转回列表页
-        this.$router.push(`/back/verifiel/1`);
+        this.getList(this.ID);
       });
     });
   }

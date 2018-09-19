@@ -84,8 +84,8 @@ export default class RealList extends Vue {
   }
   //使用中央数据总线来确定审核
   mounted() {
-    console.log(this.$refs.checkTable);
     bus.$on("comfirmStatus", (data: any) => {
+      console.log("abcdefg", data);
       let params: any = {}; //创建一个对象用于传递参数
       let Id = data.id;
       if (data.status == "通过") {
@@ -95,20 +95,15 @@ export default class RealList extends Vue {
         params.code = 0;
         params.refusal = data.reason;
       }
-      (this as any).$api.real
-        .checkRealName(Id, params)
-        .then(() => {
-          (this as any).$refs.checkTable.checkVisible = false;
-          console.log(1);
-          this.getList(this.userForm, this.pages);
-        })
-        .then(() => {
-          this.$message({
-            showClose: true,
-            message: "操作成功",
-            type: "success"
-          });
+      (this as any).$api.real.checkRealName(Id, params).then(() => {
+        (this as any).$refs.checkTable.checkVisible = false;
+        this.$message({
+          showClose: true,
+          message: "操作成功",
+          type: "success"
         });
+        this.getList(this.userForm, this.pages);
+      });
     });
   }
 }

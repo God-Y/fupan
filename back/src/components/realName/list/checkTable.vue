@@ -103,9 +103,7 @@ export default class RealTable extends Vue {
   total!: number; //条目总数，用于渲染分页
   //这里取消实名
   @Emit("cancel")
-  cancelRealName() {
-    console.log(2);
-  }
+  cancelRealName() {}
 
   uid: number = 1; //用于确定用户的uid
   checkVisible: boolean = false; //是否弹出对话框
@@ -161,6 +159,7 @@ export default class RealTable extends Vue {
   //审核状态，分未认证和再申请
   //把请求的iD传进去
   checkUser(id: number) {
+    console.log(123456789);
     this.checkVisible = true;
     this.uid = id;
   }
