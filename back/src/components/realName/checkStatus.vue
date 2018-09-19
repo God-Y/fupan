@@ -61,7 +61,6 @@ export default class CheckStatus extends Vue {
   //点击确定按钮发送http请求,把数据传送出去
   comfirm() {
     (this as any).checkForm.id = this.userId;
-    console.log(987654321,this.checkForm);
     bus.$emit("comfirmStatus", this.checkForm);
   }
   handleClose(done: any) {

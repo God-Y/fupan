@@ -85,7 +85,6 @@ export default class RealList extends Vue {
   //使用中央数据总线来确定审核
   mounted() {
     bus.$on("comfirmStatus", (data: any) => {
-      console.log("abcdefg", data);
       let params: any = {}; //创建一个对象用于传递参数
       let Id = data.id;
       if (data.status == "通过") {

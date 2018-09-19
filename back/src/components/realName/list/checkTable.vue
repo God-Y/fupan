@@ -159,7 +159,6 @@ export default class RealTable extends Vue {
   //审核状态，分未认证和再申请
   //把请求的iD传进去
   checkUser(id: number) {
-    console.log(123456789);
     this.checkVisible = true;
     this.uid = id;
   }
