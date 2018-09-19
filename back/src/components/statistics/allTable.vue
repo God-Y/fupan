@@ -32,7 +32,10 @@
           label="购买人数"  align="center" >
         </el-table-column>
         <el-table-column
-          label="购买次数"   width="120" prop="purchases"  align="center" >
+          label="购买次数"   width="120"   align="center">
+          <template slot-scope="scope" >
+            {{scope.row.purchase}}
+          </template>
         </el-table-column>
         <el-table-column
           

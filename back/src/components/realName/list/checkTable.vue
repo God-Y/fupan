@@ -78,8 +78,8 @@
       <pages :total-num="total"  @page-change="toPage" v-if="realList.length && total > 10"></pages>    
       <div class="nullMsg" v-if="!realList.length && !loading">无有效信息</div>
     </div>
-    <check-log :visible='checkVisible' :userId ="uid"
-    ></check-log>
+    <!-- <check-log :visible='checkVisible' :userId ="uid"
+    ></check-log> -->
   </div>
 </template>
 
@@ -87,11 +87,12 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import Pages from "common_Components/page/pagination.vue";
-import checkLog from "../checkStatus.vue";
+// import checkLog from "../checkStatus.vue";
+import bus from "@/bus/bus";
 @Component({
   components: {
-    Pages,
-    checkLog
+    Pages
+    // checkLog
   }
 })
 export default class RealTable extends Vue {
@@ -104,7 +105,8 @@ export default class RealTable extends Vue {
   //这里取消实名
   @Emit("cancel")
   cancelRealName() {}
-
+  @Emit("showDialog")
+  getUser(id: any) {}
   uid: number = 1; //用于确定用户的uid
   checkVisible: boolean = false; //是否弹出对话框
   //获取父级的表单数据
@@ -158,15 +160,15 @@ export default class RealTable extends Vue {
   }
   //审核状态，分未认证和再申请
   //把请求的iD传进去
-  checkUser(id: number) {
-    this.checkVisible = true;
-    this.uid = id;
-  }
+  // checkUser(id: number) {
+  //   // this.checkVisible = true;
+  //   this.uid = id;
+  // }
   modifyStatus(status: number, id: number) {
     if (status == 20) {
       this.cancelName(id);
     } else {
-      this.checkUser(id);
+      this.getUser(id);
     }
   }
   //查看页面 跳转页面

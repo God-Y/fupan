@@ -1,6 +1,6 @@
 <template>
 <div class="date-box">
-  <date-pickers placeholder="起止日期" v-model="start" 
+  <date-pickers placeholder="起始日期" v-model="start" 
   :not-after="end ||new Date() " width="150"
   @change="startChanged" ></date-pickers>
   ~

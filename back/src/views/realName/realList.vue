@@ -5,8 +5,13 @@
     <check-table :table-params = "list" 
     :loading="listLoading" :total = "total"
     @cancel="calcelReal"
+    @showDialog ="showDialog"
     ref="checkTable"
     ></check-table>
+    <check-log 
+    :visible='checkVisible' 
+    @updataStatus="updataStatus"
+  ></check-log>
   </div>
 </template>
 
@@ -15,11 +20,13 @@
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import CheckSearch from "../../components/realName/list/checkForm.vue";
 import CheckTable from "../../components/realName/list/checkTable.vue";
+import checkLog from "@/components/realName/checkStatus.vue";
 import bus from "@/bus/bus";
 @Component({
   components: {
     CheckSearch,
-    CheckTable
+    CheckTable,
+    checkLog
   }
 })
 export default class RealList extends Vue {
@@ -30,7 +37,7 @@ export default class RealList extends Vue {
     return this.$route.params.pages;
   }
   total: number = 0; //这个总条数
-
+  showDialogID: any = null;
   //可以表格加载动画
   listLoading: boolean = true;
   //关于表单搜索的数据，必须注意的是，组件
@@ -39,10 +46,11 @@ export default class RealList extends Vue {
     upperDate: "",
     lowerDate: ""
   };
+  //显示dialog页面
+  checkVisible: boolean = false;
 
   @Watch("pages") //路由参数发生变化的时候重新请求
   onIdChanged(val: any, oldVal: any) {
-    console.log(1);
     this.getList(this.userForm, this.$route.params.pages);
   }
 
@@ -79,23 +87,25 @@ export default class RealList extends Vue {
   }
   //取消实名后获取数据
   calcelReal() {
-    console.log(1);
     this.getList(this.userForm, this.pages);
   }
-  //使用中央数据总线来确定审核
-  mounted() {
-    bus.$on("comfirmStatus", (data: any) => {
-      let params: any = {}; //创建一个对象用于传递参数
-      let Id = data.id;
-      if (data.status == "通过") {
-        params.code = 1;
-        params.refusal = "";
-      } else {
-        params.code = 0;
-        params.refusal = data.reason;
-      }
-      (this as any).$api.real.checkRealName(Id, params).then(() => {
-        (this as any).$refs.checkTable.checkVisible = false;
+  showDialog(id: any) {
+    this.checkVisible = true;
+    this.showDialogID = id;
+  }
+  updataStatus(data: any) {
+    this.checkVisible = false;
+    let params: any = {}; //创建一个对象用于传递参数
+    if (data.status == "通过") {
+      params.code = 1;
+      params.refusal = "";
+    } else {
+      params.code = 0;
+      params.refusal = data.reason;
+    }
+    (this as any).$api.real
+      .checkRealName(this.showDialogID, params)
+      .then(() => {
         this.$message({
           showClose: true,
           message: "操作成功",
@@ -103,7 +113,6 @@ export default class RealList extends Vue {
         });
         this.getList(this.userForm, this.pages);
       });
-    });
   }
 }
 </script>

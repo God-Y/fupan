@@ -35,8 +35,8 @@ import bus from "@/bus/bus";
 export default class CheckStatus extends Vue {
   @Prop([Boolean])
   visible!: boolean;
-  @Prop([Number])
-  userId!: number;
+  @Emit("updataStatus")
+  updataStatus(data: any) {}
   get dialogVisible() {
     return this.visible;
   }
@@ -60,8 +60,7 @@ export default class CheckStatus extends Vue {
 
   //点击确定按钮发送http请求,把数据传送出去
   comfirm() {
-    (this as any).checkForm.id = this.userId;
-    bus.$emit("comfirmStatus", this.checkForm);
+    this.updataStatus(this.checkForm);
   }
   handleClose(done: any) {
     this.$message("取消操作");
