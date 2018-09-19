@@ -68,7 +68,10 @@ export default class parameter extends Vue {
     console.log("?");
     (this as any).$api.parameter.getData().then((res: any) => {
       console.log(res);
-    });
+      if(res.data.code === 1){
+        this.data = res.data.data;
+      }
+    })
   }
   getContentPicture(val: any) {
     console.log(val);

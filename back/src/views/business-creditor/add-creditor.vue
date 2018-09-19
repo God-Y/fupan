@@ -26,7 +26,7 @@
               </el-form-item>
               <el-form-item prop="lendingDate">
                 <span>出借日期</span>
-                <el-input v-model="data.lendingDate" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                <el-input v-model="data.lendingDate" type="text" auto-complete="off" size="mini" placeholder="请输入日期格式:2018-08-08"></el-input>
               </el-form-item>
               <el-form-item prop="lendingAmount" size="mini">
                 <span>出借金额</span>
@@ -40,11 +40,11 @@
               </el-form-item>
                 <el-form-item prop="property">
                 <span>债权性质</span>
-                <el-input v-model="data.property" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                <el-input v-model="data.property" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
               </el-form-item>
               <el-form-item prop="interestRate">
                 <span>债权年利率</span>
-                <el-input v-model="data.interestRate" type="text" auto-complete="off" size="mini" placeholder="请输入金额"></el-input>
+                <el-input v-model="data.interestRate" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
                 %
               </el-form-item>
           </div>
@@ -90,7 +90,7 @@ export default class addCreditor extends Vue {
         let month = ("0" + (value.getMonth() + 1)).slice(-2); //getMonth是从0开始，所以加+
         let day = ("0" + value.getDate()).slice(-2);
         this.data.lendingDate = year + "-" + month + "-" + day;
-        this.data.interestRate = this.data.interestRate * 100 + "%"; /* 格式化年率利 */
+        // this.data.interestRate = this.data.interestRate * 100 + "%"; /* 格式化年率利 */
       });
     }
   } /* 判断是否 编辑页面 */
@@ -127,7 +127,7 @@ export default class addCreditor extends Vue {
   }; /* 出借期限 */
   checkDate: any = (rule: any, value: any, callback: any) => {
     console.log(value);
-    let re = /((19|20)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\ d|3[01])/;
+    let re = /^(?:(?!0000)[0-9]{4}([-/.]?)(?:(?:0?[1-9]|1[0-2])\1(?:0?[1-9]|1[0-9]|2[0-8])|(?:0?[13-9]|1[0-2])\1(?:29|30)|(?:0?[13578]|1[02])\1(?:31))|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)([-/.]?)0?2\2(?:29))$/;
     if (!value || !re.test(value)) {
       callback(new Error("请输入正确的日期格式，例如：2018-08-08"));
     } else {
@@ -206,6 +206,16 @@ export default class addCreditor extends Vue {
             this.$router.push({
               path: "/back/creditor"
             })
+          } else {
+              this.$alert("该债权代号已经存在，请输入其他代号！", "提示！", {
+              confirmButtonText: "确定",
+            });
+            let temple = this.data.lendingDate;
+            let value = new Date(temple);
+            let year = value.getFullYear();
+            let month = ("0" + (value.getMonth() + 1)).slice(-2); //getMonth是从0开始，所以加+
+            let day = ("0" + value.getDate()).slice(-2);
+            this.data.lendingDate = year + "-" + month + "-" + day;
           }
         });
       } else {

@@ -23,10 +23,10 @@
                 <div style="display:flex">
                   <el-form-item prop="lowerSingleLimit" ref="lowerSingleLimit" size="mini">
                     <span>单笔限额</span>
-                    <el-input v-model="data.lowerSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入上限"></el-input> ~
+                    <el-input v-model="data.lowerSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入下限"></el-input> ~
                   </el-form-item>
                   <el-form-item prop="upperSingleLimit" ref="upperSingleLimit" size="mini">
-                    &#12288;<el-input v-model="data.upperSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入下限"></el-input>
+                    &#12288;<el-input v-model="data.upperSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入上限"></el-input>
                   </el-form-item>
                 </div>
                 <div style="display:flex">
@@ -73,7 +73,9 @@ export default class search extends Vue {
     let num = +this.data.upperSingleLimit;
     value = +value;
     if (!value) {
-      return this.$refs.lowerSingleLimit.resetField();
+      this.data.lowerSingleLimit = "";
+      console.log(this.$refs.lowerSingleLimit);
+      // return this.$refs.lowerSingleLimit.resetField();
     } else if (!Number(value) || value > num) {
       callback(new Error("请输入，数值不能大于下限值"));
     } else {
@@ -84,7 +86,7 @@ export default class search extends Vue {
     let num = +this.data.lowerSingleLimit;
     value = +value;
     if (!value) {
-      return this.$refs.upperSingleLimit.resetField();
+      // return this.$refs.upperSingleLimit.resetField();
     } else if (!Number(value) || value < num) {
       callback(new Error("请输入，数值不能小于下限值"));
     } else {
@@ -95,7 +97,7 @@ export default class search extends Vue {
     let num = +this.data.upperDailyLimit;
     value = +value;
     if (!value) {
-      return this.$refs.lowerDailyLimit.resetField();
+      // return this.$refs.lowerDailyLimit.resetField();
     } else if (!Number(value) || value > num) {
       callback(new Error("请输入，数值不能大于下限值"));
     } else {
@@ -107,7 +109,7 @@ export default class search extends Vue {
     let num = +this.data.lowerDailyLimit;
     value = +value;
     if (!value) {
-      return this.$refs.upperDailyLimit.resetField();
+      // return this.$refs.upperDailyLimit.resetField();
     } else if (!Number(value) || value < num) {
       callback(new Error("请输入，数值不能小于下限值"));
     } else {
@@ -118,8 +120,8 @@ export default class search extends Vue {
   rules: any = {
     lowerSingleLimit: [{ validator: this.checklowerSingle, bigger: "blur" }],
     upperSingleLimit: [{ validator: this.checkUpperSingle, bigger: "blur" }],
-    lowerDailyLimit: [{ validator: this.checkLowerDailyLimit, bigger: "blur" }],
-    upperDailyLimit: [{ validator: this.checkUpperDailyLimit, bigger: "blur" }]
+    lowerDailyLimit: [{ validator: this.checkLowerDailyLimit, bigger: "change" }],
+    upperDailyLimit: [{ validator: this.checkUpperDailyLimit, bigger: "change" }]
   };
   created() {
     let query: any = this.$route.query;
@@ -147,11 +149,13 @@ export default class search extends Vue {
   } /* 搜索 */
 
   clear() {
+    console.log("clear");
     let keys = Object.keys(this.data);
     console.log(keys);
     keys.forEach((value: any) => {
       this.data[value] = "";
     }); /* 表单中的数据清零 */
+    console.log(this.data);
     // this.$router.push({
     //   path: `/back/bank`
     // }); /* 清空路由 */
