@@ -59,7 +59,7 @@ import Pages from "common_Components/page/pagination.vue";
 export default class messageManagement extends Vue {
   dataList: Array<any> = [];
   total: number = 0; //总条数
-  sendData: any = {}
+  sendData: any = {};
 
   created() {
     this.getList(this.sendData);
@@ -84,11 +84,12 @@ export default class messageManagement extends Vue {
     });
   } /* 获取文章列表 */
   toPage(val: any) {
-     this.$router.push({ 
-       path: "/back/message",query:{
+    this.$router.push({
+      path: "/back/message",
+      query: {
         pages: val
-    }
-     });
+      }
+    });
     this.getList(this.sendData);
   }
   jumpAdd() {
@@ -113,7 +114,7 @@ export default class messageManagement extends Vue {
       .then(() => {
         (this as any).$api.message.changeStatu(id, statu).then((res: any) => {
           console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          if(res.data.code === 1) {
+          if (res.data.code === 1) {
             this.$message("操作成功");
             this.getList(this.sendData);
           }
@@ -124,18 +125,15 @@ export default class messageManagement extends Vue {
       });
   }
   deleteMsg(id: any) {
-    this.$confirm(
-      "确认删除吗？","提示",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }
-    )
+    this.$confirm("确认删除吗？", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
       .then(() => {
         (this as any).$api.message.deleteMsg(id).then((res: any) => {
           console.log(res); /* 接口未痛，操作成功后再弹出提示信息 */
-          if(res.data.code === 1) {
+          if (res.data.code === 1) {
             this.$message("操作成功");
             this.getList(this.sendData);
           }
