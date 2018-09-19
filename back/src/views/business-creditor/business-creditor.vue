@@ -114,20 +114,20 @@ export default class BusinessCreditor extends Vue {
   } /* 跳转至编辑页面 */
   matchRate(val: any) {
     this.$router.push({
-      path: `/back/creditorMatch/${val}/1`,
+      path: `/back/creditorMatch/${val}/1`
       // params: {id: val}
       // query: { id: val,pages: "1" }
     });
   } /* 跳转至匹配详情 */
   changeRateCloor(rate: any, statu: any) {
-    console.log(rate,statu);
-    if(rate === 0) {
+    console.log(rate, statu);
+    if (rate === 0) {
       return "blue";
     }
-    if(rate === 1) {
+    if (rate === 1) {
       return "success";
     }
-    if(rate > 0 && rate < 1){
+    if (rate > 0 && rate < 1) {
       return "warning";
     }
     //  if (rate === 0 && statu === 0) {

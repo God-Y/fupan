@@ -68,7 +68,7 @@ export default class parameter extends Vue {
     console.log("?");
     (this as any).$api.parameter.getData().then((res: any) => {
       console.log(res);
-    })
+    });
   }
   getContentPicture(val: any) {
     console.log(val);
@@ -120,10 +120,10 @@ export default class parameter extends Vue {
           console.log(this.data);
           (this as any).$api.parameter.sendData(this.data).then((res: any) => {
             console.log(res);
-            if(res.data.code === 1){
+            if (res.data.code === 1) {
               this.$message({
-                message: '操作成功',
-                type: 'success'
+                message: "操作成功",
+                type: "success"
               });
             }
           }); /* 发送新增保存请求 */
