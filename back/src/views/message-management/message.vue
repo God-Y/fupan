@@ -27,7 +27,7 @@
           <el-table-column prop="editors" label="编辑者"  header-align="center"> </el-table-column>
           <el-table-column label="编辑时间"   header-align="center">
             <template slot-scope="scope">
-              {{scope.row.timingTime | timeSecond}}
+              {{scope.row.gmtUpdate | timeSecond}}
             </template>
           </el-table-column>
           <el-table-column prop="" label="操作" header-align="center" width="250">
