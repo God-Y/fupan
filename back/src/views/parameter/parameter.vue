@@ -72,7 +72,6 @@ export default class parameter extends Vue {
         this.data = res.data.data;
       }
     })
-    });
   }
   getContentPicture(val: any) {
     console.log(val);

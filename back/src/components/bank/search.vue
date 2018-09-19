@@ -23,10 +23,10 @@
                 <div style="display:flex">
                   <el-form-item prop="lowerSingleLimit" ref="lowerSingleLimit" size="mini">
                     <span>单笔限额</span>
-                    <el-input v-model="data.lowerSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入上限"></el-input> ~
+                    <el-input v-model="data.lowerSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入下限"></el-input> ~
                   </el-form-item>
                   <el-form-item prop="upperSingleLimit" ref="upperSingleLimit" size="mini">
-                    &#12288;<el-input v-model="data.upperSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入下限"></el-input>
+                    &#12288;<el-input v-model="data.upperSingleLimit" type="text" class="small-size" auto-complete="off" placeholder="请输入上限"></el-input>
                   </el-form-item>
                 </div>
                 <div style="display:flex">
@@ -63,10 +63,10 @@ export default class search extends Vue {
     lowerDate: ""
   };
   getupperDate(val: any) {
-    this.data.upperDate = val;
+    this.data.lowerDate = val;
   } /* 获取时间 */
   getlowerDate(val: any) {
-    this.data.lowerDate = val;
+    this.data.upperDate = val;
   } /* 获取时间 */
   $refs: any;
   checklowerSingle: any = (rule: any, value: any, callback: any) => {
