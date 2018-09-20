@@ -26,9 +26,9 @@
               @start-change="getStart"
               @end-change="getEnd"
               ></DatePicker> -->
-                <el-input class="small-size" v-model="sendData.lowerAnnualizedIncome" size="mini" clearable> </el-input> 
+                <el-input class="small-size" v-model="lowerAnnualizedIncome" size="mini" clearable> </el-input> 
                 ~
-                <el-input class="small-size" v-model="sendData.upperAnnualizedIncome" size="mini" clearable> </el-input> 
+                <el-input class="small-size" v-model="upperAnnualizedIncome" size="mini" clearable> </el-input> 
                 %
             </div>
           </div>
@@ -102,6 +102,8 @@ import DatePicker from "../../components/common/date/double-date.vue";
 export default class searchProduct extends Vue {
   sendData: any = {};
   dayMonthSelect: any = 1;
+  lowerAnnualizedIncome: any = "";
+  upperAnnualizedIncome: any = "";
   created() {
     let query: any = this.$route.query;
     let keys: any = Object.keys(query);
@@ -164,6 +166,21 @@ export default class searchProduct extends Vue {
   ];
   search() {
     if (this.dayMonthSelect) console.log(this.sendData);
+    if(this.lowerAnnualizedIncome || this.upperAnnualizedIncome) {
+      if(!Number(this.lowerAnnualizedIncome || this.upperAnnualizedIncome)) {
+        this.$message("期限必须是数字");
+        return false;
+      }else {
+        this.sendData.upperAnnualizedIncome = this.upperAnnualizedIncome / 100;
+        this.sendData.lowerAnnualizedIncome = this.lowerAnnualizedIncome / 100;
+      }
+    } //把年化收益转换一下
+    if(this.sendData.lowerDeadline || this.sendData.upperDeadline) {
+      if(!Number(this.sendData.lowerDeadline) || !Number(this.sendData.upperDeadline)){
+        this.$message("期限必须是数字");
+        return false;
+      }
+    }
     this.$router.push({
       path: "/back/product",
       query: this.sendData
@@ -175,6 +192,8 @@ export default class searchProduct extends Vue {
     keys.forEach((value: any) => {
       this.sendData[value] = "";
     }); /* 表单中的数据清零 */
+    this.lowerAnnualizedIncome = "";
+    this.upperAnnualizedIncome = "";
     this.$router.push({
       path: "/back/product"
     });
