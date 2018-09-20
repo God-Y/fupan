@@ -100,14 +100,15 @@
         <div class="side-span">
             <span>&#12288;推&#12288;&#12288;荐</span>
              <div>
-                <el-radio v-model="form.isRecommend" :label=+1>精品推荐</el-radio>
+                <el-radio v-model="form.isRecommend" :label=+1>是</el-radio>
+                <el-radio v-model="form.isRecommend" :label=+0>否</el-radio>
             </div>
         </div>
         <div class="side-span">
             <span>&#12288;限&#12288;&#12288;购</span>
              <div>
-                <el-radio v-model="form.isPurchaseLimit" :label=+1>是</el-radio>
-                <el-radio v-model="form.isPurchaseLimit" :label=+0>否</el-radio>
+                <el-radio v-model="form.isPurchaseLimit" :label=1>是</el-radio>
+                <el-radio v-model="form.isPurchaseLimit" :label=0>否</el-radio>
             </div>
         </div>
         <div class="side-span footer-button">
@@ -197,7 +198,7 @@ export default class addProduct extends Vue {
     moreDetails: "",
     isShelf: "0",
     isPurchaseLimit: 1,
-    isRecommend: 0,
+    isRecommend: 1,
     type: 10
   }; /* 表单验证 数据对象 */
   private checkCode = (rule: any, value: string, callback: any) => {
@@ -286,9 +287,13 @@ export default class addProduct extends Vue {
             .then((res: any) => {
               console.log(res);
               if (res.data.code === 1) {
-                this.$alert("保存成功，点击取消可以返回上一页", "提示", {
-                  confirmButtonText: "确定"
-                });
+                // this.$alert("保存成功，点击取消可以返回上一页", "提示", {
+                //   confirmButtonText: "确定"
+                // });
+              this.$message("操作成功");
+              this.$router.push({
+                path: "/back/product"
+              })
               } else {
                 let error = res.data.message;
                 console.log(error);
@@ -308,9 +313,13 @@ export default class addProduct extends Vue {
           (this as any).$api.product.addProduct(this.form).then((res: any) => {
             console.log(res);
             if (res.data.code === 1) {
-              this.$alert("保存成功，点击取消可以返回上一页", "提示", {
-                confirmButtonText: "确定"
-              });
+              // this.$alert("保存成功，点击取消可以返回上一页", "提示", {
+              //   confirmButtonText: "确定"
+              // });
+              this.$message("操作成功");
+              this.$router.push({
+                path: "/back/product"
+              })
             } else {
               let error = res.data.message;
               console.log(error);
