@@ -60,7 +60,7 @@ export default class DatePicker extends Vue {
   endChanged(val: Date) {
     //设定结束时间的变量
     if (val) {
-      let endNumber: number = val.valueOf() + 8.64e6 - 1;
+      let endNumber: number = val.valueOf() + 8.64e7 - 1;
       this.endChange(endNumber);
     } else if (val == null) {
       let value = "";

@@ -323,14 +323,22 @@ export default class UserMsg extends Vue {
   //保存手机号修改
   savePhoneNumber(id: string, number: string) {
     if (number == this.phoneNumber) return (this.phoneUse = !this.phoneUse);
-    (this as any).$api.user.changePhone(id, number).then(() => {
-      this.getUserMsg();
-      this.$refs.phone.clearValidate();
-      this.phoneUse = !this.phoneUse;
-      this.$message({
-        type: "success",
-        message: "手机号修改成功"
-      });
+    (this as any).$api.user.changePhone(id, number).then((res: any) => {
+      console.log(res);
+      let data = res.data;
+      if (data.code == 1) {
+        this.getUserMsg();
+        this.$refs.phone.clearValidate();
+        this.phoneUse = !this.phoneUse;
+        this.$message({
+          type: "success",
+          message: "手机号修改成功"
+        });
+      } else {
+        this.$message.error(data.message);
+        this.phoneUse = !this.phoneUse;
+        this.userMsg.phone = this.phoneNumber;
+      }
     });
   }
   changes() {
