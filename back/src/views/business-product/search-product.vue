@@ -166,17 +166,20 @@ export default class searchProduct extends Vue {
   ];
   search() {
     if (this.dayMonthSelect) console.log(this.sendData);
-    if(this.lowerAnnualizedIncome || this.upperAnnualizedIncome) {
-      if(!Number(this.lowerAnnualizedIncome || this.upperAnnualizedIncome)) {
+    if (this.lowerAnnualizedIncome || this.upperAnnualizedIncome) {
+      if (!Number(this.lowerAnnualizedIncome || this.upperAnnualizedIncome)) {
         this.$message("期限必须是数字");
         return false;
-      }else {
+      } else {
         this.sendData.upperAnnualizedIncome = this.upperAnnualizedIncome / 100;
         this.sendData.lowerAnnualizedIncome = this.lowerAnnualizedIncome / 100;
       }
     } //把年化收益转换一下
-    if(this.sendData.lowerDeadline || this.sendData.upperDeadline) {
-      if(!Number(this.sendData.lowerDeadline) || !Number(this.sendData.upperDeadline)){
+    if (this.sendData.lowerDeadline || this.sendData.upperDeadline) {
+      if (
+        !Number(this.sendData.lowerDeadline) ||
+        !Number(this.sendData.upperDeadline)
+      ) {
         this.$message("期限必须是数字");
         return false;
       }

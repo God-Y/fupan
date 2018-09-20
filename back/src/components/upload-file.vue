@@ -58,17 +58,17 @@ export default class uploadFile extends Vue {
   geturl!: any; /* 图片base64 */
 
   get getdataurl() {
-    if(!this.geturl){
+    if (!this.geturl) {
       return this.dataurl;
-    }else {
-      return this.dataurl = this.geturl;
+    } else {
+      return (this.dataurl = this.geturl);
     }
   }
   created() {
-  //  if(this.geturl){
-  //    console.log(this.geturl);
-  //    this.dataurl = this.geturl;
-  //  } 
+    //  if(this.geturl){
+    //    console.log(this.geturl);
+    //    this.dataurl = this.geturl;
+    //  }
   }
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */

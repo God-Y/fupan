@@ -99,7 +99,7 @@ export default class contentEdit extends Vue {
         this.content = this.data.content;
         console.log(this.data.type);
         console.log(res.data.data.type);
-        if(res.data.data.type == 10) {
+        if (res.data.data.type == 10) {
           this.banner = true;
         }
         switch (this.data.type) {
@@ -137,7 +137,7 @@ export default class contentEdit extends Vue {
     console.log(val);
     this.data.content = val;
   } /* 获取内容的url */
-  clearTwo(val :any) {
+  clearTwo(val: any) {
     this.data.content = "";
     this.content = "";
     console.log(this.data.content);
@@ -147,19 +147,19 @@ export default class contentEdit extends Vue {
     this.data.state = "10"; /* 状态判断为立即上线 */
     if (this.data.type === "10") {
       if (!this.data.cover || !this.data.content || !this.data.title) {
-      this.$alert("请把带*号的内容填写完整", "错误提示", {
-        confirmButtonText: "确定"
-      });
-      return false;
-    } /* 如果未填写完全，弹窗返回错误 */
+        this.$alert("请把带*号的内容填写完整", "错误提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      } /* 如果未填写完全，弹窗返回错误 */
     }
-    if(this.data.type !== "10") {
-       if (!this.data.content || !this.data.title) {
-      this.$alert("请把带*号的内容填写完整", "错误提示", {
-        confirmButtonText: "确定"
-      });
-      return false;
-    } /* 如果未填写完全，弹窗返回错误 */
+    if (this.data.type !== "10") {
+      if (!this.data.content || !this.data.title) {
+        this.$alert("请把带*号的内容填写完整", "错误提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      } /* 如果未填写完全，弹窗返回错误 */
     }
     this.request(this.data.type);
   } /* 立即上线 */
@@ -168,19 +168,19 @@ export default class contentEdit extends Vue {
     this.data.state = "20"; /* 状态判断为存为草稿 */
     if (this.data.type === "10") {
       if (!this.data.cover || !this.data.content || !this.data.title) {
-      this.$alert("请把带*号的内容填写完整", "错误提示", {
-        confirmButtonText: "确定"
-      });
-      return false;
-    } /* 如果未填写完全，弹窗返回错误 */
+        this.$alert("请把带*号的内容填写完整", "错误提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      } /* 如果未填写完全，弹窗返回错误 */
     }
-    if(this.data.type !== "10") {
-       if (!this.data.content || !this.data.title) {
-      this.$alert("请把带*号的内容填写完整", "错误提示", {
-        confirmButtonText: "确定"
-      });
-      return false;
-    } /* 如果未填写完全，弹窗返回错误 */
+    if (this.data.type !== "10") {
+      if (!this.data.content || !this.data.title) {
+        this.$alert("请把带*号的内容填写完整", "错误提示", {
+          confirmButtonText: "确定"
+        });
+        return false;
+      } /* 如果未填写完全，弹窗返回错误 */
     }
     this.request(this.data.type); /* 传入type 判断是否是banner */
   } /* 存为草稿 */
@@ -197,9 +197,9 @@ export default class contentEdit extends Vue {
           .editChange(id, this.data)
           .then((res: any) => {
             console.log(res);
-            if(res.data.code === 1) {
-            this.goback();
-          }
+            if (res.data.code === 1) {
+              this.goback();
+            }
           });
         //如果state== "10" 那么是banner进来的，则两个图片都需要上传
       } else {
@@ -208,9 +208,9 @@ export default class contentEdit extends Vue {
           .editChange(id, this.data)
           .then((res: any) => {
             console.log(res);
-            if(res.data.code === 1) {
-            this.goback();
-          }
+            if (res.data.code === 1) {
+              this.goback();
+            }
           });
       } /* 如果不是banner， 发送请求 */
     } else {
@@ -219,7 +219,7 @@ export default class contentEdit extends Vue {
         // this.bannerError();
         (this as any).$api.content.launch(this.data).then((res: any) => {
           console.log(res);
-          if(res.data.code === 1) {
+          if (res.data.code === 1) {
             this.goback();
           }
         });
@@ -229,7 +229,7 @@ export default class contentEdit extends Vue {
         console.log(this.data);
         (this as any).$api.content.launch(this.data).then((res: any) => {
           console.log(res);
-          if(res.data.code === 1) {
+          if (res.data.code === 1) {
             this.goback();
           }
         });
@@ -254,8 +254,8 @@ export default class contentEdit extends Vue {
   // }
   goback() {
     this.$message({
-      message: '操作成功',
-      type: 'success'
+      message: "操作成功",
+      type: "success"
     });
     this.$router.go(-1); /* 点击确定后返回上一页 */
   }

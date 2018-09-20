@@ -59,16 +59,16 @@ export default class uploadFileTwo extends Vue {
   base!: any;
 
   get getbase() {
-    if(!this.base){
+    if (!this.base) {
       return this.baseurl;
-      }else {
-      return this.baseurl = this.base;
+    } else {
+      return (this.baseurl = this.base);
     }
   }
   created() {
-  //  if(this.base) {
-  //    this.baseurl = this.base;
-  //  } 
+    //  if(this.base) {
+    //    this.baseurl = this.base;
+    //  }
   }
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
