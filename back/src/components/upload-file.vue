@@ -58,10 +58,10 @@ export default class uploadFile extends Vue {
   geturl!: any; /* 图片base64 */
 
   get getdataurl() {
-    if(this.geturl){
-      return this.dataurl = this.geturl;
-    }else {
+    if(!this.geturl){
       return this.dataurl;
+    }else {
+      return this.dataurl = this.geturl;
     }
   }
   created() {
@@ -72,7 +72,8 @@ export default class uploadFile extends Vue {
   }
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
-
+  @Emit()
+  clear(val: any) {}
   handleFileChange(e: any) {
     this.init(); /* 每次change就初始化一次 */
     if (e.target.files[0].size >= 2516582) {
@@ -138,6 +139,10 @@ export default class uploadFile extends Vue {
         console.log(res);
         let message = res.data;
         this.uploadInfo(message); /* 请求成功后返回的url返回给父级 */
+        this.$message({
+          type: "success",
+          message: "图片上传成功"
+        });
       })
       .catch(() => {
         this.uploadInfo("请求错误");
@@ -155,6 +160,8 @@ export default class uploadFile extends Vue {
     this.dataurl = "";
     this.progress = 0;
     this.filesSize = 0;
+    this.clear("");
+    console.log(this.getdataurl);
   } /* 初始化， 删除按钮 */
 }
 </script>
