@@ -22,14 +22,16 @@
             <i class="star">*</i>
             <span>封&#12288;&#12288;面</span>
             <upload
-            :geturl=data.cover
+            :geturl=cover
+            @clear="clearOne"
             @upload-info="getCover"></upload>
           </div>
            <div class="upload">
             <i class="star">*</i>
             <span>内&#12288;&#12288;容</span>
             <uploadTwo
-            :base=data.content
+            :base=content
+            @clear="clearTwo"
             @upload-info="getContentPicture"></uploadTwo>
           </div>
           <el-form-item class="button-style">
@@ -56,9 +58,13 @@ import uploadTwo from "../../components/common/upload-file/upload-two.vue";
 export default class contentEdit extends Vue {
   data: any = {
     content: "",
-    cover: ""
+    cover: "",
+    type: "30"
   }; /* 数据对象 */
+  cover: any = "";
+  content: any = "";
   banner: any = false; /* 判断是否是banner的Boolean值 */
+  checkrequest: boolean = false;
   // get bannershow() {
   //   if(this.$route.query.statu === "10"){
   //     return true;
@@ -88,7 +94,9 @@ export default class contentEdit extends Vue {
         console.log(res);
         this.data = res.data.data;
         console.log(this.data.cover);
+        this.cover = this.data.cover;
         console.log(this.data.content);
+        this.content = this.data.content;
         console.log(this.data.type);
         console.log(res.data.data.type);
         if(res.data.data.type == 10) {
@@ -119,31 +127,72 @@ export default class contentEdit extends Vue {
     this.data.cover = val;
   } /* 获取子组件返回的封面的url */
 
+  clearOne(val: any) {
+    this.data.cover = "";
+    this.cover = "";
+    console.log(this.data.cover);
+  }
+
   getContentPicture(val: any) {
     console.log(val);
     this.data.content = val;
   } /* 获取内容的url */
-
+  clearTwo(val :any) {
+    this.data.content = "";
+    this.content = "";
+    console.log(this.data.content);
+  }
   launch() {
     console.log(this.data.contentUrl);
     this.data.state = "10"; /* 状态判断为立即上线 */
+    if (this.data.type === "10") {
+      if (!this.data.cover || !this.data.content || !this.data.title) {
+      this.$alert("请把带*号的内容填写完整", "错误提示", {
+        confirmButtonText: "确定"
+      });
+      return false;
+    } /* 如果未填写完全，弹窗返回错误 */
+    }
+    if(this.data.type !== "10") {
+       if (!this.data.content || !this.data.title) {
+      this.$alert("请把带*号的内容填写完整", "错误提示", {
+        confirmButtonText: "确定"
+      });
+      return false;
+    } /* 如果未填写完全，弹窗返回错误 */
+    }
     this.request(this.data.type);
   } /* 立即上线 */
 
   draft() {
-    console.log(this.data.state === "20");
     this.data.state = "20"; /* 状态判断为存为草稿 */
+    if (this.data.type === "10") {
+      if (!this.data.cover || !this.data.content || !this.data.title) {
+      this.$alert("请把带*号的内容填写完整", "错误提示", {
+        confirmButtonText: "确定"
+      });
+      return false;
+    } /* 如果未填写完全，弹窗返回错误 */
+    }
+    if(this.data.type !== "10") {
+       if (!this.data.content || !this.data.title) {
+      this.$alert("请把带*号的内容填写完整", "错误提示", {
+        confirmButtonText: "确定"
+      });
+      return false;
+    } /* 如果未填写完全，弹窗返回错误 */
+    }
     this.request(this.data.type); /* 传入type 判断是否是banner */
   } /* 存为草稿 */
 
   request(type: any) {
     let id = this.$route.query.id;
-    this.data.editors = "zheng";
+    // this.data.editors = "zheng";
     console.log(this.data);
     //   如果有路由id，请求的是修改的接口
     if (id) {
       if (type === "10") {
-        this.bannerError(); /* 判断资料是否填写完全 */
+        // this.bannerError(); /* 判断资料是否填写完全 */
         (this as any).$api.content
           .editChange(id, this.data)
           .then((res: any) => {
@@ -154,7 +203,7 @@ export default class contentEdit extends Vue {
           });
         //如果state== "10" 那么是banner进来的，则两个图片都需要上传
       } else {
-        this.validate();
+        // this.validate();
         (this as any).$api.content
           .editChange(id, this.data)
           .then((res: any) => {
@@ -167,7 +216,7 @@ export default class contentEdit extends Vue {
     } else {
       /* 没有路由id  ， 使用的是新增接口 */
       if (type === "10") {
-        this.bannerError();
+        // this.bannerError();
         (this as any).$api.content.launch(this.data).then((res: any) => {
           console.log(res);
           if(res.data.code === 1) {
@@ -176,7 +225,7 @@ export default class contentEdit extends Vue {
         });
         //如果state== "10" 那么是banner进来的，则两个图片都需要上传
       } else {
-        this.validate();
+        // this.validate();
         console.log(this.data);
         (this as any).$api.content.launch(this.data).then((res: any) => {
           console.log(res);
@@ -187,22 +236,22 @@ export default class contentEdit extends Vue {
       } /* 如果不是banner， 发送请求 */
     }
   } /* 发送请求的代码 */
-  bannerError() {
-    if (!this.data.cover || !this.data.content || !this.data.title) {
-      this.$alert("请把带*号的内容填写完整", "错误提示", {
-        confirmButtonText: "确定"
-      });
-      return false;
-    } /* 如果未填写完全，弹窗返回错误 */
-  } /* 如果有banner的验证是否填写完整 */
-  validate() {
-    if (!this.data.content || !this.data.title) {
-      this.$alert("请把带*号的内容填写完整", "错误提示", {
-        confirmButtonText: "确定"
-      });
-      return false;
-    } /* 如果未填写完全，弹窗返回错误 */
-  }
+  // bannerError() {
+  //   if (!this.data.cover || !this.data.content || !this.data.title) {
+  //     this.$alert("请把带*号的内容填写完整", "错误提示", {
+  //       confirmButtonText: "确定"
+  //     });
+  //     return;
+  //   } /* 如果未填写完全，弹窗返回错误 */
+  // } /* 如果有banner的验证是否填写完整 */
+  // validate() {
+  //   if (!this.data.content || !this.data.title) {
+  //     this.$alert("请把带*号的内容填写完整", "错误提示", {
+  //       confirmButtonText: "确定"
+  //     });
+  //   } /* 如果未填写完全，弹窗返回错误 */
+  //   return false;
+  // }
   goback() {
     this.$message({
       message: '操作成功',

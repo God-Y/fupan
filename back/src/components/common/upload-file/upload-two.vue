@@ -59,19 +59,21 @@ export default class uploadFileTwo extends Vue {
   base!: any;
 
   get getbase() {
-    if(this.base){
-      return this.baseurl = this.base;
-    }else {
+    if(!this.base){
       return this.baseurl;
+      }else {
+      return this.baseurl = this.base;
     }
   }
   created() {
-   if(this.base) {
-     this.baseurl = this.base;
-   } 
+  //  if(this.base) {
+  //    this.baseurl = this.base;
+  //  } 
   }
   @Emit()
   uploadInfo(files: any) {} /* 向父级发送上传文件成功后的url */
+  @Emit()
+  clear(val: any) {}
 
   handleFile(e: any) {
     this.init(); /* 初始化 */
@@ -142,6 +144,10 @@ export default class uploadFileTwo extends Vue {
         console.log(res);
         let message = res.data;
         this.uploadInfo(message); /* 请求成功后返回的url返回给父级 */
+        this.$message({
+          type: "success",
+          message: "图片上传成功"
+        });
         console.log(this.file);
       })
       .catch(() => {
@@ -160,6 +166,8 @@ export default class uploadFileTwo extends Vue {
     this.baseurl = "";
     this.progress = 0;
     this.fileSize = 0;
+    this.clear("");
+    console.log(this.getbase);
   } /* 初始化， 删除按钮 */
 }
 </script>

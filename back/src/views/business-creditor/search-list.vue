@@ -60,9 +60,9 @@
                 </el-form-item>
                 <el-form-item >
                   <span>出借期限</span>
-                  <el-input v-model="ruleForm.upperLendingDate" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入月数"></el-input>
+                  <el-input v-model="ruleForm.lowerLendingPeriod" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入月数"></el-input>
                   ~
-                  <el-input v-model="ruleForm.lowerLendingDate" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入月数"></el-input>&#12288;月
+                  <el-input v-model="ruleForm.upperLendingPeriod" class="input-width" type="text" auto-complete="off" size="mini" placeholder="请输入月数"></el-input>&#12288;月
                 </el-form-item>
             </div>
                 <el-form-item class="button">
@@ -207,6 +207,7 @@ export default class creditorSearchList extends Vue {
     this.$router.push({
       path: `/back/creditor`
     }); /* 清空路由 */
+    this.statu = "全部";
     this.sendClear(""); /* 向父级弹射事件 */
   } /* 清空按钮 */
 }

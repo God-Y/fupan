@@ -10,7 +10,7 @@
                 </el-form-item>
                 <el-form-item>
                   <span>编辑者</span>
-                  <el-input v-model="data.redactor" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
+                  <el-input v-model="data.editors" type="text" auto-complete="off" size="mini" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item  size="mini">
                   <span>编辑时间</span>
@@ -31,7 +31,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item  size="mini">
-                  <span>状态&#12288;</span>
+                  <span>类型&#12288;</span>
                   <el-select v-model="data.type" placeholder="请选择">
                     <el-option
                       v-for="item in types"
