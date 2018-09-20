@@ -120,8 +120,12 @@ export default class search extends Vue {
   rules: any = {
     lowerSingleLimit: [{ validator: this.checklowerSingle, bigger: "blur" }],
     upperSingleLimit: [{ validator: this.checkUpperSingle, bigger: "blur" }],
-    lowerDailyLimit: [{ validator: this.checkLowerDailyLimit, bigger: "change" }],
-    upperDailyLimit: [{ validator: this.checkUpperDailyLimit, bigger: "change" }]
+    lowerDailyLimit: [
+      { validator: this.checkLowerDailyLimit, bigger: "change" }
+    ],
+    upperDailyLimit: [
+      { validator: this.checkUpperDailyLimit, bigger: "change" }
+    ]
   };
   created() {
     let query: any = this.$route.query;

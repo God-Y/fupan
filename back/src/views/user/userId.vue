@@ -240,34 +240,59 @@ export default class UserMsg extends Vue {
   };
   //弹窗解绑银行卡
   deleteCard(id: string, cardNumber: number) {
-    let msg: string =
-      "<div><p>解绑将删除该银行卡信息</p><h3>确定解绑</h3></div>";
-    let successMsg: string = "解绑成功";
-    let that: any = this;
-    let callback: any = function() {
-      return (that as any).$api.user.deleteCard(id, cardNumber);
-    };
-    //删除后重新获取数据
-    (this as any).$alertMsg(msg, successMsg, callback).then(() => {
-      setTimeout(() => {
-        that.getUserMsg();
-      }, 200);
-    });
+    this.$confirm(
+      "<div><p>解绑将删除该银行卡信息</p><h3>确定解绑</h3></div>",
+      "操作提示",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        center: true,
+        dangerouslyUseHTMLString: true
+      }
+    )
+      .then(() => {
+        (this as any).$api.user.deleteCard(id, cardNumber).then(() => {
+          (this as any).$message({
+            type: "success",
+            message: "解绑成功"
+          });
+          this.getUserMsg();
+        });
+      })
+      //请求成功后刷新本页面,或者从新调用search方法
+      .catch(() => {
+        (this as any).$message({
+          type: "info",
+          message: "取消操作"
+        });
+      });
   }
   //取消实名
   cancelId(id: number) {
-    let msg: string = "是否取消实名";
-    let successMsg: string = "取消实名成功";
-    let that: any = this;
-    let callback: any = function() {
-      return (that as any).$api.user.changeVerification(id);
-    };
-    //删除后重新获取数据
-    (this as any).$alertMsg(msg, successMsg, callback).then(() => {
-      setTimeout(() => {
-        that.getUserMsg();
-      }, 200);
-    });
+    this.$confirm("是否取消实名", "操作提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+      center: true,
+      dangerouslyUseHTMLString: true
+    })
+      .then(() => {
+        (this as any).$api.user.changeVerification(id).then(() => {
+          (this as any).$message({
+            type: "success",
+            message: "取消实名成功"
+          });
+          this.getUserMsg();
+        });
+      })
+      //请求成功后刷新本页面,或者从新调用search方法
+      .catch(() => {
+        (this as any).$message({
+          type: "info",
+          message: "取消操作"
+        });
+      });
   }
   //取消修改工号
   cancelManageNumber() {

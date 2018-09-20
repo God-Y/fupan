@@ -103,7 +103,7 @@ export default class addCreditor extends Vue {
     }
   }; /* 验证身份证号 */
   checkName: any = (rule: any, value: any, callback: any) => {
-    if (!value || value.length>5 || value.length<2) {
+    if (!value || value.length > 5 || value.length < 2) {
       callback(new Error("请输入债权人姓名,字数限制在2-5位以内"));
     } else {
       callback();
@@ -197,18 +197,18 @@ export default class addCreditor extends Vue {
         console.log(this.data);
         (this as any).$api.creditor.addCreditor(this.data).then((res: any) => {
           console.log(res);
-          if(res.data.code === 1) {
-             this.$message({
+          if (res.data.code === 1) {
+            this.$message({
               message: "增加成功",
               type: "success",
               center: true
             });
             this.$router.push({
               path: "/back/creditor"
-            })
+            });
           } else {
-              this.$alert("该债权代号已经存在，请输入其他代号！", "提示！", {
-              confirmButtonText: "确定",
+            this.$alert("该债权代号已经存在，请输入其他代号！", "提示！", {
+              confirmButtonText: "确定"
             });
             let temple = this.data.lendingDate;
             let value = new Date(temple);
