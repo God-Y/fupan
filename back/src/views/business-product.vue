@@ -16,7 +16,7 @@
                     <tr id="listTitle">
                         <th>产品代号</th>
                         <th>产品名称</th>
-                        <th>年华收益率（%）</th>
+                        <th>年化收益率（%）</th>
                         <th>期限</th>
                         <th>起投金额（元）</th>
                         <th>起息日期</th>
